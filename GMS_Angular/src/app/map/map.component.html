@@ -1,9 +1,10 @@
 <div class="map-container" [@mapAnimation]="isSidebarCollapsed ? 'sidebarCollapsed' : 'sidebarExpanded'">
-    <google-map 
+    <google-map
         [options]="options" 
         height="100%" 
         width="100%"
     >
+    <map-marker [label]="marker.label" [icon]="marker.icon"  [position]="marker.position"></map-marker>
     </google-map>
 </div>
   

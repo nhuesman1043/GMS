@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output} from '@angular/core';
 import { NgClass, NgStyle } from '@angular/common';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 

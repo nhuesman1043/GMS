@@ -1,13 +1,15 @@
-import { Component, Input } from '@angular/core';
-import { GlobalService } from '../services/global.service';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import {GoogleMap} from '@angular/google-maps';
+import { GoogleMapsModule } from '@angular/google-maps'
 import { trigger, state, style, animate, transition } from '@angular/animations';
+
 
 @Component({
   selector: 'app-map',
   standalone: true,
   imports: [
-    GoogleMap
+    GoogleMap,
+    GoogleMapsModule
   ],
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss',
@@ -28,6 +30,7 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
     ])
   ]
 })
+
 export class MapComponent {
   @Input() isSidebarCollapsed: boolean = true;
   
@@ -37,6 +40,16 @@ export class MapComponent {
     mapTypeId: "satellite",
     disableDefaultUI: true,
     keyboardShortcuts: false,
+    rotateControl: true,
+    heading: 90,
+    restriction: {latLngBounds: {north: 46.6551803, south: 46.6520219, west: -96.4423670, east: -96.4394105}}
   };
+
+  marker = {
+    //content: this.renderer.createElement('div'),
+    position: { lat: 46.6537, lng: -96.4405 },
+    label: "Susy Mae",
+    icon: "assets/images/gravesmall.png",
+ }
 }
 
