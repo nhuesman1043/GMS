@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router'
+import { RouterOutlet } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 // Components
 import { HeaderComponent } from './header/header.component';
@@ -11,6 +12,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
   standalone: true,
   imports: [
     RouterOutlet,
+    HttpClientModule,
 
     // Components
     HeaderComponent,
@@ -21,6 +23,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
+  // Collaspe sidebar by default
   isSidebarCollapsed: boolean = true;
   
   onSidebarToggled(isCollapsed: boolean) {
