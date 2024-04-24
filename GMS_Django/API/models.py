@@ -40,7 +40,7 @@ class Plot(models.Model):
     plot_latitude = models.DecimalField(null=False, decimal_places=8, max_digits=12)
     plot_longitude = models.DecimalField(null=False, decimal_places=8, max_digits=12)
     plot_state = models.ForeignKey(Plot_Status, on_delete=models.SET_NULL, null=True)
-    person_id = models.ForeignKey(Person, on_delete=models.SET_NULL, null=True, blank=True, unique=True)
+    person_id = models.OneToOneField(Person, on_delete=models.SET_NULL, null=True, blank=True, unique=True)
 
     def __str__(self):
         return (self.plot_identifier + " - " + str(self.plot_latitude) + "/" + str(self.plot_longitude))
