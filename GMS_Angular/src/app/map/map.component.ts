@@ -1,17 +1,14 @@
-import { Component, Input, Injectable, Renderer2, RendererFactory2 } from '@angular/core';
-//import {GoogleMap} from '@angular/google-maps';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {GoogleMap} from '@angular/google-maps';
 import { GoogleMapsModule } from '@angular/google-maps'
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
-// @Injectable({
-//   providedIn: 'root'
-// })
 
 @Component({
   selector: 'app-map',
   standalone: true,
   imports: [
-    //GoogleMap,
+    GoogleMap,
     GoogleMapsModule
   ],
   templateUrl: './map.component.html',
@@ -36,9 +33,6 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 
 export class MapComponent {
   @Input() isSidebarCollapsed: boolean = true;
-
-  //constructor(private renderer: Renderer2){
-  //}
   
   options: google.maps.MapOptions = {
     center: { lat: 46.6537, lng: -96.4405 },
@@ -54,6 +48,8 @@ export class MapComponent {
   marker = {
     //content: this.renderer.createElement('div'),
     position: { lat: 46.6537, lng: -96.4405 },
+    label: "Susy Mae",
+    icon: "assets/images/gravesmall.png",
  }
 }
 
