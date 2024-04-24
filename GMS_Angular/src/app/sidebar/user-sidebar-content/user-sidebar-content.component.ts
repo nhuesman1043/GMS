@@ -19,7 +19,7 @@ export class UserSidebarContentComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     // Call the getData method of ApiService to fetch plot data and then person data based on plot's person_id value
-    this.plotData = await this.apiService.getData('plot/1');
-    this.personData = await this.apiService.getData('person/' + this.plotData.person_id);
+    this.plotData = await this.apiService.getData('plot/1/');
+    this.personData = await this.apiService.getData('person/' + this.plotData.person_id + '/');
   }
 }
