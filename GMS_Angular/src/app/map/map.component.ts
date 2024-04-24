@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { GlobalService } from '../services/global.service';
 import {GoogleMap} from '@angular/google-maps';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
