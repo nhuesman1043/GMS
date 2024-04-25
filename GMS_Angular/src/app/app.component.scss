@@ -18,7 +18,7 @@
             height: calc(100vh - $header-height);
 
             .sidebar-toggle {
-                color: $baby-blue;
+                color: $white;
                 right: 25px;
                 position: absolute;
                 height: 100%; 
@@ -34,7 +34,7 @@
                 }
             
                 #toggle:hover {
-                    color: $white;
+                    color: $baby-blue;
                     animation: pulse 2s infinite;
                 }
             

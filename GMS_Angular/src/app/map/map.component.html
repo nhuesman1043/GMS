@@ -4,7 +4,13 @@
         height="100%" 
         width="100%"
     >
-    <map-marker [label]="marker.label" [icon]="marker.icon"  [position]="marker.position"></map-marker>
+        <map-marker 
+            #mark *ngFor="let coord of coordinates" 
+            [position]="coord" 
+            [icon]="marker.icon"
+            (mapClick)="testClick(plotData.plot_id)"
+        >
+        </map-marker>
     </google-map>
 </div>
   
