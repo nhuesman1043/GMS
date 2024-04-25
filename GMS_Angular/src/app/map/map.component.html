@@ -5,7 +5,7 @@
         width="100%"
     >
 
-    <map-marker #mark *ngFor="let coord of coordinates" [position]="coord" (mapClick)="toggleSidebar(coord)" [icon]="coord.icon" label="{{ coord.plotName }}">
+    <map-marker #mark *ngFor="let plot of plots" [position]="plot" (mapClick)="toggleSidebar(plot.plotID)" [icon]="plot.icon" label="{{ plot.plotName }}">
 </map-marker>
 
 

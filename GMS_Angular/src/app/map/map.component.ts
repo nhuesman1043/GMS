@@ -4,6 +4,7 @@ import {GoogleMap} from '@angular/google-maps';
 import { GoogleMapsModule } from '@angular/google-maps'
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { APIService } from '../services/api.service';
+import {AppComponent} from '../app.component';
 
 @Component({
   selector: 'app-map',
@@ -35,10 +36,10 @@ export class MapComponent {
   @Output() sidebarToggled = new EventEmitter<boolean>();
   isCollapsed: boolean = true;
   
-  constructor(private apiService: APIService) { } 
+  constructor(private apiService: APIService, public myapp: AppComponent) { } 
   plotData: any;
   plotStatusData: any;
-  coordinates: any;
+  plots: any;
   
   options: google.maps.MapOptions = {
     center: { lat: 46.6537, lng: -96.4405 },
@@ -96,7 +97,7 @@ async ngOnInit(): Promise<void> {
     list.push({ 
         lat: parseFloat(this.plotData[i].plot_latitude)
       , lng: parseFloat(this.plotData[i].plot_longitude)
-      , plotId: this.plotData[i].plot_id
+      , plotId: parseInt(this.plotData[i].plot_id)
       , plotState: this.plotData[i].plot_state
       , plotName: this.plotData[i].plot_identifier 
       , plotColor: this.plotStatusData[this.plotData[i].plot_state - 1].color_hex
@@ -112,16 +113,15 @@ async ngOnInit(): Promise<void> {
     });
     
   }
-  this.coordinates = list;
+  this.plots = list;
 
-  console.log(this.coordinates);
+  console.log(this.plots);
 }
 
 
-toggleSidebar(coord: any) {
-  console.log('You clicked on plot: ' + coord.plotName);
-  this.isCollapsed = !this.isCollapsed;
-  this.sidebarToggled.emit(this.isCollapsed);
+toggleSidebar(id: Number) {
+  console.log('You clicked on plot: ' + id);
+  this.myapp.toggleSidebar(id);
   }
 
 // CODE FOR MAKING POPUP WHEN HOVERING OVER PIN (doesn't work/Expiremental)

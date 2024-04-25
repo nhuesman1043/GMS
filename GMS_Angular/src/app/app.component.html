@@ -12,7 +12,7 @@
     <div class="col-auto sidebar-container">
       <!-- Sidebar toggle button -->
       <div class="sidebar-toggle" [@toggleAnimation]="isSidebarCollapsed ? 'collapsed' : 'expanded'">
-        <i id="toggle" [ngClass]="{ 'bi bi-caret-right-fill': !isSidebarCollapsed, 'bi bi-caret-left-fill': isSidebarCollapsed }" (click)="toggleSidebar()"></i>
+        <i id="toggle" [ngClass]="{ 'bi bi-caret-right-fill': !isSidebarCollapsed, 'bi bi-caret-left-fill': isSidebarCollapsed }" (click)="toggleSidebar(-1)"></i>
       </div>
       <!-- Sidebar -->
       <div class="sidebar position-fixed end-0"> 
