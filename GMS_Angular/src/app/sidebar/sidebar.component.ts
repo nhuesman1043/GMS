@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output} from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { NgClass, NgStyle } from '@angular/common';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
@@ -22,29 +22,26 @@ import { SextonSidebarContentComponent } from './sexton-sidebar-content/sexton-s
   animations: [
     trigger('sidebarAnimation', [
       state('collapsed', style({
-        width: '0',
-        transform: 'translateX(-100%)'
+        transform: 'translateX(100%)',
+        visibility: 'hidden',
       })),
       state('expanded', style({
-        width: '30vw', // Width of sidebar
-        transform: 'translateX(0)' 
+        transform: 'translateX(0)',
+        visibility: 'visible'
       })),
-      transition('collapsed => expanded', [
-        animate('0.4s')
-      ]),
-      transition('expanded => collapsed', [
-        animate('0.4s')
+      transition('collapsed <=> expanded', [
+        animate('0.5s ease-in-out')
       ])
     ])
   ]
 })
-export class SidebarComponent {
-  @Output() sidebarToggled = new EventEmitter<boolean>();
-  isCollapsed: boolean = true;
+export class SidebarComponent implements OnChanges {
+  @Input() isSidebarCollapsed: boolean = true;
+  sidebarState: string = 'collapsed'; // Initial state
 
-  // Toggle the sidebar
-  toggleSidebar() {
-    this.isCollapsed = !this.isCollapsed;
-    this.sidebarToggled.emit(this.isCollapsed);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['isSidebarCollapsed']) { 
+      this.sidebarState = this['isSidebarCollapsed'] ? 'collapsed' : 'expanded';
+    }
   }
 }

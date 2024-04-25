@@ -15,17 +15,14 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
   styleUrl: './map.component.scss',
   animations: [
     trigger('mapAnimation', [
-      state('sidebarCollapsed', style({
+      state('collapsed', style({
         width: '100vw',
       })),
-      state('sidebarExpanded', style({
-        width: 'calc(100vw - 30vw)', // Subtract by width of sidebar
-      })),
-      transition('sidebarCollapsed => sidebarExpanded', [
-        animate('0.4s')
-      ]),
-      transition('sidebarExpanded => sidebarCollapsed', [
-        animate('0.4s')
+      state('expanded', style({
+        width: 'calc(100vw - 35vw)' // Subtract by width of sidebar
+      })), 
+      transition('collapsed <=> expanded', [
+        animate('0.5s ease-in-out')
       ])
     ])
   ]
@@ -41,7 +38,6 @@ export class MapComponent {
     disableDefaultUI: true,
     keyboardShortcuts: false,
     rotateControl: true,
-    heading: 90,
     restriction: {latLngBounds: {north: 46.6551803, south: 46.6520219, west: -96.4423670, east: -96.4394105}}
   };
 

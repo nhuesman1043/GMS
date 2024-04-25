@@ -1,5 +1,27 @@
-<div class="container-fluid" *ngIf="plotData">
-    <div>
-        {{personData?.first_name}}
+<div class="container-fluid main-content" *ngIf="plotData">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="sidebar-header ">
+                <h2 class="text-center lh-base">{{ personData?.first_name }} {{ personData?.last_name }}</h2>
+            </div>
+            <div class="mt-2">
+                <div class="row">
+                    <div class="col-6">
+                        <p class="fw-bold">Date of Birth:</p>
+                        <p>{{ personData?.date_of_birth }}</p>
+                        <p class="fw-bold">Date of Death:</p>
+                        <p>{{ personData?.date_of_death }}</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="fw-bold">Date of Burial:</p>
+                        <p>{{ personData?.date_of_burial }}</p>
+                    </div>
+                </div>
+                <hr>
+                <p class="fw-bold mb-1">Obituary:</p>
+                <p class="mb-0">{{ personData?.obituary }}</p>
+            </div>
+            <img class="" [src]="landscapeImage">
+        </div>
     </div>
 </div>

@@ -11,6 +11,13 @@
 }
 
 /*Variables*/
+// Colors
 $white: #FFFFFF;
 $black: #000000;
-$example: #a31111;
+$off-white: #F4F4F4;
+$baby-blue: #5AF;
+$example: #A31111;
+
+// Sizing
+$header-height: 75px;
+$sidebar-width: 35vw; // When changing this value, you will need to update app.component.ts and map.component.ts animations
