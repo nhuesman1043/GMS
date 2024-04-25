@@ -4,6 +4,9 @@ from rest_framework import status
 from django.http import Http404
 from .models import Person, Plot_Status, Plot
 from .serializers import Person_Serializer, Plot_Status_Serializer, Plot_Serializer
+from django.http import FileResponse
+from django.conf import settings
+import os
 
 class Person_CRUD(APIView):
     def get(self, request, pk=None):
@@ -66,6 +69,15 @@ class Plot_Status_CRUD(APIView):
         plot_status = Plot_Status.objects.get(pk=pk)
         plot_status.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+def serve_image(request, image_path):
+    # Construct the full path to the image file
+    print('image_path: ' + image_path)
+    full_path = os.path.join(settings.MEDIA_ROOT, image_path)
+    
+    # Serve the image file using FileResponse
+    print("path: " + full_path)
+    return FileResponse(open(full_path, 'rb'), content_type='image/jpeg')
 
 class Plot_CRUD(APIView):
     def get(self, request, pk=None):

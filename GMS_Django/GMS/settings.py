@@ -133,3 +133,6 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:4200', 
 ]
+
+# Directory to stored images
+MEDIA_ROOT = BASE_DIR / 'API/images'

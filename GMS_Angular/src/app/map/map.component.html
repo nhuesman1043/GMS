@@ -1,5 +1,5 @@
-<div class="map-container" [@mapAnimation]="isSidebarCollapsed ? 'sidebarCollapsed' : 'sidebarExpanded'">
-    <google-map #map
+<div class="map-container" [@mapAnimation]="isSidebarCollapsed ? 'collapsed' : 'expanded'">
+    <google-map
         [options]="options" 
         height="100%" 
         width="100%"

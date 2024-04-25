@@ -1,17 +1,9 @@
-<div class="sidebar" [ngStyle]="{ 'overflow-y': isCollapsed ? 'hidden' : 'auto' }">
-    <div class="sidebar-toggle">
-        <!--Icon based on isCollapsed, click toggles sidebar-->
-        <i id="toggle" [ngClass]="{ 'bi bi-caret-right-fill': !isCollapsed, 'bi bi-caret-left-fill': isCollapsed }" (click)="toggleSidebar()"></i>
+<div class="sidebar" [@sidebarAnimation]="sidebarState" [ngStyle]="{ 'overflow-y': isSidebarCollapsed ? 'hidden' : 'auto' }">
+    <!--User/Sexton content, need to update with logic-->
+    <div>
+        <app-user-sidebar-content></app-user-sidebar-content>
     </div>
-    <div [@sidebarAnimation]="isCollapsed ? 'collapsed' : 'expanded'">
-        <!--User/Sexton content, need to update with logic-->
-        <div>
-            <div>
-                <app-user-sidebar-content></app-user-sidebar-content>
-            </div>
-            <div>
-                <app-sexton-sidebar-content></app-sexton-sidebar-content>
-            </div>
-        </div>
-    </div>
+    <!--<div>
+        <app-sexton-sidebar-content></app-sexton-sidebar-content>
+    </div>-->
 </div>

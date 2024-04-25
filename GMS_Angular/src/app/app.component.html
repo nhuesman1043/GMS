@@ -4,14 +4,19 @@
     <app-header></app-header>
   </div>
   <div class="row main-content">
-    <div class="col">
-      <!--Map-->
-      <app-map (sidebarToggled)="onSidebarToggled($event)" [isSidebarCollapsed]="isSidebarCollapsed"></app-map>
+    <div class="col-12">
+      <!-- Map -->
+      <app-map [isSidebarCollapsed]="isSidebarCollapsed"></app-map>
     </div>
-    <div class="col-auto">
+    <!-- Sidebar stuff -->
+    <div class="col-auto sidebar-container">
+      <!-- Sidebar toggle button -->
+      <div class="sidebar-toggle" [@toggleAnimation]="isSidebarCollapsed ? 'collapsed' : 'expanded'">
+        <i id="toggle" [ngClass]="{ 'bi bi-caret-right-fill': !isSidebarCollapsed, 'bi bi-caret-left-fill': isSidebarCollapsed }" (click)="toggleSidebar()"></i>
+      </div>
+      <!-- Sidebar -->
       <div class="sidebar position-fixed end-0"> 
-        <!-- Sidebar -->
-        <app-sidebar (sidebarToggled)="onSidebarToggled($event)" [isSidebarCollapsed]="isSidebarCollapsed"></app-sidebar>
+        <app-sidebar [isSidebarCollapsed]="isSidebarCollapsed"></app-sidebar>
       </div>
     </div>
   </div>
