@@ -6,6 +6,9 @@ urlpatterns = [
     path('persons/', views.Person_CRUD.as_view(), name='persons'),
     path('person/<int:pk>/', views.Person_CRUD.as_view(), name='person'),
 
+    # Images
+    path('image/<path:image_path>/', views.serve_image, name='serve_image'),
+
     # Plot_Status
     path('plot_statuses/', views.Plot_Status_CRUD.as_view(), name='plot_statuses'),
     path('plot_status/<int:pk>/', views.Plot_Status_CRUD.as_view(), name='plot_status'),
