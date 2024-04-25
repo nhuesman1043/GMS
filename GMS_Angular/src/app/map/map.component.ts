@@ -36,9 +36,12 @@ import { map } from 'rxjs';
 
 export class MapComponent {
   @Input() isSidebarCollapsed: boolean = true;
+  @Output() sidebarToggled = new EventEmitter<boolean>();
+  isCollapsed: boolean = true;
   
   constructor(private apiService: APIService) { } 
   plotData: any;
+  plotStatusData: any;
   coordinates: any;
   
   options: google.maps.MapOptions = {
@@ -47,39 +50,83 @@ export class MapComponent {
     mapTypeId: "satellite",
     disableDefaultUI: true,
     keyboardShortcuts: false,
-    rotateControl: true,
+    rotateControl: false,
     heading: 90,
     restriction: {latLngBounds: {north: 46.6551803, south: 46.6520219, west: -96.4423670, east: -96.4394105}}
   };
 
-  icon = {
-    path: "M-20,0a20,20 0 1,0 40,0a20,20 0 1,0 -40,0",
-    fillColor: '#FF0000',
-    fillOpacity: .6,
-    strokeWeight: 0,
-    scale: 1
-  }
+//   icon = {
+//     path: "M0 100c-81.822 0-150 63.366-150 150v150c0 6.668-.757 23.558 0 30h300c.757-6.442 0-23.332 0-30V250c0-86.634-68.178-150-150-150zM-245 466v60h480v-60H0z",
+//     fillColor: '#6AA2BF',
+//     fillOpacity: .95,
+//     strokeWeight: 0,
+//     scale: 0.1
+// };
+
 
   marker = {
-    //content: this.renderer.createElement('div'),
-    position: { lat: 46.6537, lng: -96.4405 },
-    label: "Susy Mae",
-    icon: this.icon,
- }
-
- async ngOnInit(): Promise<void> {
-  console.log("Start")
-  // Call the getData method of ApiService to fetch plot data and then person data based on plot's person_id value
-  this.plotData = await this.apiService.getData('plots');
-  let list = [];
-  console.log(this.plotData[0].plot_latitude)
-  for (let i = 0; i < this.plotData.length; i++){
-    list.push({ lat: parseFloat(this.plotData[i].plot_latitude), lng: parseFloat(this.plotData[i].plot_longitude) });
-    console.log(list[i]);
-  }
-  this.coordinates = list
-  console.log(this.coordinates)
+  position: { lat: 46.6537, lng: -96.4405 },
+  label: "",
+  icon: "",
+  plotId: "",
+  plotState: "",
+  plotName: "",
+  plotColor: "",
+  plotPersonId: ""
 }
+//Plot States
+// 1 = Availible #26532B
+// 2 = Occupied #5C80BC
+// 3 = Reserved #E89005
+// 4 = Inactive #333333
+
+async ngOnInit(): Promise<void> {
+  console.log("Start")
+
+  //this.plotData = await this.apiService.getData('plot/1/');
+  //this.personData = await this.apiService.getData('person/' + this.plotData.person_id + '/');
+  // Call the getData method of ApiService to fetch plot data and then person data based on plot's person_id value
+
+ //array of svg
+
+  this.plotData = await this.apiService.getData('plots');
+  this.plotStatusData = await this.apiService.getData('plot_statuses');
+  let list = [];
+
+  for (let i = 0; i < this.plotData.length; i++){
+
+    const plotState = this.plotData[i].plot_state;
+    const plotColor = this.plotStatusData.find((status: any) => status.status_id === plotState)?.color_hex;
+    list.push({ 
+        lat: parseFloat(this.plotData[i].plot_latitude)
+      , lng: parseFloat(this.plotData[i].plot_longitude)
+      , plotId: this.plotData[i].plot_id
+      , plotState: this.plotData[i].plot_state
+      , plotName: this.plotData[i].plot_identifier 
+      , plotColor: this.plotStatusData[this.plotData[i].plot_state - 1].color_hex
+      , plotPersonId: this.plotData[i].person_id
+      , icon: {
+        path: "M0 100c-81.822 0-150 63.366-150 150v150c0 6.668-.757 23.558 0 30h300c.757-6.442 0-23.332 0-30V250c0-86.634-68.178-150-150-150zM-245 466v60h480v-60H0z",
+        fillColor: plotColor,
+        fillOpacity: 0.95,
+        strokeWeight: 0,
+        scale: 0.1
+      }
+    
+    });
+    
+  }
+  this.coordinates = list;
+
+  console.log(this.coordinates);
+}
+
+
+toggleSidebar(coord: any) {
+  console.log('You clicked on plot: ' + coord.plotName);
+  this.isCollapsed = !this.isCollapsed;
+  this.sidebarToggled.emit(this.isCollapsed);
+  }
 
 // CODE FOR MAKING POPUP WHEN HOVERING OVER PIN (doesn't work/Expiremental)
 //Use the mapmouseover event in html to call viewMessage
@@ -117,4 +164,3 @@ export class MapComponent {
 // });
 // }
 }
-

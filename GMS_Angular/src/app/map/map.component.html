@@ -5,8 +5,9 @@
         width="100%"
     >
 
-    <map-marker #mark *ngFor="let coord of coordinates" [position]="coord" [icon]="marker.icon">
-    </map-marker>
+    <map-marker #mark *ngFor="let coord of coordinates" [position]="coord" (mapClick)="toggleSidebar(coord)" [icon]="coord.icon" label="{{ coord.plotName }}">
+</map-marker>
+
 
     </google-map>
 </div>

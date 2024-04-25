@@ -6,12 +6,12 @@
   <div class="row main-content">
     <div class="col">
       <!--Map-->
-      <app-map [isSidebarCollapsed]="isSidebarCollapsed"></app-map>
+      <app-map (sidebarToggled)="onSidebarToggled($event)" [isSidebarCollapsed]="isSidebarCollapsed"></app-map>
     </div>
     <div class="col-auto">
       <div class="sidebar position-fixed end-0"> 
         <!-- Sidebar -->
-        <app-sidebar (sidebarToggled)="onSidebarToggled($event)"></app-sidebar>
+        <app-sidebar (sidebarToggled)="onSidebarToggled($event)" [isSidebarCollapsed]="isSidebarCollapsed"></app-sidebar>
       </div>
     </div>
   </div>
