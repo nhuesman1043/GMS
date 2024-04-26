@@ -1,0 +1,19 @@
+<div id="divWeatherMain">  
+    <!-- <div class="weatherWidgetRow cloudDiv">
+        <i class="fas fa-cloud fa-3x cloud"></i>
+    </div> -->
+    <div class="weatherWidgetRow">
+        <div *ngIf="WeatherData.isDay" class="weatherWidgetColumn" style="margin-right: 10px;">
+            <i class="fas fa-3x fa-sun sun"></i>  
+        </div>   
+        <div *ngIf="!WeatherData.isDay" class="weatherWidgetColumn" style="margin-right: 10px;">
+            <i class="fas fa-3x fa-moon moon"></i>  
+        </div>  
+        <div class="weatherWidgetColumn" style="font-size: 23px;margin-top: 10px; margin-right: 10px;">{{WeatherData.name}}</div>
+        <div class="weatherWidgetColumn" style="font-size: 23px;margin-top: 10px;">{{WeatherData.temp}}°</div>
+    </div>
+
+    <div  class="weatherWidgetRow">
+        <div class="weatherWidgetColumn" style="font-size: 12px; margin-bottom: 5px;">Wind Speeds: {{WeatherData.windSpeed}} | Feels Like: {{WeatherData.temp_feels_like}}°</div>
+    </div>
+</div>
