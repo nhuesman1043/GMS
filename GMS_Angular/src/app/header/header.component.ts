@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, HostListener, Output } from '@angular/core';
 import { GlobalService } from '../services/global.service';
 import { InfoPopupService } from '../info-popup/info-popup.service';
 import { WeatherWidgetComponent } from '../weather-widget/weather-widget.component';
@@ -18,13 +18,15 @@ import { MatDialog, MatDialogConfig, MatDialogModule } from '@angular/material/d
 })
 export class HeaderComponent {
   constructor(private dialog: MatDialog) {}
+  @Output() onClick = new EventEmitter();
 
   openInfoPopup() {
     this.dialog.open(InfoPopupComponent);
   }
 
+  @HostListener('click')
   openModel(){
-    console.log('popup started')
+    console.log('popup started');
     const dialogConfig = new MatDialogConfig();
 
         dialogConfig.disableClose = true;
@@ -32,6 +34,6 @@ export class HeaderComponent {
 
         this.dialog.open(InfoPopupComponent, dialogConfig);
         console.log('popup ended');
-  }
+   }
   
 }
