@@ -1,6 +1,7 @@
 @import "../../styles.scss";
 .sidebar {
     height: 100%;
+    width: $sidebar-width;
     max-height: calc(100vh - $header-height);
     max-width: $sidebar-width;
     border-left: solid $black;

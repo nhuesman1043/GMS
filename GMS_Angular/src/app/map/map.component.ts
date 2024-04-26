@@ -1,9 +1,11 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgFor } from '@angular/common';
 import {GoogleMap} from '@angular/google-maps';
 import { GoogleMapsModule } from '@angular/google-maps'
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { APIService } from '../services/api.service';
+import {AppComponent} from '../app.component';
+import { SidebarService } from '../services/sidebar.service';
 
 @Component({
   selector: 'app-map',
@@ -30,16 +32,18 @@ import { APIService } from '../services/api.service';
   ]
 })
 
-export class MapComponent {
+export class MapComponent {  
+  //Define a constructor to load services and AppComponent methods
+  constructor(private apiService: APIService, public app: AppComponent, private sidebarService: SidebarService) { } 
+
+  //Define global variables
   @Input() isSidebarCollapsed: boolean = true;
-  @Output() sidebarToggled = new EventEmitter<boolean>();
-  isCollapsed: boolean = true;
-  
-  constructor(private apiService: APIService) { } 
   plotData: any;
   plotStatusData: any;
-  coordinates: any;
+  plots: any;
+  lastSelectedPlotId: Number = -1;
   
+  //Define options/settings for the google map api
   options: google.maps.MapOptions = {
     center: { lat: 46.6537, lng: -96.4405 },
     zoom: 19,
@@ -47,116 +51,84 @@ export class MapComponent {
     disableDefaultUI: true,
     keyboardShortcuts: false,
     rotateControl: true,
-    //heading: 90,
-    restriction: {latLngBounds: {north: 46.6551803, south: 46.6520219, west: -96.4423670, east: -96.4394105}}
+    restriction: {latLngBounds: {north: 46.6551803, south: 46.6520219, west: -96.4423670, east: -96.4394105}},
+    minZoom: 19
   };
 
-//   icon = {
-//     path: "M0 100c-81.822 0-150 63.366-150 150v150c0 6.668-.757 23.558 0 30h300c.757-6.442 0-23.332 0-30V250c0-86.634-68.178-150-150-150zM-245 466v60h480v-60H0z",
-//     fillColor: '#6AA2BF',
-//     fillOpacity: .95,
-//     strokeWeight: 0,
-//     scale: 0.1
-// };
-
-
-  marker = {
-  position: { lat: 46.6537, lng: -96.4405 },
-  label: "",
-  icon: "",
-  plotId: "",
-  plotState: "",
-  plotName: "",
-  plotColor: "",
-  plotPersonId: ""
-}
 //Plot States
 // 1 = Availible #26532B
 // 2 = Occupied #5C80BC
 // 3 = Reserved #E89005
 // 4 = Inactive #333333
 
-async ngOnInit(): Promise<void> {
-  console.log("Start")
+// Method to create a list of plots to load onto map
+  async ngOnInit(): Promise<void> {
+    //Get plots and plot status from database
+    this.plotData = await this.apiService.getData('plots');
+    this.plotStatusData = await this.apiService.getData('plot_statuses');
+    let list = [];
 
-  //this.plotData = await this.apiService.getData('plot/1/');
-  //this.personData = await this.apiService.getData('person/' + this.plotData.person_id + '/');
-  // Call the getData method of ApiService to fetch plot data and then person data based on plot's person_id value
+    // Loop through each plot in the database and format data
+    for (let i = 0; i < this.plotData.length; i++){
+      // Get plot color
+      const plotState = this.plotData[i].plot_state;
+      const plotColor = this.plotStatusData.find((status: any) => status.status_id === plotState)?.color_hex;
 
- //array of svg
+      // Format plot information to be used in html markes
+      list.push({ 
+          lat: parseFloat(this.plotData[i].plot_latitude)
+        , lng: parseFloat(this.plotData[i].plot_longitude)
+        , plotId: parseInt(this.plotData[i].plot_id)
+        , plotState: this.plotData[i].plot_state
+        , plotName: this.plotData[i].plot_identifier 
+        , plotColor: this.plotStatusData[this.plotData[i].plot_state - 1].color_hex
+        , plotPersonId: this.plotData[i].person_id
+        , icon: {
+          path: "M0 100c-81.822 0-150 63.366-150 150v150c0 6.668-.757 23.558 0 30h300c.757-6.442 0-23.332 0-30V250c0-86.634-68.178-150-150-150zM-245 466v60h480v-60H0z",
+          fillColor: plotColor,
+          fillOpacity: 0.85,
+          strokeWeight: 0,
+          scale: 0.04
+        }
+      });
+      
+    }
 
-  this.plotData = await this.apiService.getData('plots');
-  this.plotStatusData = await this.apiService.getData('plot_statuses');
-  let list = [];
+    // Set the list of formatted plots to a global variable
+    this.plots = list;
+  }
 
-  for (let i = 0; i < this.plotData.length; i++){
+  // Method for toggling sidebar based on selected plotId, lastSelectedPlotId, and statusId
+  selectPlot(plotId: Number, statusId: Number) {
+    // Detect whether or not this is a new plotID and if so, then continue
+    if (this.lastSelectedPlotId !== plotId) {
+      // Set lastSelectedPlotID to selected plotID
+      this.lastSelectedPlotId = plotId;
 
-    const plotState = this.plotData[i].plot_state;
-    const plotColor = this.plotStatusData.find((status: any) => status.status_id === plotState)?.color_hex;
-    list.push({ 
-        lat: parseFloat(this.plotData[i].plot_latitude)
-      , lng: parseFloat(this.plotData[i].plot_longitude)
-      , plotId: this.plotData[i].plot_id
-      , plotState: this.plotData[i].plot_state
-      , plotName: this.plotData[i].plot_identifier 
-      , plotColor: this.plotStatusData[this.plotData[i].plot_state - 1].color_hex
-      , plotPersonId: this.plotData[i].person_id
-      , icon: {
-        path: "M0 100c-81.822 0-150 63.366-150 150v150c0 6.668-.757 23.558 0 30h300c.757-6.442 0-23.332 0-30V250c0-86.634-68.178-150-150-150zM-245 466v60h480v-60H0z",
-        fillColor: plotColor,
-        fillOpacity: 0.95,
-        strokeWeight: 0,
-        scale: 0.1
+      // If status is "Available" (2), then toggle sidebar
+      if (statusId === 2) {
+        // If sidebar is already opened, then close it, wait, reopen it with new info
+        if (!this.app.isSidebarCollapsed) {
+          // Close sidebar
+          this.app.toggleSidebar(plotId);
+
+          // Wait 750ms for a "smooth" effect and then reopen
+          setTimeout(() => {
+            // Set data 
+            this.sidebarService.toggleSidebar(plotId);
+
+            // Reopen
+            this.app.toggleSidebar(plotId);
+          }, 750);
+        }
+
+        // If it's closed, then just open it
+        else {
+          // Set data and then open sidebar
+          this.sidebarService.toggleSidebar(plotId);
+          this.app.toggleSidebar(plotId);
+        }
       }
-    
-    });
-    
+    }
   }
-  this.coordinates = list;
-
-  console.log(this.coordinates);
-}
-
-
-toggleSidebar(coord: any) {
-  console.log('You clicked on plot: ' + coord.plotName);
-  this.isCollapsed = !this.isCollapsed;
-  this.sidebarToggled.emit(this.isCollapsed);
-  }
-
-// CODE FOR MAKING POPUP WHEN HOVERING OVER PIN (doesn't work/Expiremental)
-//Use the mapmouseover event in html to call viewMessage
-// viewMessage(marker: any, mapInstance: any){
-//   const contentString =
-//   '<div id="content">' +
-//   '<div id="siteNotice">' +
-//   "</div>" +
-//   '<h1 id="firstHeading" class="firstHeading">Uluru</h1>' +
-//   '<div id="bodyContent">' +
-//   "<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large " +
-//   "sandstone rock formation in the southern part of the " +
-//   "Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) " +
-//   "south west of the nearest large town, Alice Springs; 450&#160;km " +
-//   "(280&#160;mi) by road. Kata Tjuta and Uluru are the two major " +
-//   "features of the Uluru - Kata Tjuta National Park. Uluru is " +
-//   "sacred to the Pitjantjatjara and Yankunytjatjara, the " +
-//   "Aboriginal people of the area. It has many springs, waterholes, " +
-//   "rock caves and ancient paintings. Uluru is listed as a World " +
-//   "Heritage Site.</p>" +
-//   '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">' +
-//   "https://en.wikipedia.org/w/index.php?title=Uluru</a> " +
-//   "(last visited June 22, 2009).</p>" +
-//   "</div>" +
-//   "</div>";
-
-// const infowindow = new google.maps.InfoWindow({
-//   content: contentString,
-//   ariaLabel: "Uluru",
-// });
-
-// infowindow.open({
-//   anchor: marker,
-//   map: mapInstance
-// });
-// }
 }
