@@ -4,11 +4,14 @@
         height="100%" 
         width="100%"
     >
-
-    <map-marker #mark *ngFor="let plot of plots" [position]="plot" (mapClick)="toggleSidebar(plot.plotID)" [icon]="plot.icon" label="{{ plot.plotName }}">
-</map-marker>
-
-
+        <map-marker 
+            #mark *ngFor="let plot of plots" 
+            [position]="plot" 
+            (mapClick)="selectPlot(plot.plotId, plot.plotState)" 
+            [icon]="plot.icon" 
+            label="{{ plot.plotName }}"
+        >
+        </map-marker>
     </google-map>
 </div>
   

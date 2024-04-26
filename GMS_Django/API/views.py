@@ -72,11 +72,9 @@ class Plot_Status_CRUD(APIView):
     
 def serve_image(request, image_path):
     # Construct the full path to the image file
-    print('image_path: ' + image_path)
     full_path = os.path.join(settings.MEDIA_ROOT, image_path)
     
     # Serve the image file using FileResponse
-    print("path: " + full_path)
     return FileResponse(open(full_path, 'rb'), content_type='image/jpeg')
 
 class Plot_CRUD(APIView):

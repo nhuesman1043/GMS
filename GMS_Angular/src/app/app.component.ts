@@ -45,6 +45,7 @@ export class AppComponent {
 
   // Toggle the sidebar
   toggleSidebar(id: Number) {
+    // Toggle sidebar
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
   }
 }

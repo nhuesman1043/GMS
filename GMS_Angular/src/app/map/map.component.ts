@@ -1,10 +1,11 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgFor } from '@angular/common';
 import {GoogleMap} from '@angular/google-maps';
 import { GoogleMapsModule } from '@angular/google-maps'
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { APIService } from '../services/api.service';
 import {AppComponent} from '../app.component';
+import { SidebarService } from '../services/sidebar.service';
 
 @Component({
   selector: 'app-map',
@@ -33,13 +34,14 @@ import {AppComponent} from '../app.component';
 
 export class MapComponent {  
   //Define a constructor to load services and AppComponent methods
-  constructor(private apiService: APIService, public myapp: AppComponent) { } 
+  constructor(private apiService: APIService, public app: AppComponent, private sidebarService: SidebarService) { } 
 
   //Define global variables
   @Input() isSidebarCollapsed: boolean = true;
   plotData: any;
   plotStatusData: any;
   plots: any;
+  lastSelectedPlotId: Number = -1;
   
   //Define options/settings for the google map api
   options: google.maps.MapOptions = {
@@ -59,46 +61,74 @@ export class MapComponent {
 // 3 = Reserved #E89005
 // 4 = Inactive #333333
 
-//Method to create a list of plots to load onto map
-async ngOnInit(): Promise<void> {
-  //Get plots and plot status from database
-  this.plotData = await this.apiService.getData('plots');
-  this.plotStatusData = await this.apiService.getData('plot_statuses');
-  let list = [];
+// Method to create a list of plots to load onto map
+  async ngOnInit(): Promise<void> {
+    //Get plots and plot status from database
+    this.plotData = await this.apiService.getData('plots');
+    this.plotStatusData = await this.apiService.getData('plot_statuses');
+    let list = [];
 
-  //Loop through each plot in the database and format data
-  for (let i = 0; i < this.plotData.length; i++){
-    //Get plot color
-    const plotState = this.plotData[i].plot_state;
-    const plotColor = this.plotStatusData.find((status: any) => status.status_id === plotState)?.color_hex;
+    // Loop through each plot in the database and format data
+    for (let i = 0; i < this.plotData.length; i++){
+      // Get plot color
+      const plotState = this.plotData[i].plot_state;
+      const plotColor = this.plotStatusData.find((status: any) => status.status_id === plotState)?.color_hex;
 
-    //Format plot information to be used in html markes
-    list.push({ 
-        lat: parseFloat(this.plotData[i].plot_latitude)
-      , lng: parseFloat(this.plotData[i].plot_longitude)
-      , plotId: parseInt(this.plotData[i].plot_id)
-      , plotState: this.plotData[i].plot_state
-      , plotName: this.plotData[i].plot_identifier 
-      , plotColor: this.plotStatusData[this.plotData[i].plot_state - 1].color_hex
-      , plotPersonId: this.plotData[i].person_id
-      , icon: {
-        path: "M0 100c-81.822 0-150 63.366-150 150v150c0 6.668-.757 23.558 0 30h300c.757-6.442 0-23.332 0-30V250c0-86.634-68.178-150-150-150zM-245 466v60h480v-60H0z",
-        fillColor: plotColor,
-        fillOpacity: 0.95,
-        strokeWeight: 0,
-        scale: 0.1
-      }
-    });
-    
+      // Format plot information to be used in html markes
+      list.push({ 
+          lat: parseFloat(this.plotData[i].plot_latitude)
+        , lng: parseFloat(this.plotData[i].plot_longitude)
+        , plotId: parseInt(this.plotData[i].plot_id)
+        , plotState: this.plotData[i].plot_state
+        , plotName: this.plotData[i].plot_identifier 
+        , plotColor: this.plotStatusData[this.plotData[i].plot_state - 1].color_hex
+        , plotPersonId: this.plotData[i].person_id
+        , icon: {
+          path: "M0 100c-81.822 0-150 63.366-150 150v150c0 6.668-.757 23.558 0 30h300c.757-6.442 0-23.332 0-30V250c0-86.634-68.178-150-150-150zM-245 466v60h480v-60H0z",
+          fillColor: plotColor,
+          fillOpacity: 0.85,
+          strokeWeight: 0,
+          scale: 0.04
+        }
+      });
+      
+    }
+
+    // Set the list of formatted plots to a global variable
+    this.plots = list;
   }
 
-  //Set the list of formatted plots to a global variable
-  this.plots = list;
-}
+  // Method for toggling sidebar based on selected plotId, lastSelectedPlotId, and statusId
+  selectPlot(plotId: Number, statusId: Number) {
+    // Detect whether or not this is a new plotID and if so, then continue
+    if (this.lastSelectedPlotId !== plotId) {
+      // Set lastSelectedPlotID to selected plotID
+      this.lastSelectedPlotId = plotId;
 
-//Method for toggling the sidebar and sending the plot id to the sidebar
-toggleSidebar(id: Number) {
-  console.log('You clicked on plot: ' + id);
-  this.myapp.toggleSidebar(id);
-}
+      // If status is "Available" (2), then toggle sidebar
+      if (statusId === 2) {
+        // If sidebar is already opened, then close it, wait, reopen it with new info
+        if (!this.app.isSidebarCollapsed) {
+          // Close sidebar
+          this.app.toggleSidebar(plotId);
+
+          // Wait 750ms for a "smooth" effect and then reopen
+          setTimeout(() => {
+            // Set data 
+            this.sidebarService.toggleSidebar(plotId);
+
+            // Reopen
+            this.app.toggleSidebar(plotId);
+          }, 750);
+        }
+
+        // If it's closed, then just open it
+        else {
+          // Set data and then open sidebar
+          this.sidebarService.toggleSidebar(plotId);
+          this.app.toggleSidebar(plotId);
+        }
+      }
+    }
+  }
 }
