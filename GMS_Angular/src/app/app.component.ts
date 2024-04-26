@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NgIf, NgClass } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
@@ -8,6 +8,7 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 import { HeaderComponent } from './header/header.component';
 import { MapComponent } from './map/map.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { LoginComponent } from './login/login.component';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +22,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     // Components
     HeaderComponent,
     MapComponent,
-    SidebarComponent
+    SidebarComponent,
+    LoginComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -42,6 +44,16 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 export class AppComponent {
   // Collaspe sidebar by default
   isSidebarCollapsed: boolean = true;
+
+// check if the link is /admin
+  isAdminRoute: boolean = false;
+  constructor(private router: Router) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.isAdminRoute = this.router.url === '/admin';
+      }
+    });
+  }
 
   // Toggle the sidebar
   toggleSidebar(id: Number) {
