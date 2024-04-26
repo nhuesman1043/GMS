@@ -22,6 +22,25 @@ export class APIService {
       console.error('Error getting data: ', error);
       throw error;
     }
+    
+  }
+
+  async login(username: string, password: string): Promise<any> {
+    try {
+      const url = this.globalService.API_URL + 'login/'; 
+      const body = { username, password };
+      const data = await firstValueFrom(this.http.post(url, body));
+      return data;
+    } catch (error) {
+      console.error('Error during login:', error);
+      throw error;
+    }
+  }
+
+  async logout(): Promise<void> {
+    // Perform logout actions such as clearing tokens or session data
+    // Example:
+    // localStorage.removeItem('auth_token');
   }
 
   // postData method takes a url from Django and a body (consists of all the needed attributes of a model) and creates an entry in the database

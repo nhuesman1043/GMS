@@ -6,7 +6,26 @@ from .models import Person, Plot_Status, Plot
 from .serializers import Person_Serializer, Plot_Status_Serializer, Plot_Serializer
 from django.http import FileResponse
 from django.conf import settings
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 import os
+
+@csrf_exempt
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return JsonResponse({'success': True, 'message': 'Login successful'})
+        else:
+            return JsonResponse({'success': False, 'error': 'Invalid username or password'}, status=401)
+    else:
+        return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=400)
 
 class Person_CRUD(APIView):
     def get(self, request, pk=None):
