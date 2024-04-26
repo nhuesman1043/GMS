@@ -9,22 +9,6 @@ import { firstValueFrom } from 'rxjs';
 export class APIService {
   constructor(private http: HttpClient, private globalService: GlobalService) {}
 
-  // getData method takes a url from Django and returns all data pertaining to it
-  async getData(endpoint: string): Promise<any> {
-    try {
-      // Build url based on global API_URL and given endpoint
-      const url = this.globalService.API_URL + endpoint;
-
-      // Get data
-      const data = await firstValueFrom(this.http.get(url));
-      return data;
-    } catch (error) {
-      console.error('Error getting data: ', error);
-      throw error;
-    }
-    
-  }
-
   async login(username: string, password: string): Promise<any> {
     try {
       const url = this.globalService.API_URL + 'login/'; 
@@ -41,6 +25,22 @@ export class APIService {
     // Perform logout actions such as clearing tokens or session data
     // Example:
     // localStorage.removeItem('auth_token');
+  }
+
+  // getData method takes a url from Django and returns all data pertaining to it
+  async getData(endpoint: string): Promise<any> {
+    try {
+      // Build url based on global API_URL and given endpoint
+      const url = this.globalService.API_URL + endpoint;
+
+      // Get data
+      const data = await firstValueFrom(this.http.get(url));
+      return data;
+    } catch (error) {
+      console.error('Error getting data: ', error);
+      throw error;
+    }
+    
   }
 
   // postData method takes a url from Django and a body (consists of all the needed attributes of a model) and creates an entry in the database

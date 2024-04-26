@@ -1,3 +1,4 @@
+@import "../../styles.scss";
 .container-fluid {
     display: flex;
     justify-content: center; /* Center items horizontally */
@@ -29,7 +30,7 @@
           transition: border-color 0.3s;
     
           &:focus {
-            border-color: #007bff;
+            border-color: $baby-blue;
           }
         }
     
@@ -38,7 +39,7 @@
           padding: 10px;
           border: none;
           border-radius: 5px;
-          background-color: #007bff;
+          background-color: $baby-blue;
           color: white;
           cursor: pointer;
           transition: background-color 0.3s;
