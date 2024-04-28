@@ -6,7 +6,7 @@
     background-color: $off-white;
 }
 
-.btn-donate {
+.btn-donate, .btn-donate:focus {
     background-color: $brand;
     color: white;
     border: none;
@@ -14,6 +14,7 @@
 
 .btn-donate:hover {
     background-color: lightgrey;
+    color: $brand;
 }
 
 .btn-info, .btn-info:focus {
@@ -38,7 +39,7 @@ border: none;
       z-index: 6;
       background-color: rgb(255, 255, 255);
       border-radius: 10px;
-      border: 2px solid black;
+      border: 2px solid $black;
       width: 750px;
       height: fit-content;
   }
@@ -49,7 +50,7 @@ border: none;
       right: 20px;
       font-size: xx-large;
       border: 0px;
-      background-color: white;
+      background-color: $white;
   }
   
 .popup-dialog-cont footer {
@@ -57,7 +58,7 @@ border: none;
     bottom: 0px;
     width: 100%;
     background-color: $brand;
-    color: white;
+    color: $white;
     padding: 10px 0;
     border-bottom-right-radius: 8px;
     border-bottom-left-radius: 8px;
@@ -95,19 +96,19 @@ border: none;
 }
 
 .popup-dialog-cont span {
-    color: #ff5858;
+    color: $mean-button-red;
 }
 
 .popup-dialog-cont span:hover {
-    color: lightgrey;
+    color: $lightgrey;
 }
 
 .popup-dialog-cont a {
-    color: white;
+    color: $white;
 }
 
 .popup-dialog-cont a:hover {
-    color: lightgrey;
+    color: $lightgrey;
 }
 
 .popup-dialog-cont button, button:hover, button:focus {
