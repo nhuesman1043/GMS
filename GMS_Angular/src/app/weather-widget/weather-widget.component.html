@@ -1,7 +1,4 @@
 <div id="divWeatherMain">  
-    <!-- <div class="weatherWidgetRow cloudDiv">
-        <i class="fas fa-cloud fa-3x cloud"></i>
-    </div> -->
     <div class="weatherWidgetRow">
         <div *ngIf="WeatherData.condition === 'Clouds'; else thunderstorm" class="weatherWidgetColumn" style="margin-right: 10px;">
             <i class="fas fa-3x fa-cloud cloud"></i>  
