@@ -4,7 +4,7 @@
         height="100%" 
         width="100%"
     >
-        <map-marker 
+        <map-marker
             #mark *ngFor="let plot of plots" 
             [position]="plot" 
             (mapClick)="selectPlot(plot.plotId, plot.plotState)" 
