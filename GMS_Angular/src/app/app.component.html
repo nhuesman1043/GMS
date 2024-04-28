@@ -1,29 +1,34 @@
-<div class="container-fluid app">
-  <div class="row header">
-    <!--Header-->
-    <app-header></app-header>
+<div class="login">
+  <div>
+    <app-login *ngIf="isAdminRoute"></app-login> <!-- Render LoginComponent for /admin route -->
   </div>
-  <div class="row main-content">
-    <div class="col-12">
-      <!-- Map -->
-      <app-map [isSidebarCollapsed]="isSidebarCollapsed"></app-map>
+  <div *ngIf="!isAdminRoute" class="container-fluid app">
+    <div class="row header">
+      <!--Header-->
+      <app-header></app-header>
     </div>
-    <!-- Sidebar stuff -->
-    <div class="col-auto sidebar-container">
-      <!-- Sidebar toggle button -->
-      <div class="sidebar-toggle" [@toggleAnimation]="isSidebarCollapsed ? 'collapsed' : 'expanded'">
-        <button class="btn" [ngClass]="{'btn-toggle': isDataLoaded, 'btn-toggle-disabled': !isDataLoaded}">
-          <i 
-            class="d-flex fs-3 p-1" 
-            [ngClass]="{'bi bi-caret-right-fill': !isSidebarCollapsed, 'bi bi-caret-left-fill': isSidebarCollapsed}" 
-            (click)="isDataLoaded && toggleSidebar(-1)"
-          >
-          </i>
-        </button>
+    <div class="row main-content">
+      <div class="col-12">
+        <!-- Map -->
+        <app-map [isSidebarCollapsed]="isSidebarCollapsed"></app-map>
       </div>
-      <!-- Sidebar -->
-      <div class="sidebar position-fixed end-0"> 
-        <app-sidebar [isSidebarCollapsed]="isSidebarCollapsed"></app-sidebar>
+      <!-- Sidebar stuff -->
+      <div class="col-auto sidebar-container">
+        <!-- Sidebar toggle button -->
+        <div class="sidebar-toggle" [@toggleAnimation]="isSidebarCollapsed ? 'collapsed' : 'expanded'">
+          <button class="btn" [ngClass]="{'btn-toggle': isDataLoaded, 'btn-toggle-disabled': !isDataLoaded}">
+            <i 
+              class="d-flex fs-3 p-1" 
+              [ngClass]="{'bi bi-caret-right-fill': !isSidebarCollapsed, 'bi bi-caret-left-fill': isSidebarCollapsed}" 
+              (click)="isDataLoaded && toggleSidebar(-1)"
+            >
+            </i>
+          </button>
+        </div>
+        <!-- Sidebar -->
+        <div class="sidebar position-fixed end-0"> 
+          <app-sidebar [isSidebarCollapsed]="isSidebarCollapsed"></app-sidebar>
+        </div>
       </div>
     </div>
   </div>

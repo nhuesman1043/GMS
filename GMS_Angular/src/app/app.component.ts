@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NgIf, NgClass } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { SidebarService } from './services/sidebar.service';
@@ -9,6 +9,7 @@ import { SidebarService } from './services/sidebar.service';
 import { HeaderComponent } from './header/header.component';
 import { MapComponent } from './map/map.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { LoginComponent } from './login/login.component';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +23,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     // Components
     HeaderComponent,
     MapComponent,
-    SidebarComponent
+    SidebarComponent,
+    LoginComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -41,11 +43,20 @@ import { SidebarComponent } from './sidebar/sidebar.component';
   ]
 })
 export class AppComponent {
-  constructor(private sidebarService: SidebarService) {};
+  constructor(private sidebarService: SidebarService, private router: Router) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.isAdminRoute = this.router.url === '/admin';
+      }
+    });
+  };
 
   // Collapse sidebar by default
   isSidebarCollapsed: boolean = true;
   isDataLoaded: boolean = false;        // Variable to store data loading status
+
+  // Check if the link is /admin
+  isAdminRoute: boolean = false;
 
   // Method to toggle sidebar
   toggleSidebar(id: number) {

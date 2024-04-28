@@ -1,0 +1,67 @@
+.weatherWidgetColumn{
+    display:inline-block;
+    margin:0 auto;
+    width: fit-content;
+}
+
+.weatherWidgetRow{
+    display:block;
+    margin:0 auto;
+    width: fit-content;
+}
+
+.sun{
+    font-size: 30px;
+    size: 30px;
+    margin-top: 10px;
+    color: #FEDD00;
+    filter: drop-shadow( 1px 1px 10px yellow);
+}
+
+.moon{
+    font-size: 20px;
+    size: 20px;
+    margin-top: 10px;
+    color: grey;
+    filter: drop-shadow( 1px 1px 10px grey);
+}
+
+.cloud{
+    font-size: 25px;
+    size: 25px;
+    margin-top: 10px;
+    color: #a8a8a8;
+    filter: drop-shadow( 1px 1px 10px #a8a8a8);
+}
+
+.cloud-bolt{
+    font-size: 25px;
+    size: 25px;
+    margin-top: 10px;
+    color: #a8a8a8;
+    filter: drop-shadow( 1px 1px 10px #a8a8a8);
+}
+
+.cloud-rain{
+    font-size: 25px;
+    size: 25px;
+    margin-top: 10px;
+    color: #a8a8a8;
+    filter: drop-shadow( 1px 1px 10px #a8a8a8);
+}
+
+.cloud-showers-heavy{
+    font-size: 25px;
+    size: 25px;
+    margin-top: 10px;
+    color: #a8a8a8;
+    filter: drop-shadow( 1px 1px 10px #a8a8a8);
+}
+
+.snowflake{
+    font-size: 25px;
+    size: 25px;
+    margin-top: 10px;
+    color: #d1cfcf;
+    filter: drop-shadow( 1px 1px 10px #d1cfcf);
+}
