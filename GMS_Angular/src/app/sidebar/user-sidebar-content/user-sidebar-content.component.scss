@@ -1,19 +1,16 @@
 @import "../../../styles.scss";
 .main-content {
+    border: solid $silver;
+    
     .sidebar-header {
-        background-color: $baby-blue;
+        background-color: $brand;
         border-bottom: solid $silver;
         color: $white;
     }
 
     .obituary-header {
-        margin-top: -5px;
+        padding-top: 5px;
         margin-left: 5px;
-    }
-
-    .obituary-text {
-        margin-top: -10px;
-        position: relative;
     }
 
     .portrait-image-container {
@@ -22,15 +19,17 @@
 
         .portrait-image {
             border: 0.75px solid $black;
-            width: 50%;
+            width: 40%;
             height: auto;
+            margin-bottom: 3px;
         }
     }
 
     .landscape-image-container {
 
         .landscape-image {
-            border: 0.75px solid $black;
+            border: 0.75px solid $silver;
+            transform: translateX(0px);
             width: 100%;
             height: auto;
             max-height: 100vh;

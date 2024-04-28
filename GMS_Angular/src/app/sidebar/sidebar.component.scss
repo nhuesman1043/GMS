@@ -5,7 +5,5 @@
     height: calc(100vh - $header-height);
     max-height: calc(100vh - $header-height);
     max-width: $sidebar-width;
-    border-left: solid $black;
     overflow-x: hidden;
-    border: solid $silver;
 }

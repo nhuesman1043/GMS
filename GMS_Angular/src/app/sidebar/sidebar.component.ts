@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, Input,  OnChanges, SimpleChanges} from '@angular/core';
+import { Component, Input, SimpleChanges} from '@angular/core';
 import { NgClass, NgStyle } from '@angular/common';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 
@@ -37,7 +37,6 @@ import { SextonSidebarContentComponent } from './sexton-sidebar-content/sexton-s
 })
 export class SidebarComponent {
   isCollapsed: boolean = true;
-  @Output() sidebarToggled = new EventEmitter<boolean>();
   @Input() isSidebarCollapsed: boolean = true;
   sidebarState: string = 'collapsed'; // Initial state
 

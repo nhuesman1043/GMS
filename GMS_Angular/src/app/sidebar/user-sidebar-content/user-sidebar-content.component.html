@@ -15,11 +15,11 @@
     <hr>
     <div class="row mt-1">
         <div class="col-md-12">
+            <p class="fw-bold fs-5 obituary-header">Obituary:</p>
             <div *ngIf="portraitImage" class="portrait-image-container">
                 <img [src]="portraitImage" class="img-fluid float-md-end me-md-3 portrait-image" alt="Portrait Image">
             </div>
-            <p class="fw-bold fs-5 obituary-header">Obituary:</p>
-            <p class="fs-6 p-2 obituary-text">
+            <p class="fs-6 p-2" [ngStyle]="{ 'margin-top': portraitImage ? '-25px' : '-5px' }">
                 <span style="margin-left: 1em;">{{ personData.obituary.split(' ')[0] }}</span>
                 {{ personData.obituary.substr(personData.obituary.indexOf(' ') + 1) }}
             </p>

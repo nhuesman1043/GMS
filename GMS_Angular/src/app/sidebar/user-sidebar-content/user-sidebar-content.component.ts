@@ -23,7 +23,7 @@ export class UserSidebarContentComponent implements OnInit{
   portraitImage: any;
   landscapeImage: any;
 
-  async getUserContentData(plotId: Number): Promise<void> {
+  async getUserContentData(plotId: number): Promise<void> {
     try {
       // Call the getData method of ApiService to fetch plot data and then person data based on plot's person_id value
       this.plotData = await this.apiService.getData('plot/' + plotId + '/');
@@ -44,13 +44,17 @@ export class UserSidebarContentComponent implements OnInit{
       // Check if there is an available landscape image and if so, set value
       if (this.personData.landscape_image !== null)
         this.landscapeImage = imageURL + this.personData.landscape_image;
+
+      // Set dataLoaded to true when data is fetched
+      this.sidebarService.setDataLoadedStatus(true);
     } catch(err) {
       console.error('Error fetching user content data:', err);
+      this.sidebarService.setDataLoadedStatus(false);
     }
   }
 
   ngOnInit() {
-    this.sidebarService.sidebarToggled$.subscribe((id: Number) => {
+    this.sidebarService.sidebarToggled$.subscribe((id: number) => {
       // Call getUserContentData method when sidebar is toggled
       this.getUserContentData(id);
     });
