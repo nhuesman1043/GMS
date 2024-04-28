@@ -19,7 +19,6 @@ export class WeatherWidgetComponent implements OnInit {
       isDay: true
     };
     this.getWeatherData();
-    console.log(this.WeatherData);
   }
 
   getWeatherData() {
@@ -37,11 +36,9 @@ export class WeatherWidgetComponent implements OnInit {
     this.WeatherData.sunset_time = sunsetTime.toLocaleTimeString();
     let currentDate = new Date();
     this.WeatherData.isDay = (currentDate.getTime() < sunsetTime.getTime());
+    this.WeatherData.condition = this.WeatherData.weather[0].main;
     this.WeatherData.temp = (this.WeatherData.main.temp).toFixed(0);
-    // this.WeatherData.temp_min = (this.WeatherData.main.temp_min).toFixed(0);
-    // this.WeatherData.temp_max = (this.WeatherData.main.temp_max).toFixed(0);
     this.WeatherData.temp_feels_like = (this.WeatherData.main.feels_like).toFixed(0);
     this.WeatherData.windSpeed = (this.WeatherData.wind.speed).toFixed(0);
-    console.log(this.WeatherData.windSpeed);
   }
 }

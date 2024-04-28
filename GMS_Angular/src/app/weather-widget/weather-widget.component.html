@@ -3,17 +3,42 @@
         <i class="fas fa-cloud fa-3x cloud"></i>
     </div> -->
     <div class="weatherWidgetRow">
-        <div *ngIf="WeatherData.isDay" class="weatherWidgetColumn" style="margin-right: 10px;">
-            <i class="fas fa-3x fa-sun sun"></i>  
-        </div>   
-        <div *ngIf="!WeatherData.isDay" class="weatherWidgetColumn" style="margin-right: 10px;">
-            <i class="fas fa-3x fa-moon moon"></i>  
-        </div>  
+        <div *ngIf="WeatherData.condition === 'Clouds'; else thunderstorm" class="weatherWidgetColumn" style="margin-right: 10px;">
+            <i class="fas fa-3x fa-cloud cloud"></i>  
+        </div>
+        <ng-template #thunderstorm>
+            <div *ngIf="WeatherData.condition === 'Thunderstorm'; else drizzle" class="weatherWidgetColumn" style="margin-right: 10px;">
+                <i class="fas fa-3x fa-cloud-bolt cloud-bolt"></i>  
+            </div>
+        </ng-template> 
+        <ng-template #drizzle>
+            <div *ngIf="WeatherData.condition === 'Drizzle'; else rain" class="weatherWidgetColumn" style="margin-right: 10px;">
+                <i class="fas fa-3x fa-cloud-rain cloud-rain"></i>  
+            </div>
+        </ng-template> 
+        <ng-template #rain>
+            <div *ngIf="WeatherData.condition === 'Rain'; else snow" class="weatherWidgetColumn" style="margin-right: 10px;">
+                <i class="fas fa-3x fa-cloud-showers-heavy cloud-showers-heavy"></i>  
+            </div>
+        </ng-template> 
+        <ng-template #snow>
+            <div *ngIf="WeatherData.condition === 'Snow'; else last" class="weatherWidgetColumn" style="margin-right: 10px;">
+                <i class="fas fa-3x fa-snowflake snowflake"></i>  
+            </div>
+        </ng-template> 
+        <ng-template #last>
+            <div *ngIf="WeatherData.isDay" class="weatherWidgetColumn" style="margin-right: 10px;">
+                <i class="fas fa-3x fa-sun sun"></i>  
+            </div>
+            <div *ngIf="!WeatherData.isDay" class="weatherWidgetColumn" style="margin-right: 10px;">
+                <i class="fas fa-3x fa-moon moon"></i>  
+            </div>  
+        </ng-template> 
         <div class="weatherWidgetColumn" style="font-size: 23px;margin-top: 10px; margin-right: 10px;">{{WeatherData.name}}</div>
         <div class="weatherWidgetColumn" style="font-size: 23px;margin-top: 10px;">{{WeatherData.temp}}°</div>
     </div>
 
     <div  class="weatherWidgetRow">
-        <div class="weatherWidgetColumn" style="font-size: 12px; margin-bottom: 5px;">Wind Speeds: {{WeatherData.windSpeed}} | Feels Like: {{WeatherData.temp_feels_like}}°</div>
+        <div class="weatherWidgetColumn" style="font-size: 12px; margin-bottom: 5px;">Wind Speeds: {{WeatherData.windSpeed}} mph | Feels Like: {{WeatherData.temp_feels_like}}°</div>
     </div>
 </div>

@@ -1,4 +1,25 @@
 @import "../../styles.scss";
+
+
 .header {
     border-bottom: solid $black;
 }
+
+.btn-donate {
+    background-color: $brand;
+    color: white;
+}
+
+.btn-info, .btn-info:focus {
+    border: none;
+    background-color: transparent;
+}
+
+.hello {
+    background-color:rgba(255,255,255,.3);
+    backdrop-filter: blur(100px);
+  }
+
+  button:hover {
+    color: $brand;
+  }

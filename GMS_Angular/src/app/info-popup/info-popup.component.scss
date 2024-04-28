@@ -1,3 +1,4 @@
+@import "../../styles.scss";
 .popup-dialog-cont {
     position: fixed;
     top: 50%;
@@ -7,5 +8,73 @@
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
     border: 2px solid black;
-    padding: 20px;
+    width: 750px;
+    height: fit-content;
 }
+
+button {
+    position:absolute;
+    top: 10px;
+    right: 20px;
+    font-size: xx-large;
+    border: 0px;
+    background-color: white;
+}
+
+footer {
+    // position: fixed;
+    bottom: 0px;
+    width: 100%;
+    background-color: $brand;
+    color: white;
+    padding: 10px 0;
+    border-bottom-right-radius: 8px;
+     border-bottom-left-radius: 8px;
+    //text-align: center;
+}
+
+  footer p {
+    font-size: small;
+  }
+
+  footer h2 {
+    font-size: x-large;
+  }
+
+  footer div {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .copyright {
+    text-align: right;
+    bottom: 0px;
+    right: 0px;
+    position: absolute;
+    padding: 10px;
+  }
+
+  ol {
+    margin-top: 10px;
+    margin-left: 30px;
+  }
+
+  li {
+    padding-bottom: 5px;
+  }
+
+  span {
+    color: $brand;
+  }
+
+  span:hover {
+    color: lightgrey;
+  }
+
+  a {
+    color: white;
+  }
+
+  a:hover {
+    color: lightgrey;
+  }
