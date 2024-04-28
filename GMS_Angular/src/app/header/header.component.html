@@ -1,9 +1,47 @@
 <div class="header h-100 d-flex align-items-center justify-content-center">
+
     <div style="margin-left: 20px; margin-right: auto;"><app-weather-widget></app-weather-widget></div>
     
     <div class="text-center fs-2">
-        Rosemound Cemetery <button type="button" (click)="openModel()" class="btn btn-info"><i class="fa-solid fa-circle-info fs-3"></i></button>
+        Rosemound Cemetery <button type="button" (click)="open(content)" class="btn btn-info"><i class="fa-solid fa-circle-info fs-3"></i></button>
     </div>
 
     <div style="margin-left: auto; margin-right: 20px;"><button class="btn btn-donate fs-5 p-1" onclick="window.location.href = 'https://app.securegive.com/stjamesuccmn/main/donate/category'">Donate</button></div>
 </div>
+
+<ng-template #content let-modal>
+    <div class="popup-dialog-cont d-flex flex-column">
+        <button type="button" (click)="modal.dismiss('Cross click')"><span><i class="fa-solid fa-rectangle-xmark fs-10"></i></span></button>
+    <div style="margin-bottom: 20px; margin-top: 15px; margin-left: 15px;">
+      <h2>Graveyard Rules and Regulations</h2>
+      <ol>
+          <li>No littering or dumping of trash.</li>
+          <li>Respect the solemnity of the space.</li>
+          <li>No vandalism or defacement of graves.</li>
+          <li>Keep noise levels to a minimum.</li>
+          <li>No unauthorized vehicles allowed.</li>
+          <li>Follow designated pathways.</li>
+          <li>Do not disturb wildlife or vegetation.</li>
+          <li>Dispose of flowers and decorations responsibly.</li>
+          <li>Observe posted visiting hours.</li>
+          <li>No camping or overnight stays.</li>
+      </ol>
+    </div>
+    <footer class="w-100 d-flex align-items-center justify-content-center">
+      <div style="margin-left: 20px; margin-right: auto;">
+        <h2>Contact Us</h2>
+        <p style="padding-top: 5px;">St. James Email: <a href="mailto:churchoffice.stjames@gmail.com">churchoffice.stjames&#64;gmail.com</a></p>
+        <p style="padding-top: 5px;">St. James Phone: 218-354-7198</p>
+      </div>
+  
+      <div style="margin-right: 150px;">
+        <h2>Find Us</h2>
+        <p style="padding-top: 5px;">201 3rd Street SE<br>PO Box 369<br>Barnesville, MN 56514</p>
+      </div>
+  
+      <div style="margin-left: 0px; margin-right: auto;">
+        <p class="copyright" style="font-size: xx-small;"><i class="fa fa-copyright fs-8"></i> 2024 Jang Tech. USA, LLC.<br>All rights reserved.</p>
+      </div>
+    </footer>
+    </div>
+  </ng-template>
