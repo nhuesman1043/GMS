@@ -55,7 +55,7 @@ export class MapComponent {
     minZoom: 19
   };
 
-//Plot States
+// Plot States
 // 1 = Availible #26532B
 // 2 = Occupied #5C80BC
 // 3 = Reserved #E89005
@@ -99,36 +99,38 @@ export class MapComponent {
   }
 
   // Method for toggling sidebar based on selected plotId, lastSelectedPlotId, and statusId
-  selectPlot(plotId: Number, statusId: Number) {
+  selectPlot(plotId: number, statusId: number) {
     // Detect whether or not this is a new plotID and if so, then continue
     if (this.lastSelectedPlotId !== plotId) {
       // Set lastSelectedPlotID to selected plotID
       this.lastSelectedPlotId = plotId;
-
+  
       // If status is "Available" (2), then toggle sidebar
-      if (statusId === 2) {
-        // If sidebar is already opened, then close it, wait, reopen it with new info
+      if (statusId === 2) {  
+        // Define a function to toggle the sidebar after data is loaded
+        const toggleSidebarWithData = () => {
+          // Set data and then open sidebar
+          this.sidebarService.toggleSidebar(plotId, true);
+          this.app.toggleSidebar(plotId);
+        };
+  
+        // If the sidebar is already open, close it, wait, then reopen it with new info
         if (!this.app.isSidebarCollapsed) {
           // Close sidebar
           this.app.toggleSidebar(plotId);
-
-          // Wait 750ms for a "smooth" effect and then reopen
-          setTimeout(() => {
-            // Set data 
-            this.sidebarService.toggleSidebar(plotId);
-
-            // Reopen
-            this.app.toggleSidebar(plotId);
-          }, 750);
-        }
-
-        // If it's closed, then just open it
-        else {
-          // Set data and then open sidebar
-          this.sidebarService.toggleSidebar(plotId);
-          this.app.toggleSidebar(plotId);
-        }
+  
+          // Wait for a short duration for a smooth effect and then reopen with new data
+          setTimeout(toggleSidebarWithData, 750);
+        } 
+        
+        // If it's closed, just open it with data
+        else 
+          toggleSidebarWithData();
       }
-    }
+    } 
+    
+    // Just toggle if we're opening/closing the same plot
+    else 
+      this.app.toggleSidebar(plotId);
   }
 }

@@ -1,15 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SidebarService {
-  private sidebarToggledSource = new Subject<Number>();
+  private sidebarToggledSource = new Subject<number>();
+  private dataLoadedSource = new BehaviorSubject<boolean>(false);
 
   sidebarToggled$ = this.sidebarToggledSource.asObservable();
+  dataLoaded$ = this.dataLoadedSource.asObservable();
 
-  toggleSidebar(plotId: Number) {
-    this.sidebarToggledSource.next(plotId);
+  toggleSidebar(plotId: number, isDataLoaded: boolean) {
+    if (isDataLoaded) {
+      this.sidebarToggledSource.next(plotId);
+    } 
+  }
+
+  setDataLoadedStatus(isLoaded: boolean) {
+    this.dataLoadedSource.next(isLoaded);
   }
 }

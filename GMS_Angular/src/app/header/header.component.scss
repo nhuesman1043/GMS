@@ -2,7 +2,8 @@
 
 
 .header {
-    border-bottom: solid $black;
+    border-bottom: solid $silver;
+    background-color: $off-white;
 }
 
 .btn-donate {
@@ -22,15 +23,11 @@
     box-shadow: none !important;
 }
 
-.hello {
-    background-color:rgba(255,255,255,.3);
-    backdrop-filter: blur(100px);
-  }
 
-  button:hover {
-    color: $brand;
-    border: none;
-  }
+button:hover {
+color: $brand;
+border: none;
+}
 
   //Styles for popup
   .popup-dialog-cont {
@@ -55,67 +52,67 @@
       background-color: white;
   }
   
-  .popup-dialog-cont footer {
-      // position: fixed;
-      bottom: 0px;
-      width: 100%;
-      background-color: $brand;
-      color: white;
-      padding: 10px 0;
-      border-bottom-right-radius: 8px;
-       border-bottom-left-radius: 8px;
-      //text-align: center;
-  }
-  
-  .popup-dialog-cont footer p {
-      font-size: small;
-    }
-  
-    .popup-dialog-cont footer h2 {
-      font-size: x-large;
-    }
-  
-    .popup-dialog-cont footer div {
-      margin-top: 10px;
-      margin-bottom: 10px;
-    }
-  
-    .popup-dialog-cont .copyright {
-      text-align: right;
-      bottom: 0px;
-      right: 0px;
-      position: absolute;
-      padding: 10px;
-    }
-  
-    .popup-dialog-cont ol {
-      margin-top: 10px;
-      margin-left: 30px;
-    }
-  
-    .popup-dialog-cont li {
-      padding-bottom: 5px;
-    }
-  
-    .popup-dialog-cont span {
-      color: #ff5858;
-    }
-  
-    .popup-dialog-cont span:hover {
-      color: lightgrey;
-    }
-  
-    .popup-dialog-cont a {
-      color: white;
-    }
-  
-    .popup-dialog-cont a:hover {
-      color: lightgrey;
-    }
-  
-    .popup-dialog-cont button, button:hover, button:focus {
-      border: none;
-      background-color: transparent;
-      outline: none;
-      box-shadow: none !important;
-    }
+.popup-dialog-cont footer {
+    // position: fixed;
+    bottom: 0px;
+    width: 100%;
+    background-color: $brand;
+    color: white;
+    padding: 10px 0;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    //text-align: center;
+}
+
+.popup-dialog-cont footer p {
+    font-size: small;
+}
+
+.popup-dialog-cont footer h2 {
+    font-size: x-large;
+}
+
+.popup-dialog-cont footer div {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.popup-dialog-cont .copyright {
+    text-align: right;
+    bottom: 0px;
+    right: 0px;
+    position: absolute;
+    padding: 10px;
+}
+
+.popup-dialog-cont ol {
+    margin-top: 10px;
+    margin-left: 30px;
+}
+
+.popup-dialog-cont li {
+    padding-bottom: 5px;
+}
+
+.popup-dialog-cont span {
+    color: #ff5858;
+}
+
+.popup-dialog-cont span:hover {
+    color: lightgrey;
+}
+
+.popup-dialog-cont a {
+    color: white;
+}
+
+.popup-dialog-cont a:hover {
+    color: lightgrey;
+}
+
+.popup-dialog-cont button, button:hover, button:focus {
+    border: none;
+    background-color: transparent;
+    outline: none;
+    box-shadow: none !important;
+}

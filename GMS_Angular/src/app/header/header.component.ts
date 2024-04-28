@@ -1,6 +1,6 @@
 import { Component, inject, TemplateRef } from '@angular/core';
 import { APIService } from '../services/api.service';
-import { WeatherWidgetComponent } from '../weather-widget/weather-widget.component';
+import { WeatherWidgetComponent } from './weather-widget/weather-widget.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
