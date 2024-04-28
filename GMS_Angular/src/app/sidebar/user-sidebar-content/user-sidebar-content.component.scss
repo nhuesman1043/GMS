@@ -1,6 +1,7 @@
 @import "../../../styles.scss";
 .main-content {
-    border: solid $silver;
+    border-top: none;
+    border-bottom: none;
     
     .sidebar-header {
         background-color: $brand;
@@ -27,10 +28,10 @@
 
     .landscape-image-container {
 
+
         .landscape-image {
-            border: 0.75px solid $silver;
-            transform: translateX(0px);
-            width: 100%;
+            border: 0.75px solid $black;
+            width: 98%;
             height: auto;
             max-height: 100vh;
         }

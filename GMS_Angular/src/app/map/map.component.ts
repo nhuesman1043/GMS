@@ -105,7 +105,7 @@ export class MapComponent {
       // Set lastSelectedPlotID to selected plotID
       this.lastSelectedPlotId = plotId;
   
-      // If status is "AvailSable" (2), then toggle sidebar
+      // If status is "Available" (2), then toggle sidebar
       if (statusId === 2) {  
         // Define a function to toggle the sidebar after data is loaded
         const toggleSidebarWithData = () => {
@@ -120,7 +120,7 @@ export class MapComponent {
           this.app.toggleSidebar(plotId);
   
           // Wait for a short duration for a smooth effect and then reopen with new data
-          setTimeout(toggleSidebarWithData, 500);
+          setTimeout(toggleSidebarWithData, 750);
         } 
         
         // If it's closed, just open it with data
@@ -129,7 +129,7 @@ export class MapComponent {
       }
     } 
     
-    // Just toggle sidebar once if we're opening/closing the same plot
+    // Just toggle if we're opening/closing the same plot
     else 
       this.app.toggleSidebar(plotId);
   }

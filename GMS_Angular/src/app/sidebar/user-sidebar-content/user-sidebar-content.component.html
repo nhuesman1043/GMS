@@ -1,6 +1,6 @@
 <div class="container-fluid main-content" *ngIf="plotData && personData">
-    <div class="row sidebar-header">
-        <h2 class="text-center lh-base">{{ personData.first_name }} {{ personData.last_name }}</h2>
+    <div class="row sidebar-header p-2">
+        <p class="text-center lh-base fs-2">{{ personData.first_name }} {{ personData.last_name }}</p>
     </div>
     <div class="row mt-2 mb-2">
         <div class="col-md-7 text-center">
@@ -25,7 +25,7 @@
             </p>
         </div>
     </div>
-    <div *ngIf="landscapeImage" class="row mt-2 landscape-image-container">
+    <div *ngIf="landscapeImage" class="row mt-2 mb-2 landscape-image-container d-flex justify-content-center w-100">
         <img [src]="landscapeImage" class="img-fluid landscape-image" alt="Landscape Image">
     </div>
 </div>

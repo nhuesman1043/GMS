@@ -55,7 +55,7 @@ export class AppComponent {
       this.isDataLoaded = isLoaded;
 
       // Only let user toggle if there is data to display
-      if (isLoaded) {
+      if (this.isDataLoaded) {
         // If data is loaded, toggle the sidebar
         this.isSidebarCollapsed = !this.isSidebarCollapsed;
       } 
