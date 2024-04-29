@@ -16,7 +16,7 @@
       <div class="col-auto sidebar-container">
         <!-- Sidebar toggle button -->
         <div class="sidebar-toggle" [@toggleAnimation]="isSidebarCollapsed ? 'collapsed' : 'expanded'">
-          <button class="btn" [ngClass]="{'btn-toggle': isDataLoaded, 'btn-toggle-disabled': !isDataLoaded}">
+          <button class="btn" [ngClass]="{'btn-toggle': isDataLoaded, 'btn-toggle-disabled': !isDataLoaded && isFirstLoad}">
             <i 
               class="d-flex fs-3 p-1" 
               [ngClass]="{'bi bi-caret-right-fill': !isSidebarCollapsed, 'bi bi-caret-left-fill': isSidebarCollapsed}" 

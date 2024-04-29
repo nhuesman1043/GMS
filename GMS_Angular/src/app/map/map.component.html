@@ -1,4 +1,20 @@
 <div class="map-container" [@mapAnimation]="isSidebarCollapsed ? 'collapsed' : 'expanded'">
+    <div *ngIf="isSexton" class="plot-status-key position-absolute">
+        <table class="table table-striped table-bordered text-center">
+            <thead>
+                <tr>
+                  <th scope="col">Status</th>
+                  <th scope="col">Color</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let status of plotStatusData">
+                  <td>{{status.status_name}}</td>
+                  <td [ngStyle]="{'background-color': status.color_hex}">&nbsp;</td>
+                </tr>
+              </tbody>
+        </table>
+    </div>
     <google-map
         [options]="options" 
         height="100%" 
@@ -7,9 +23,9 @@
         <map-marker
             #mark *ngFor="let plot of plots" 
             [position]="plot" 
-            (mapClick)="selectPlot(plot.plotId, plot.plotState)" 
+            (mapClick)="selectPlot(plot.plotId)" 
             [icon]="plot.icon" 
-            label="{{ plot.plotName }}"
+            label="{{plot.plotName}}"
         >
         </map-marker>
     </google-map>

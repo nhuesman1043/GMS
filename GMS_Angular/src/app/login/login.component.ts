@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { APIService } from '../services/api.service';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms'
+import { GlobalService } from '../services/global.service';
 import { NgIf } from '@angular/common';
 
 @Component({
@@ -19,14 +20,16 @@ export class LoginComponent {
   password: string = '';
   loginError: string = '';
 
-  constructor(private router: Router, private apiService: APIService) {}
+  constructor(private router: Router, private apiService: APIService, private globalService: GlobalService) {}
 
   async login(): Promise<void> {
     try {
       const response = await this.apiService.login(this.username, this.password);
-      // Handle successful login response (redirect, store tokens, etc.)
-      console.log('Login successful:', response);
-      this.router.navigate(['/']); 
+      if (response.success) {
+        // Handle successful login response by setting global variable and navigate
+        this.globalService.IS_SEXTON = true;
+        this.router.navigate(['/']); 
+      }
     } catch (error) {
       this.loginError = 'Invalid username or password.';
       console.error('Login error:', error);

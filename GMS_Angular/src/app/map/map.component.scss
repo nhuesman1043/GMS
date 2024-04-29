@@ -11,6 +11,14 @@
     height: 100%;
     overflow: hidden;
 
+    .plot-status-key {
+        z-index: 1;
+        border: solid $silver;
+        border-radius: 2px;
+        margin-top: 10px;
+        margin-left: 10px;
+    }
+
     .google-map {
         position: absolute;
         top: 0;
