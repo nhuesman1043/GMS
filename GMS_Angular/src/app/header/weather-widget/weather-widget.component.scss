@@ -1,3 +1,4 @@
+@import "../../../styles.scss";
 .weatherWidgetColumn{
     display:inline-block;
     margin:0 auto;
@@ -14,54 +15,54 @@
     font-size: 30px;
     size: 30px;
     margin-top: 10px;
-    color: #FEDD00;
-    filter: drop-shadow( 1px 1px 10px yellow);
+    color: $sun;
+    filter: drop-shadow( 1px 1px 10px $sun);
 }
 
 .moon{
     font-size: 20px;
     size: 20px;
     margin-top: 10px;
-    color: grey;
-    filter: drop-shadow( 1px 1px 10px grey);
+    color: $moon;
+    filter: drop-shadow( 1px 1px 10px $moon);
 }
 
 .cloud{
     font-size: 25px;
     size: 25px;
     margin-top: 10px;
-    color: #a8a8a8;
-    filter: drop-shadow( 1px 1px 10px #a8a8a8);
+    color: $clouds;
+    filter: drop-shadow( 1px 1px 10px $clouds);
 }
 
 .cloud-bolt{
     font-size: 25px;
     size: 25px;
     margin-top: 10px;
-    color: #a8a8a8;
-    filter: drop-shadow( 1px 1px 10px #a8a8a8);
+    color: $clouds;
+    filter: drop-shadow( 1px 1px 10px $clouds);
 }
 
 .cloud-rain{
     font-size: 25px;
     size: 25px;
     margin-top: 10px;
-    color: #a8a8a8;
-    filter: drop-shadow( 1px 1px 10px #a8a8a8);
+    color: $clouds;
+    filter: drop-shadow( 1px 1px 10px $clouds);
 }
 
 .cloud-showers-heavy{
     font-size: 25px;
     size: 25px;
     margin-top: 10px;
-    color: #a8a8a8;
-    filter: drop-shadow( 1px 1px 10px #a8a8a8);
+    color: $clouds;
+    filter: drop-shadow( 1px 1px 10px $clouds);
 }
 
 .snowflake{
     font-size: 25px;
     size: 25px;
     margin-top: 10px;
-    color: #d1cfcf;
-    filter: drop-shadow( 1px 1px 10px #d1cfcf);
+    color: $snowflake;
+    filter: drop-shadow( 1px 1px 10px $snowflake);
 }
