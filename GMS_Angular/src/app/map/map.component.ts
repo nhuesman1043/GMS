@@ -49,11 +49,15 @@ export class MapComponent {
   isSexton: boolean = this.globalService.IS_SEXTON;
   plotIcon(plotColor: string): any {
     return {
-      path: "M0 100c-81.822 0-150 63.366-150 150v150c0 6.668-.757 23.558 0 30h300c.757-6.442 0-23.332 0-30V250c0-86.634-68.178-150-150-150zM-245 466v60h480v-60H0z",
+      path: "M 5 5 L 5 50 L 100 50 L 100 5 Z",
       fillColor: plotColor,
       fillOpacity: 0.85,
       strokeWeight: 0,
-      scale: 0.05
+      scale: 0.65,
+       labelOrigin: {
+            x: 50,
+            y: 25
+        },
     };
   }
   
@@ -82,6 +86,7 @@ export class MapComponent {
       const plotColor = this.plotStatusData.find((status: any) => status.status_id === plotState)?.color_hex;
 
       // Format plot information to be used in html markes
+      if (this.isSexton || plotState === 2){
       list.push({ 
           lat: parseFloat(this.plotData[i].plot_latitude)
         , lng: parseFloat(this.plotData[i].plot_longitude)
@@ -93,10 +98,15 @@ export class MapComponent {
         , icon: this.plotIcon(plotColor)
       });  
     }
+    }
 
     // Set the list of formatted plots to a global variable
     this.plots = list;
   }
+
+  // checkLoginStatus(): boolean {
+  //   return this.isSexton;
+  // }
 
   // Method for toggling sidebar based on selected plotId, lastSelectedPlotId, and statusId
   selectPlot(plotId: number) {
