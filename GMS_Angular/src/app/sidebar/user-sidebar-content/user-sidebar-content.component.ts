@@ -15,7 +15,7 @@ import { SidebarService } from '../../services/sidebar.service';
   templateUrl: './user-sidebar-content.component.html',
   styleUrl: './user-sidebar-content.component.scss'
 })
-export class UserSidebarContentComponent implements OnInit{
+export class UserSidebarContentComponent implements OnInit {
   constructor(private apiService: APIService, private globalService : GlobalService, private sidebarService: SidebarService) { } 
   // Variables to hold pulled in plot data and person data
   plotData: any;
@@ -25,6 +25,9 @@ export class UserSidebarContentComponent implements OnInit{
 
   async getUserContentData(plotId: number): Promise<void> {
     try {
+      // Set dataLoaded to false when starting to get user data
+      this.sidebarService.setDataLoadedStatus(false);
+
       // Call the getData method of ApiService to fetch plot data and then person data based on plot's person_id value
       this.plotData = await this.apiService.getData('plot/' + plotId + '/');
       this.personData = await this.apiService.getData('person/' + this.plotData.person_id + '/');
@@ -48,6 +51,7 @@ export class UserSidebarContentComponent implements OnInit{
       // Set dataLoaded to true when data is fetched
       this.sidebarService.setDataLoadedStatus(true);
     } catch(err) {
+      // Show error and set data loaded to false
       console.error('Error fetching user content data:', err);
       this.sidebarService.setDataLoadedStatus(false);
     }

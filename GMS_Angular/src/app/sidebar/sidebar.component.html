@@ -1,9 +1,8 @@
-<div class="sidebar" [@sidebarAnimation]="sidebarState" [ngStyle]="{ 'overflow-y': isSidebarCollapsed ? 'hidden' : 'auto' }">
-    <!--User/Sexton content, need to update with logic-->
-    <div>
-        <app-user-sidebar-content></app-user-sidebar-content>
-    </div>
-    <!--<div>
+<div class="sidebar" [@sidebarAnimation]="sidebarState" [ngStyle]="{'overflow-y': isSidebarCollapsed ? 'hidden' : 'auto'}">
+    <ng-container *ngIf="isSexton; else sextonContent">
         <app-sexton-sidebar-content></app-sexton-sidebar-content>
-    </div>-->
+    </ng-container>
+    <ng-template #sextonContent>
+        <app-user-sidebar-content></app-user-sidebar-content>
+    </ng-template>
 </div>

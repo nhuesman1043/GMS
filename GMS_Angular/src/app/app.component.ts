@@ -54,6 +54,7 @@ export class AppComponent {
   // Collapse sidebar by default
   isSidebarCollapsed: boolean = true;
   isDataLoaded: boolean = false;        // Variable to store data loading status
+  isFirstLoad: boolean = true;          // Variable to show that sidebar toggle is disabled before a plot has been selected
 
   // Check if the link is /admin
   isAdminRoute: boolean = false;
@@ -67,6 +68,9 @@ export class AppComponent {
 
       // Only let user toggle if there is data to display
       if (this.isDataLoaded) {
+          // Show that a user has been selected and that the sidebar toggle can be used
+          this.isFirstLoad = false;
+
         // If data is loaded, toggle the sidebar
         this.isSidebarCollapsed = !this.isSidebarCollapsed;
       } 
