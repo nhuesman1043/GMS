@@ -1,4 +1,10 @@
 <div class="map-container" [@mapAnimation]="isSidebarCollapsed ? 'collapsed' : 'expanded'">
+    <div>
+      <button (click)="searchBox.value=''; search(searchBox.value)" class="btn-clear"><i class="fa-solid fa-trash-can fs-6" style="padding-left: 4px; padding-right: 4px;"></i></button>
+      <input #searchBox id="search-box" (keyup.enter)="search(searchBox.value)" class="search-bar search-box" placeholder="Person's Name"/>
+      <button (click)="search(searchBox.value)" class="search-bar btn-search"><i class="fa-solid fa-magnifying-glass fs-6" style="padding-left: 4px; padding-right: 4px;"></i></button>
+    </div>
+
     <div *ngIf="isSexton" class="plot-status-key position-absolute">
         <table class="table table-striped table-bordered text-center">
             <thead>

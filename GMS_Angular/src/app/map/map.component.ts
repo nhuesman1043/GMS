@@ -44,6 +44,7 @@ export class MapComponent {
   @Input() isSidebarCollapsed: boolean = true;
   plotData: any;
   plotStatusData: any;
+  personData: any;
   plots: any;
   lastSelectedPlotId: Number = -1;
   isSexton: boolean = this.globalService.IS_SEXTON;
@@ -77,11 +78,15 @@ export class MapComponent {
     //Get plots and plot status from database
     this.plotData = await this.apiService.getData('plots');
     this.plotStatusData = await this.apiService.getData('plot_statuses');
+    this.personData = await this.apiService.getData('persons');
     let list = [];
 
     // Loop through each plot in the database and format data
     for (let i = 0; i < this.plotData.length; i++){
-      // Get plot color
+      // this.personData = await this.apiService.getData('person/' + this.plotData[i].person_id + '/');
+      const personName = this.plotData[i].plot_identifier.toLowerCase()//(this.personData[i].first_name + " " + this.personData[i].first_name).toLowerCase();
+      if(personName.includes(searchField.toLowerCase()) || searchField === ''){
+        // Get plot color
       const plotState = this.plotData[i].plot_state;
       const plotColor = this.plotStatusData.find((status: any) => status.status_id === plotState)?.color_hex;
 
@@ -97,6 +102,7 @@ export class MapComponent {
         , plotPersonId: this.plotData[i].person_id
         , icon: this.plotIcon(plotColor)
       });  
+      }
     }
     }
 
@@ -145,4 +151,10 @@ export class MapComponent {
   async ngOnInit(): Promise<void> {
     this.refreshMap('');
   }
+
+  search(searchField: string): void {
+    // this.plots = this.plots.filter(plot => plot?.plot_identifier.toLowerCase().includes(searchField.toLowerCase()))   
+    this.refreshMap(searchField);
+    }
+  
 }
