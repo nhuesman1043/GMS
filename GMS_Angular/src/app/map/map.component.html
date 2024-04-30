@@ -1,4 +1,28 @@
 <div class="map-container" [@mapAnimation]="isSidebarCollapsed ? 'collapsed' : 'expanded'">
+    <div *ngIf="filterProperty === personFilter">
+      <button *ngIf="isClearable;" (click)="searchBox.value=''; refreshMap(searchBox.value); isClearable = false;" class="btn-clear"><i class="fa-solid fa-trash-can fs-6" style="padding-left: 4px; padding-right: 4px;"></i></button>
+      <button *ngIf="!isClearable;" class="btn-clear-disabled"><i class="fa-solid fa-trash-can fs-6" style="padding-left: 4px; padding-right: 4px;"></i></button>
+      <input #searchBox id="search-box" (input)="searchBox.value==='' ? setClearButtonReset(false) : isClearable = true" (keyup.enter)="refreshMap(searchBox.value)" class="search-bar search-box" placeholder="{{personFilter}}"/>
+      <button (click)="refreshMap(searchBox.value)" class="search-bar btn-search"><i class="fa-solid fa-magnifying-glass fs-6" style="padding-left: 4px; padding-right: 4px;"></i></button>
+    </div>
+
+    <div *ngIf="isSexton">
+      <div *ngIf="filterProperty === identifierFilter">
+        <button *ngIf="isClearable;" (click)="searchBox.value=''; refreshMap(searchBox.value); isClearable = false;" class="btn-clear"><i class="fa-solid fa-trash-can fs-6" style="padding-left: 4px; padding-right: 4px;"></i></button>
+        <button *ngIf="!isClearable;" class="btn-clear-disabled"><i class="fa-solid fa-trash-can fs-6" style="padding-left: 4px; padding-right: 4px;"></i></button>
+        <input #searchBox id="search-box" (input)="searchBox.value==='' ? setClearButtonReset(false) : isClearable = true" (keyup.enter)="refreshMap(searchBox.value)" class="search-bar search-box" placeholder="{{identifierFilter}}"/>
+        <button (click)="refreshMap(searchBox.value)" class="search-bar btn-search"><i class="fa-solid fa-magnifying-glass fs-6" style="padding-left: 4px; padding-right: 4px;"></i></button>
+      </div>
+  
+      <div class="btn-group btn-search-toggle" role="group" aria-label="Basic example">
+        <button *ngIf="filterProperty !== personFilter" type="button" class="btn btn-filter-property-unselected" (click)="filterProperty = personFilter; isClearable = false; refreshMap('');"><p class="multistate-text">Person's Name</p></button>
+        <button *ngIf="filterProperty === personFilter" type="button" class="btn btn-filter-property-selected"><p class="multistate-text">Person's Name</p></button>
+  
+        <button *ngIf="filterProperty !== identifierFilter" type="button" class="btn btn-filter-property-unselected" (click)="filterProperty = identifierFilter; isClearable = false; refreshMap('');"><p class="multistate-text">Plot Identifier</p></button>
+        <button *ngIf="filterProperty === identifierFilter" type="button" class="btn btn-filter-property-selected"><p class="multistate-text">Plot Identifier</p></button>
+      </div>
+    </div>
+
     <div *ngIf="isSexton" class="plot-status-key position-absolute">
         <table class="table table-striped table-bordered text-center">
             <thead>

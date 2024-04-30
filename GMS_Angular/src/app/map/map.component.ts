@@ -7,6 +7,7 @@ import { APIService } from '../services/api.service';
 import {AppComponent} from '../app.component';
 import { SidebarService } from '../services/sidebar.service';
 import { GlobalService } from '../services/global.service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 
 @Component({
   selector: 'app-map',
@@ -16,7 +17,8 @@ import { GlobalService } from '../services/global.service';
     GoogleMapsModule,
     NgFor,
     NgStyle,
-    NgIf
+    NgIf,
+    NgbModule
   ],
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss',
@@ -44,8 +46,13 @@ export class MapComponent {
   @Input() isSidebarCollapsed: boolean = true;
   plotData: any;
   plotStatusData: any;
+  personData: any;
   plots: any;
   lastSelectedPlotId: Number = -1;
+  isClearable: boolean = false;
+  filterProperty: string = "Person\'s Name";
+  personFilter: string = "Person\'s Name";
+  identifierFilter: string = "Plot Identifier";
   isSexton: boolean = this.globalService.IS_SEXTON;
   plotIcon(plotColor: string): any {
     return {
@@ -61,7 +68,7 @@ export class MapComponent {
     };
   }
   
-  //Define options/settings for the google map api
+  // Define options/settings for the google map api
   options: google.maps.MapOptions = {
     center: { lat: 46.6537, lng: -96.4405 },
     zoom: 19,
@@ -74,14 +81,17 @@ export class MapComponent {
   };
 
   async refreshMap(searchField: string): Promise<void> {
-    //Get plots and plot status from database
+    // Get plots and plot status from database
     this.plotData = await this.apiService.getData('plots');
     this.plotStatusData = await this.apiService.getData('plot_statuses');
+    this.personData = await this.apiService.getData('persons');
     let list = [];
 
     // Loop through each plot in the database and format data
     for (let i = 0; i < this.plotData.length; i++){
-      // Get plot color
+      //Check to see if plot meets filter conditions
+      if(this.searchFilter(searchField, i)){
+        // Get plot color
       const plotState = this.plotData[i].plot_state;
       const plotColor = this.plotStatusData.find((status: any) => status.status_id === plotState)?.color_hex;
 
@@ -97,6 +107,7 @@ export class MapComponent {
         , plotPersonId: this.plotData[i].person_id
         , icon: this.plotIcon(plotColor)
       });  
+      }
     }
     }
 
@@ -104,9 +115,35 @@ export class MapComponent {
     this.plots = list;
   }
 
-  // checkLoginStatus(): boolean {
-  //   return this.isSexton;
-  // }
+  // Method for checking if a plot has a person that is being searched for
+  searchFilter(searchField: any, i: any) {
+    let filter = '';
+    if(this.filterProperty === this.personFilter) {
+    // Get the first and last name of the person in the plot if filtering by name
+    if(this.plotData[i].person_id !== null){
+      const filteredArray = this.personData.filter((dict: any) => {
+        return dict.person_id == this.plotData[i].person_id;});
+        filter = (filteredArray[0].first_name + " " + filteredArray[0].last_name).toLowerCase();
+    }
+    }
+    // Get plot identifier if filtering by that
+    else if(this.filterProperty === this.identifierFilter) {
+        filter = this.plotData[i].plot_identifier.toLowerCase();
+    }
+
+    // Check if clear button needs to be enabled
+    if(searchField !== '')
+      this.isClearable = true;
+
+    // Check if plot is to be filtered out or not
+    return filter.includes(searchField.toLowerCase()) || searchField === '';
+  }
+
+  // Sets the state of the clear button and refreshes map
+  setClearButtonReset(state: any) {
+    this.isClearable = state;
+    this.refreshMap('');
+  }
 
   // Method for toggling sidebar based on selected plotId, lastSelectedPlotId, and statusId
   selectPlot(plotId: number) {
