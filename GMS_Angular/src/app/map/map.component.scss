@@ -36,6 +36,13 @@
     top: 20px;
 }
 
+.btn-search-toggle {
+    position: absolute;
+    right: 20px;
+    top: 60px;
+    z-index: 6;
+}
+
 .btn-clear {
     position: absolute;
     z-index: 6;
@@ -59,6 +66,21 @@
     border-color: transparent;
 }
 
+.btn-clear-disabled, .btn-clear-disabled:hover, .btn-clear-disabled:focus {
+    position: absolute;
+    z-index: 6;
+    right: 229px;
+    top: 20px;
+    background-color: $lightgrey;
+    color: $white;
+    border-left: none;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-style:solid;
+    border-color: transparent;
+    z-index: 6;
+}
+
 .btn-search, .btn-search:focus {
     background-color: $brand;
     color: $white;
@@ -68,6 +90,38 @@
     border-style:solid;
     border-color: transparent;
     z-index: 6;
+}
+
+.btn-filter-property-selected, .btn-filter-property-selected:focus {
+    background-color: $brand;
+    color: $white;
+    border-left: none;
+    border-style:solid;
+    border-color: transparent;
+}
+
+.btn-filter-property-selected:hover {
+    background-color: $brand;
+    color: $white;
+    border-left: none;
+    border-style:solid;
+    border-color: transparent;
+}
+
+.btn-filter-property-unselected, .btn-filter-property-unselected:focus {
+    background-color: $lightgrey;
+    color: $brand;
+    border-left: none;
+    border-style:solid;
+    border-color: transparent;
+}
+
+.btn-filter-property-unselected:hover {
+    background-color: $lightgrey;
+    color: $white;
+    border-left: none;
+    border-style:solid;
+    border-color: transparent;
 }
 
 .btn-search:hover {
@@ -119,4 +173,10 @@ li {
   ul.search-result {
     margin-top: 0;
     padding-left: 0;
+  }
+
+  .multistate-text {
+    padding-left: 4px;
+    padding-right: 4px;
+    font-size: 15.3px;
   }
