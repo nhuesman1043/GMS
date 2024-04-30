@@ -45,10 +45,10 @@
         width="100%"
     >
         <map-marker
-            #mark *ngFor="let plot of plots" 
+            #mark *ngFor="let plot of plots; let i = index" 
             [position]="plot" 
-            (mapClick)="selectPlot(plot.plotId)" 
-            [icon]="plot.icon" 
+            (mapClick)="selectPlot(plot.plotId, i)" 
+            [icon]="plotIcon(plot.plotColor, isPlotSelected(i))" 
             label="{{plot.plotName}}"
         >
         </map-marker>

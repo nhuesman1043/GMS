@@ -49,15 +49,17 @@ export class MapComponent {
   personData: any;
   plots: any;
   lastSelectedPlotId: Number = -1;
+  selectedPlotIndex: number = -1;
   isClearable: boolean = false;
   filterProperty: string = "Person\'s Name";
   personFilter: string = "Person\'s Name";
   identifierFilter: string = "Plot Identifier";
   isSexton: boolean = this.globalService.IS_SEXTON;
-  plotIcon(plotColor: string): any {
+  plotIcon(plotColor: string, isSelected: boolean): any {
+    let fillColor = isSelected ? 'white' : plotColor;
     return {
       path: "M 5 5 L 5 50 L 100 50 L 100 5 Z",
-      fillColor: plotColor,
+      fillColor: fillColor,
       fillOpacity: 0.85,
       strokeWeight: 0,
       scale: 0.65,
@@ -105,7 +107,7 @@ export class MapComponent {
         , plotName: this.plotData[i].plot_identifier 
         , plotColor: this.plotStatusData[this.plotData[i].plot_state - 1].color_hex
         , plotPersonId: this.plotData[i].person_id
-        , icon: this.plotIcon(plotColor)
+        , icon: this.plotIcon(plotColor, false)
       });  
       }
     }
@@ -145,8 +147,13 @@ export class MapComponent {
     this.refreshMap('');
   }
 
+  isPlotSelected(index: number): boolean {
+    return index === this.selectedPlotIndex;
+  }
+
   // Method for toggling sidebar based on selected plotId, lastSelectedPlotId, and statusId
-  selectPlot(plotId: number) {
+  selectPlot(plotId: number, index: number) {
+    this.selectedPlotIndex = index;
     // Detect whether or not this is a new plotID and if so, then continue
     if (this.lastSelectedPlotId !== plotId) {
       // Set lastSelectedPlotID to selected plotID
