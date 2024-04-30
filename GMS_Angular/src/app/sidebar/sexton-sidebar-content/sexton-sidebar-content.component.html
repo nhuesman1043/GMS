@@ -3,29 +3,142 @@
         <p class="text-center lh-base fs-2">Plot: {{plotData.plot_identifier}}</p>
     </div>
     <div class="row">
-
-    </div>
-    <div class="row">
-
-    </div>
-    <div class="row">
         <div class="col-6">
-
+            <p>First Name of Deceased:</p>
         </div>
         <div class="col-6">
-
+            <input class="form-control" type="text">
         </div>
     </div>
     <div class="row">
         <div class="col-6">
-
+            <p>Last Name of Deceased:</p>
         </div>
         <div class="col-6">
-
+            <input class="form-control" type="text">
         </div>
     </div>
     <div class="row">
-        <button class="btn btn-save">Save</button>
+        <div class="col-6">
+            <p>Date of Birth:</p>
+            <div class="input-group">
+                <input
+                    class="form-control"
+                    placeholder="yyyy-mm-dd"
+                    name="burial"
+                    [(ngModel)]="model"
+                    ngbDatepicker
+                    #d="ngbDatepicker"
+                />
+                <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+            </div>
+        </div>
+        <div class="col-6">
+            <p>Date of Death:</p>
+            <div class="input-group">
+                <input
+                    class="form-control"
+                    placeholder="yyyy-mm-dd"
+                    name="burial"
+                    [(ngModel)]="model"
+                    ngbDatepicker
+                    #d="ngbDatepicker"
+                />
+                <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="status">Plot Status:</label>
+                <select class="form-control" id="status">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-6">
+            <p>Date of Burial:</p>
+            <div class="input-group">
+                <input
+                    class="form-control"
+                    placeholder="yyyy-mm-dd"
+                    name="burial"
+                    [(ngModel)]="model"
+                    ngbDatepicker
+                    #d="ngbDatepicker"
+                />
+                <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="obituary">Obituary:</label>
+                <textarea class="form-control" id="obituary" rows="6"></textarea>
+            </div>
+        </div>
+        <div class="col-6">
+            <p>Portrait Image:</p>
+            <label for="fileInputPortrait" style="cursor: pointer;">
+                <ngx-file-drop 
+                    dropZoneLabel="Drop a file here or click to browse" 
+                    *ngIf="!portraitFileUploaded" 
+                    (onFileDrop)="handleDroppedFile($event, 'portrait')"
+                >
+                </ngx-file-drop>
+            </label>
+            <input 
+                id="fileInputPortrait" 
+                type="file" 
+                style="display: none;" 
+                (change)="handleFileInputChange($event, 'portrait')"
+            >
+            <div *ngIf="portraitFileUploaded" class="uploaded-image">
+                <img [src]="portraitImageSrc" alt="Uploaded Image" class="img-fluid">
+                <button class="btn btn-clear-image" (click)="clearFile('portrait')">
+                    <i class="fa-solid fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div *ngIf="portraitInvalidFileType" class="text-center">
+                <p>Please upload an image file.</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <p>Landscape Image:</p>
+        <label for="fileInputLandscape" style="cursor: pointer;">
+            <ngx-file-drop 
+                dropZoneLabel="Drop a file here or click to browse" 
+                *ngIf="!landscapeFileUploaded" 
+                (onFileDrop)="handleDroppedFile($event, 'landscape')"
+            >
+            </ngx-file-drop>
+        </label>
+        <input 
+            id="fileInputLandscape" 
+            type="file" 
+            style="display: none;" 
+            (change)="handleFileInputChange($event, 'landscape')"
+        >
+        <div *ngIf="landscapeFileUploaded" class="uploaded-image">
+            <img [src]="landscapeImageSrc" alt="Uploaded Image" class="img-fluid">
+            <button class="btn btn-clear-image" (click)="clearFile('landscape')">
+                <i class="fa-solid fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div *ngIf="landscapeInvalidFileType" class="text-center">
+            <p>Please upload an image file.</p>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <button class="btn btn-save mt-2 fs-5 p-1">Save</button>
     </div>
     <div class="row">
 

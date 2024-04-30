@@ -1,5 +1,5 @@
 <div class="map-container" [@mapAnimation]="isSidebarCollapsed ? 'collapsed' : 'expanded'">
-    <div *ngIf="isSexton" class="plot-status-key position-absolute">
+    <div *ngIf="isSexton && plotStatusData" class="plot-status-key position-absolute">
         <table class="table table-striped table-bordered text-center">
             <thead>
                 <tr>

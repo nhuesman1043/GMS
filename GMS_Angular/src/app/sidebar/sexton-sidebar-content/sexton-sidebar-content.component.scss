@@ -13,4 +13,18 @@
         background-color: $good-button-green;
         color: $white
     }
+
+    .drop-text {
+        z-index: 1;
+        border: solid red;
+    }
+
+    .uploaded-image {
+        z-index: 1;
+
+        .btn-clear-image {
+            background-color: $mean-button-red;
+            color: $white;
+        }
+    }
 }
