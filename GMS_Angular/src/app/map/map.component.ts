@@ -83,9 +83,8 @@ export class MapComponent {
 
     // Loop through each plot in the database and format data
     for (let i = 0; i < this.plotData.length; i++){
-      // this.personData = await this.apiService.getData('person/' + this.plotData[i].person_id + '/');
-      const personName = this.plotData[i].plot_identifier.toLowerCase()//(this.personData[i].first_name + " " + this.personData[i].first_name).toLowerCase();
-      if(personName.includes(searchField.toLowerCase()) || searchField === ''){
+      //Check to see if plot meets filter conditions
+      if(this.searchFilter(searchField, i)){
         // Get plot color
       const plotState = this.plotData[i].plot_state;
       const plotColor = this.plotStatusData.find((status: any) => status.status_id === plotState)?.color_hex;
@@ -108,6 +107,21 @@ export class MapComponent {
 
     // Set the list of formatted plots to a global variable
     this.plots = list;
+  }
+
+  // Method for checking if a plot has a person that is being searched for
+  searchFilter(searchField: any, i: any) {
+    let personName = '';
+    // Get the first and last name of the person in the plot
+    if(this.plotData[i].person_id !== null){
+      const filteredArray = this.personData.filter((dict: any) => {
+        return dict.person_id == this.plotData[i].person_id;});
+      personName = (filteredArray[0].first_name + " " + filteredArray[0].last_name).toLowerCase();
+      console.log(this.plotData[i].person_id)
+    }
+
+    // Check if first name and last name of person contains the search field
+    return personName.includes(searchField.toLowerCase()) || searchField === '';
   }
 
   // checkLoginStatus(): boolean {
