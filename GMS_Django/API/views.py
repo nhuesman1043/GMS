@@ -10,8 +10,38 @@ from django.contrib.auth import logout
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.authtoken.models import Token
+from django.core.mail import send_mail
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
+from django.utils.crypto import get_random_string
+from django.core.mail import send_mail
 import os
 import json
+
+def password_reset(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        user = get_object_or_404(User, email=email)
+
+        # Generate and save a unique token for password reset
+        token = get_random_string(length=32)
+        user.profile.password_reset_token = token
+        user.profile.save()
+
+        # Send password reset email
+        reset_link = f'http://localhost:4200/reset-password/'
+        print('Helllooooooo')
+        send_mail(
+            'Password Reset',
+            f'Click the following link to reset your password: {reset_link}',
+            'from@example.com',
+            [email],
+            fail_silently=False,
+        )
+        
+        return JsonResponse({'message': 'Password reset email sent'}, status=200)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 @csrf_exempt
 def login_view(request):

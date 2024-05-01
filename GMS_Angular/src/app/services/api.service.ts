@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { Router } from '@angular/router';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,6 +12,11 @@ export class APIService {
   private readonly TOKEN_KEY = 'auth_token';
 
   constructor(private http: HttpClient, private globalService: GlobalService, private router: Router) {}
+
+  resetPassword(email: string) {
+    const url = this.globalService.API_URL + '/reset-password';
+    return this.http.post<any>(url, { email });
+  }
 
   async login(username: string, password: string): Promise<any> {
     try {

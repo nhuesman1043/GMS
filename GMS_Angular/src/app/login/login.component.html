@@ -4,6 +4,9 @@
     <input type="text" placeholder="Username" [(ngModel)]="username" name="username" required>
     <input type="password" placeholder="Password" [(ngModel)]="password" name="password" required>
     <button type="submit">Login</button>
+    <div class="forgot-password-link">
+      <button type="button" (click)="navigateToReset()">Forgot Password?</button>
+    </div>
     <div *ngIf="loginError" class="error-message text-center mt-2">{{ loginError }}</div>
   </form>
 </div>

@@ -22,6 +22,10 @@ export class LoginComponent {
 
   constructor(private router: Router, private apiService: APIService, private globalService: GlobalService) {}
 
+  navigateToReset() {
+    this.router.navigate(['/password-reset']);
+  }
+
   async login(): Promise<void> {
     try {
       const response = await this.apiService.login(this.username, this.password);

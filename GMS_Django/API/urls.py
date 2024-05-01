@@ -5,6 +5,9 @@ urlpatterns = [
     # Login
     path('login/', views.login_view, name='login'),
     
+    # Password Reset
+    path('API/reset-password/', views.password_reset, name='password_reset'),
+    
     # Person 
     path('persons/', views.Person_CRUD.as_view(), name='persons'),
     path('person/<int:pk>/', views.Person_CRUD.as_view(), name='person'),

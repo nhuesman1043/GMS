@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { NgIf, NgClass } from '@angular/common';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
@@ -10,6 +10,9 @@ import { HeaderComponent } from './header/header.component';
 import { MapComponent } from './map/map.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { LoginComponent } from './login/login.component';
+import { PasswordResetComponent } from './password-reset/password-reset.component';
+import { NbPasswordAuthStrategy, NbAuthModule } from '@nebular/auth';
+import { APIService } from './services/api.service';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +27,8 @@ import { LoginComponent } from './login/login.component';
     HeaderComponent,
     MapComponent,
     SidebarComponent,
-    LoginComponent
+    LoginComponent,
+    PasswordResetComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -43,10 +47,12 @@ import { LoginComponent } from './login/login.component';
   ]
 })
 export class AppComponent {
-  constructor(private sidebarService: SidebarService, private router: Router) {
+  constructor(private apiService: APIService, private sidebarService: SidebarService, private router: Router) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.isAdminRoute = this.router.url === '/admin';
+        this.isPasswordResetRoute = this.router.url === '/password-reset'; 
+        this.isRoute = this.router.url === '/'; 
       }
     });
   };
@@ -58,6 +64,8 @@ export class AppComponent {
 
   // Check if the link is /admin
   isAdminRoute: boolean = false;
+  isRoute: boolean = false; 
+  isPasswordResetRoute: boolean = false; 
 
   // Method to toggle sidebar
   toggleSidebar(id: number) {
@@ -75,5 +83,7 @@ export class AppComponent {
         this.isSidebarCollapsed = !this.isSidebarCollapsed;
       } 
     });
+
   }
 }
+

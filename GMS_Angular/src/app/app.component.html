@@ -2,7 +2,10 @@
   <div>
     <app-login *ngIf="isAdminRoute"></app-login> <!-- Render LoginComponent for /admin route -->
   </div>
-  <div *ngIf="!isAdminRoute" class="container-fluid app">
+  <div>
+    <app-password-reset *ngIf="isPasswordResetRoute"></app-password-reset>
+  </div>
+  <div *ngIf="!isAdminRoute && !isPasswordResetRoute && isRoute" class="container-fluid app">
     <div class="row header">
       <!--Header-->
       <app-header></app-header>
