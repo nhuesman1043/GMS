@@ -6,7 +6,7 @@
       <button (click)="refreshMap(searchBox.value)" class="search-bar btn-search"><i class="fa-solid fa-magnifying-glass fs-6" style="padding-left: 4px; padding-right: 4px;"></i></button>
     </div>
 
-    <div *ngIf="isSexton">
+    <div *ngIf="isSexton && plotStatusData">
       <div *ngIf="filterProperty === identifierFilter">
         <button *ngIf="isClearable;" (click)="searchBox.value=''; refreshMap(searchBox.value); isClearable = false;" class="btn-clear"><i class="fa-solid fa-trash-can fs-6" style="padding-left: 4px; padding-right: 4px;"></i></button>
         <button *ngIf="!isClearable;" class="btn-clear-disabled"><i class="fa-solid fa-trash-can fs-6" style="padding-left: 4px; padding-right: 4px;"></i></button>
@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div *ngIf="isSexton" class="plot-status-key position-absolute">
+    <div *ngIf="isSexton " class="plot-status-key position-absolute">
         <table class="table table-striped table-bordered text-center">
             <thead>
                 <tr>
@@ -34,7 +34,7 @@
               <tbody>
                 <tr *ngFor="let status of plotStatusData">
                   <td>{{status.status_name}}</td>
-                  <td [ngStyle]="{'background-color': status.color_hex}">&nbsp;</td>
+                  <td [ngStyle]="{'background-color': status.color_hex, 'cursor': 'pointer'}">&nbsp;</td>
                 </tr>
               </tbody>
         </table>

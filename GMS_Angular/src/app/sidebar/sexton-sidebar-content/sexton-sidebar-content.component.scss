@@ -13,4 +13,21 @@
         background-color: $good-button-green;
         color: $white
     }
+
+    .btn-save-disabled {
+        background-color: $good-button-green;
+        color: $white;
+        opacity: $opacity-disabled;
+    }
+
+    .uploaded-image {
+        border: 0.75px solid $black;
+
+        .btn-clear-image {
+            background-color: $mean-button-red;
+            color: $white;
+            margin-top: 5px;
+            margin-right: 5px;
+        }
+    }
 }

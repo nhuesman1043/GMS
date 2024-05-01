@@ -27,10 +27,12 @@ import { SextonSidebarContentComponent } from './sexton-sidebar-content/sexton-s
       state('collapsed', style({
         transform: 'translateX(100%)',
         visibility: 'hidden',
+        zIndex: '-1'
       })),
       state('expanded', style({
         transform: 'translateX(0)',
-        visibility: 'visible'
+        visibility: 'visible',
+        zIndex: '1'
       })),
       transition('collapsed <=> expanded', [
         animate('0.5s ease-in-out')
