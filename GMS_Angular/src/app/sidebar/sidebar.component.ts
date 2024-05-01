@@ -2,6 +2,7 @@ import { Component, Input, SimpleChanges} from '@angular/core';
 import { NgClass, NgIf, NgStyle } from '@angular/common';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { GlobalService } from '../services/global.service';
+import { APIService } from '../services/api.service';
 
 // Components
 import { UserSidebarContentComponent } from './user-sidebar-content/user-sidebar-content.component';
@@ -40,7 +41,7 @@ import { SextonSidebarContentComponent } from './sexton-sidebar-content/sexton-s
   ]
 })
 export class SidebarComponent {
-  constructor(private globalService: GlobalService) {}
+  constructor(private globalService: GlobalService, private apiService: APIService) {}
 
   // Sidebar state stuff
   isCollapsed: boolean = true;
@@ -48,7 +49,7 @@ export class SidebarComponent {
   sidebarState: string = 'collapsed'; // Initial state
 
   // Check for Sexton
-  isSexton: boolean = this.globalService.IS_SEXTON;
+  isSexton = this.apiService.isSexton();
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['isSidebarCollapsed']) { 

@@ -6,8 +6,10 @@ from .serializers import Person_Serializer, Plot_Status_Serializer, Plot_Seriali
 from django.http import FileResponse
 from django.conf import settings
 from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.authtoken.models import Token
 import os
 import json
 from django.core.files.storage import FileSystemStorage
@@ -25,11 +27,23 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return JsonResponse({'success': True, 'message': 'Login successful'})
+            token, created = Token.objects.get_or_create(user=user)
+            print(request)
+            print(token)
+            return JsonResponse({'success': True, 'message': 'Login successful', 'token': token.key})
         else:
             return JsonResponse({'success': False, 'error': 'Invalid username or password'}, status=401)
     else:
         return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=400)
+
+def logout_view(request):
+    # Clear any session data specific to the "sexton" role
+    if 'sexton_role' in request.session:
+        del request.session['sexton_role']
+    
+    print(request)
+    print('Logging out')
+    logout(request) 
 
 class Person_CRUD(APIView):
     def get(self, request, pk=None):

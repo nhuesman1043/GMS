@@ -7,6 +7,7 @@ import { APIService } from '../services/api.service';
 import { AppComponent } from '../app.component';
 import { SidebarService } from '../services/sidebar.service';
 import { GlobalService } from '../services/global.service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { MapService } from '../services/map.service';
 
 @Component({
@@ -17,7 +18,8 @@ import { MapService } from '../services/map.service';
     GoogleMapsModule,
     NgFor,
     NgStyle,
-    NgIf
+    NgIf,
+    NgbModule
   ],
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss',
@@ -51,20 +53,31 @@ export class MapComponent {
   @Input() isSidebarCollapsed: boolean = true;
   plotData: any;
   plotStatusData: any;
+  personData: any;
   plots: any;
   lastSelectedPlotId: Number = -1;
-  isSexton: boolean = this.globalService.IS_SEXTON;
-  plotIcon(plotColor: string): any {
+  selectedPlotIndex: number = -1;
+  isClearable: boolean = false;
+  filterProperty: string = "Person\'s Name";
+  personFilter: string = "Person\'s Name";
+  identifierFilter: string = "Plot Identifier";
+  isSexton = this.apiService.isSexton();
+  plotIcon(plotColor: string, isSelected: boolean, opacity: any): any {
+    let fillColor = isSelected ? 'white' : plotColor;
     return {
-      path: "M0 100c-81.822 0-150 63.366-150 150v150c0 6.668-.757 23.558 0 30h300c.757-6.442 0-23.332 0-30V250c0-86.634-68.178-150-150-150zM-245 466v60h480v-60H0z",
-      fillColor: plotColor,
-      fillOpacity: 0.85,
+      path: "M 5 5 L 5 50 L 100 50 L 100 5 Z",
+      fillColor: fillColor,
+      fillOpacity: opacity,
       strokeWeight: 0,
-      scale: 0.05
+      scale: 0.65,
+       labelOrigin: {
+            x: 50,
+            y: 25
+        },
     };
   }
   
-  //Define options/settings for the google map api
+  // Define options/settings for the google map api
   options: google.maps.MapOptions = {
     center: { lat: 46.6537, lng: -96.4405 },
     zoom: 19,
@@ -77,9 +90,10 @@ export class MapComponent {
   };
 
   async refreshMap(searchField: string): Promise<void> {
-    //Get plots and plot status from database
+    // Get plots and plot status from database
     this.plotData = await this.apiService.getData('plots');
     this.plotStatusData = await this.apiService.getData('plot_statuses');
+    this.personData = await this.apiService.getData('persons');
     let list = [];
 
     // Loop through each plot in the database and format data
@@ -88,25 +102,80 @@ export class MapComponent {
       const plotState = this.plotData[i].plot_state;
       const plotColor = this.plotStatusData.find((status: any) => status.status_id === plotState)?.color_hex;
 
-      // Format plot information to be used in html markes
-      list.push({ 
-          lat: parseFloat(this.plotData[i].plot_latitude)
-        , lng: parseFloat(this.plotData[i].plot_longitude)
-        , plotId: parseInt(this.plotData[i].plot_id)
-        , plotState: this.plotData[i].plot_state
-        , plotName: this.plotData[i].plot_identifier 
-        , plotColor: this.plotStatusData[this.plotData[i].plot_state - 1].color_hex
-        , plotPersonId: this.plotData[i].person_id
-        , icon: this.plotIcon(plotColor)
-      });  
+      //Check to see if plot meets filter conditions
+      if(this.searchFilter(searchField, i)) {
+        // Format plot information to be used in html markes that meet search criteria
+        if (this.isSexton || plotState === 2){
+          list.push({ 
+              lat: parseFloat(this.plotData[i].plot_latitude)
+            , lng: parseFloat(this.plotData[i].plot_longitude)
+            , plotId: parseInt(this.plotData[i].plot_id)
+            , plotState: this.plotData[i].plot_state
+            , plotName: this.plotData[i].plot_identifier 
+            , plotColor: this.plotStatusData[this.plotData[i].plot_state - 1].color_hex
+            , plotPersonId: this.plotData[i].person_id
+            , icon: this.plotIcon(plotColor, false, 1)
+          });  
+        }
+      }
+      else {
+        // If plot does not meet search criteria, make it grey and translucent
+        if (this.isSexton || plotState === 2){
+          list.push({ 
+              lat: parseFloat(this.plotData[i].plot_latitude)
+            , lng: parseFloat(this.plotData[i].plot_longitude)
+            , plotId: parseInt(this.plotData[i].plot_id)
+            , plotState: this.plotData[i].plot_state
+            , plotName: this.plotData[i].plot_identifier 
+            , plotColor: 'lightgrey'
+            , plotPersonId: this.plotData[i].person_id
+            , icon: this.plotIcon('lightgrey', false, 0.33)
+          });  
+        }
+      }
     }
 
     // Set the list of formatted plots to a global variable
     this.plots = list;
   }
 
+  // Method for checking if a plot has a person that is being searched for
+  searchFilter(searchField: any, i: any) {
+    let filter = '';
+    if(this.filterProperty === this.personFilter) {
+    // Get the first and last name of the person in the plot if filtering by name
+    if(this.plotData[i].person_id !== null){
+      const filteredArray = this.personData.filter((dict: any) => {
+        return dict.person_id == this.plotData[i].person_id;});
+        filter = (filteredArray[0].first_name + " " + filteredArray[0].last_name).toLowerCase();
+    }
+    }
+    // Get plot identifier if filtering by that
+    else if(this.filterProperty === this.identifierFilter) {
+        filter = this.plotData[i].plot_identifier.toLowerCase();
+    }
+
+    // Check if clear button needs to be enabled
+    if(searchField !== '')
+      this.isClearable = true;
+
+    // Check if plot is to be filtered out or not
+    return filter.includes(searchField.toLowerCase()) || searchField === '';
+  }
+
+  // Sets the state of the clear button and refreshes map
+  setClearButtonReset(state: any) {
+    this.isClearable = state;
+    this.refreshMap('');
+  }
+
+  isPlotSelected(index: number): boolean {
+    return index === this.selectedPlotIndex;
+  }
+
   // Method for toggling sidebar based on selected plotId, lastSelectedPlotId, and statusId
-  selectPlot(plotId: number) {
+  selectPlot(plotId: number, index: number) {
+    this.selectedPlotIndex = index;
     // Detect whether or not this is a new plotID and if so, then continue
     if (this.lastSelectedPlotId !== plotId) {
       // Set lastSelectedPlotID to selected plotID
