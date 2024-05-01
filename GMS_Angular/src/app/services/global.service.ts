@@ -10,5 +10,5 @@ export class GlobalService {
   API_URL: string = 'http://localhost:8000/API/';
 
   // Flag variable for Sexton
-  IS_SEXTON: boolean = false;
+  //IS_SEXTON: boolean = false;
 }

@@ -2,18 +2,20 @@ import { Component, inject, TemplateRef } from '@angular/core';
 import { APIService } from '../services/api.service';
 import { WeatherWidgetComponent } from './weather-widget/weather-widget.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [WeatherWidgetComponent],
+  imports: [WeatherWidgetComponent, NgIf],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   host: {ngSkipHydration: 'true'},
 })
 export class HeaderComponent {
   private modalService = inject(NgbModal);
-  constructor(private apiService: APIService) {}
+  constructor(private apiService: APIService, private router: Router) {}
 
   //Open info popup view
 	open(content: TemplateRef<any>) {
@@ -21,8 +23,19 @@ export class HeaderComponent {
                                       animation: true, 
                                       centered: true }).result.then();
 	}
+
+  isSexton = this.apiService.isSexton();
+
+  reloadPage(): void {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigateByUrl(currentUrl);
+    });
+  }
+
   logout(): void {
     this.apiService.logout(); // Call logout method from APIService
-    // Optionally perform additional logout-related tasks (e.g., redirect)
+    //this.router.navigate(['/home']);
+    window.location.reload();
   }
 }

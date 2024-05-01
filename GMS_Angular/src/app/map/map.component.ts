@@ -54,7 +54,7 @@ export class MapComponent {
   filterProperty: string = "Person\'s Name";
   personFilter: string = "Person\'s Name";
   identifierFilter: string = "Plot Identifier";
-  isSexton: boolean = this.globalService.IS_SEXTON;
+  isSexton = this.apiService.isSexton();
   plotIcon(plotColor: string, isSelected: boolean, opacity: any): any {
     let fillColor = isSelected ? 'white' : plotColor;
     return {
