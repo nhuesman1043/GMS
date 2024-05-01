@@ -1,6 +1,5 @@
 @import "../../styles.scss";
 
-
 .header {
     border-bottom: solid $silver;
     background-color: $off-white;
@@ -8,12 +7,12 @@
 
 .btn-donate, .btn-donate:focus {
     background-color: $brand;
-    color: white;
+    color: $white;
     border: none;
 }
 
 .btn-donate:hover {
-    background-color: lightgrey;
+    background-color: $lightgrey;
     color: $brand;
 }
 
@@ -24,37 +23,35 @@
     box-shadow: none !important;
 }
 
-
 button:hover {
 color: $brand;
 border: none;
 }
 
-  //Styles for popup
-  .popup-dialog-cont {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 6;
-      background-color: rgb(255, 255, 255);
-      border-radius: 10px;
-      border: 2px solid $black;
-      width: 750px;
-      height: fit-content;
-  }
+//Styles for popup
+.popup-dialog-cont {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 6;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    border: 2px solid $black;
+    width: 750px;
+    height: fit-content;
+ }
   
-  .popup-dialog-cont button {
-      position:absolute;
-      top: 10px;
-      right: 20px;
-      font-size: xx-large;
-      border: 0px;
-      background-color: $white;
-  }
+.popup-dialog-cont button {
+    position:absolute;
+    top: 10px;
+    right: 20px;
+    font-size: xx-large;
+    border: 0px;
+    background-color: $white;
+}
   
 .popup-dialog-cont footer {
-    // position: fixed;
     bottom: 0px;
     width: 100%;
     background-color: $brand;
@@ -62,7 +59,6 @@ border: none;
     padding: 10px 0;
     border-bottom-right-radius: 8px;
     border-bottom-left-radius: 8px;
-    //text-align: center;
 }
 
 .popup-dialog-cont footer p {

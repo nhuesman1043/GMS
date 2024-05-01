@@ -15,6 +15,8 @@ import { NgIf } from '@angular/common';
 })
 export class HeaderComponent {
   private modalService = inject(NgbModal);
+  isSexton = this.apiService.isSexton();
+
   constructor(private apiService: APIService, private router: Router) {}
 
   //Open info popup view
@@ -24,18 +26,9 @@ export class HeaderComponent {
                                       centered: true }).result.then();
 	}
 
-  isSexton = this.apiService.isSexton();
-
-  reloadPage(): void {
-    const currentUrl = this.router.url;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigateByUrl(currentUrl);
-    });
-  }
-
+  // Log out the sexton and reload the page
   logout(): void {
     this.apiService.logout(); // Call logout method from APIService
-    //this.router.navigate(['/home']);
     window.location.reload();
   }
 }

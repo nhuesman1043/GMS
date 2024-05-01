@@ -8,8 +8,7 @@ import { AppComponent } from '../app.component';
 import { SidebarService } from '../services/sidebar.service';
 import { GlobalService } from '../services/global.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+import { DomSanitizer } from '@angular/platform-browser';
 import { MapService } from '../services/map.service';
 
 @Component({
@@ -49,7 +48,6 @@ export class MapComponent {
     private apiService: APIService, 
     private app: AppComponent, 
     private sidebarService: SidebarService, 
-    private globalService: GlobalService,
     private mapService: MapService
   ) { } 
 
@@ -68,6 +66,7 @@ export class MapComponent {
   isSexton = this.apiService.isSexton();
   nameList: any;
   
+  // This method creates the icon for the plots using an svg string
   plotIcon(plotColor: string, isSelected: boolean, opacity: any): any {
     let fillColor = isSelected ? 'white' : plotColor;
     const svgString = '<svg width="25" height="25" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" style="fill:' + fillColor + '; opacity:' + opacity +'" /></svg>';
@@ -141,7 +140,6 @@ export class MapComponent {
 
     // Set the list of formatted plots to a global variable
     this.plots = list;
-    console.log(this.nameList);
   }
 
   // Method for checking if a plot has a person that is being searched for
@@ -189,10 +187,6 @@ export class MapComponent {
     this.refreshMap('');
   }
 
-  isPlotSelected(index: number): boolean {
-    return index === this.selectedPlotIndex;
-  }
-
   // Method for toggling sidebar based on selected plotId, lastSelectedPlotId, and statusId
   selectPlot(plotId: number, index: number) {
     this.selectedPlotIndex = index;
@@ -232,8 +226,4 @@ export class MapComponent {
     this.refreshMap('');
     this.mapService.mapInstance = this;
   }
-
-  // getPersonName(plotId: any): string {
-  //   let name: string = '';
-  // }
 }

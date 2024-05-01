@@ -50,7 +50,7 @@
             #mark *ngFor="let plot of plots; let i = index" 
             [position]="plot" 
             (mapClick)="selectPlot(plot.plotId, i)" 
-            [content]="isPlotSelected(i) ? plotIcon(plot.plotColor, isPlotSelected(i), 1) : plot.icon"
+            [content]="i === selectedPlotIndex ? plotIcon(plot.plotColor, i === selectedPlotIndex, 1) : plot.icon"
             [title]="nameList[i]"
         >
         </map-advanced-marker>
