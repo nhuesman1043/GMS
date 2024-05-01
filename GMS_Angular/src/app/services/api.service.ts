@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 import { GlobalService } from './global.service';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class APIService {
-  constructor(private http: HttpClient, private globalService: GlobalService) {}
+  private readonly TOKEN_KEY = 'auth_token';
+
+  constructor(private http: HttpClient, private globalService: GlobalService, private router: Router) {}
 
   async login(username: string, password: string): Promise<any> {
     try {
@@ -21,10 +24,26 @@ export class APIService {
     }
   }
 
+  isSexton(): boolean {
+    return !!this.getToken();
+  }
+
+  setToken(token: string): void {
+    localStorage.setItem(this.TOKEN_KEY, token);
+  }
+
+  getToken(): string | null {
+    if (typeof localStorage !== 'undefined') {
+      return localStorage.getItem(this.TOKEN_KEY);
+    }
+    return null; // Or handle the absence of localStorage as needed
+  }
+
   async logout(): Promise<void> {
     // Perform logout actions such as clearing tokens or session data
     // Example:
-    // localStorage.removeItem('auth_token');
+    localStorage.removeItem('auth_token');
+    //this.router.navigate(['/home']);
   }
 
   // getData method takes a url from Django and returns all data pertaining to it
