@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ElementRef } from '@angular/core';
 import { NgFor, NgIf, NgStyle } from '@angular/common';
 import {GoogleMap} from '@angular/google-maps';
 import { GoogleMapsModule } from '@angular/google-maps'
@@ -7,6 +7,8 @@ import { APIService } from '../services/api.service';
 import { AppComponent } from '../app.component';
 import { SidebarService } from '../services/sidebar.service';
 import { GlobalService } from '../services/global.service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { MapService } from '../services/map.service';
 
@@ -19,7 +21,7 @@ import { MapService } from '../services/map.service';
     NgFor,
     NgStyle,
     NgIf,
-    NgbModule
+    NgbModule,
   ],
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss',
@@ -42,6 +44,8 @@ import { MapService } from '../services/map.service';
 export class MapComponent {  
   // Define a constructor to load services and AppComponent methods
   constructor(
+    private sanitizer: DomSanitizer, 
+    private elementRef: ElementRef,
     private apiService: APIService, 
     private app: AppComponent, 
     private sidebarService: SidebarService, 
@@ -62,19 +66,16 @@ export class MapComponent {
   personFilter: string = "Person\'s Name";
   identifierFilter: string = "Plot Identifier";
   isSexton = this.apiService.isSexton();
+  nameList: any;
+  
   plotIcon(plotColor: string, isSelected: boolean, opacity: any): any {
     let fillColor = isSelected ? 'white' : plotColor;
-    return {
-      path: "M 5 5 L 5 50 L 100 50 L 100 5 Z",
-      fillColor: fillColor,
-      fillOpacity: opacity,
-      strokeWeight: 0,
-      scale: 0.65,
-       labelOrigin: {
-            x: 50,
-            y: 25
-        },
-    };
+    const svgString = '<svg width="25" height="25" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" style="fill:' + fillColor + '; opacity:' + opacity +'" /></svg>';
+    const sanitizedHtml = this.sanitizer.bypassSecurityTrustHtml(svgString);
+    const container = this.elementRef.nativeElement.ownerDocument.createElement('div');
+    let htmlstring: string = sanitizedHtml.toString().replace('SafeValue must use [property]=binding: ', '').replace(' (see https://g.co/ng/security#xss)', '');
+    container.innerHTML = htmlstring;
+    return container.firstChild as HTMLElement;
   }
   
   // Define options/settings for the google map api
@@ -95,6 +96,7 @@ export class MapComponent {
     this.plotStatusData = await this.apiService.getData('plot_statuses');
     this.personData = await this.apiService.getData('persons');
     let list = [];
+    this.nameList = [];
 
     // Loop through each plot in the database and format data
     for (let i = 0; i < this.plotData.length; i++){
@@ -115,7 +117,8 @@ export class MapComponent {
             , plotColor: this.plotStatusData[this.plotData[i].plot_state - 1].color_hex
             , plotPersonId: this.plotData[i].person_id
             , icon: this.plotIcon(plotColor, false, 1)
-          });  
+          });
+          this.getFullName(i);
         }
       }
       else {
@@ -131,12 +134,14 @@ export class MapComponent {
             , plotPersonId: this.plotData[i].person_id
             , icon: this.plotIcon('lightgrey', false, 0.33)
           });  
+          this.getFullName(i);
         }
       }
     }
 
     // Set the list of formatted plots to a global variable
     this.plots = list;
+    console.log(this.nameList);
   }
 
   // Method for checking if a plot has a person that is being searched for
@@ -150,7 +155,7 @@ export class MapComponent {
         filter = (filteredArray[0].first_name + " " + filteredArray[0].last_name).toLowerCase();
     }
     }
-    // Get plot identifier if filtering by that
+    // Get plot identifier if filtering by identifier
     else if(this.filterProperty === this.identifierFilter) {
         filter = this.plotData[i].plot_identifier.toLowerCase();
     }
@@ -161,6 +166,21 @@ export class MapComponent {
 
     // Check if plot is to be filtered out or not
     return filter.includes(searchField.toLowerCase()) || searchField === '';
+  }
+
+  // Method for getting full name of a person in a plot
+  getFullName(i: any) {
+    let filter = '';
+    // Get the first and last name of the person in the plot if filtering by name
+    if(this.plotData[i].person_id !== null){
+      const filteredArray = this.personData.filter((dict: any) => {
+        return dict.person_id == this.plotData[i].person_id;});
+        filter = filteredArray[0].first_name + " " + filteredArray[0].last_name;
+        this.nameList.push(filter);
+    }
+    else if(this.plotData[i].person_id === null) {
+      this.nameList.push('');
+    }
   }
 
   // Sets the state of the clear button and refreshes map
@@ -212,4 +232,8 @@ export class MapComponent {
     this.refreshMap('');
     this.mapService.mapInstance = this;
   }
+
+  // getPersonName(plotId: any): string {
+  //   let name: string = '';
+  // }
 }

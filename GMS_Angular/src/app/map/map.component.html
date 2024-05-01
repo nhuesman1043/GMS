@@ -40,18 +40,20 @@
         </table>
     </div>
     <google-map
+        mapId="gmsmap"
         [options]="options" 
         height="100%" 
         width="100%"
     >
-        <map-marker
+
+        <map-advanced-marker
             #mark *ngFor="let plot of plots; let i = index" 
             [position]="plot" 
             (mapClick)="selectPlot(plot.plotId, i)" 
-            [icon]="isPlotSelected(i) ? plotIcon(plot.plotColor, isPlotSelected(i), 1) : plot.icon" 
-            label="{{plot.plotName}}"
+            [content]="isPlotSelected(i) ? plotIcon(plot.plotColor, isPlotSelected(i), 1) : plot.icon"
+            [title]="nameList[i]"
         >
-        </map-marker>
+        </map-advanced-marker>
     </google-map>
 </div>
   
