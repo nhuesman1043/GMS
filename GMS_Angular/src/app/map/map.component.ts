@@ -4,9 +4,10 @@ import {GoogleMap} from '@angular/google-maps';
 import { GoogleMapsModule } from '@angular/google-maps'
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { APIService } from '../services/api.service';
-import {AppComponent} from '../app.component';
+import { AppComponent } from '../app.component';
 import { SidebarService } from '../services/sidebar.service';
 import { GlobalService } from '../services/global.service';
+import { MapService } from '../services/map.service';
 
 @Component({
   selector: 'app-map',
@@ -38,7 +39,13 @@ import { GlobalService } from '../services/global.service';
 
 export class MapComponent {  
   // Define a constructor to load services and AppComponent methods
-  constructor(private apiService: APIService, public app: AppComponent, private sidebarService: SidebarService, private globalService: GlobalService) { } 
+  constructor(
+    private apiService: APIService, 
+    private app: AppComponent, 
+    private sidebarService: SidebarService, 
+    private globalService: GlobalService,
+    private mapService: MapService
+  ) { } 
 
   // Define variables
   @Input() isSidebarCollapsed: boolean = true;
@@ -134,5 +141,6 @@ export class MapComponent {
   // Method to create a list of plots to load onto map
   async ngOnInit(): Promise<void> {
     this.refreshMap('');
+    this.mapService.mapInstance = this;
   }
 }

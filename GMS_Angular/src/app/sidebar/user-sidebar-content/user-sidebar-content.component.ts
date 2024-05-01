@@ -37,16 +37,13 @@ export class UserSidebarContentComponent implements OnInit {
       this.portraitImage = null;
       this.landscapeImage = null;
 
-      // Build imageURL based on API_URL and 'image'
-      const imageURL = this.globalService.API_URL + 'image';
-
       // Check if there is an available portait image and if so, set value
       if (this.personData.portrait_image !== null)
-        this.portraitImage = imageURL + this.personData.portrait_image;
+        this.portraitImage = this.personData.portrait_image_url;
 
       // Check if there is an available landscape image and if so, set value
       if (this.personData.landscape_image !== null)
-        this.landscapeImage = imageURL + this.personData.landscape_image;
+        this.landscapeImage = this.personData.landscape_image_url;
 
       // Set dataLoaded to true when data is fetched
       this.sidebarService.setDataLoadedStatus(true);

@@ -10,7 +10,7 @@
               <tbody>
                 <tr *ngFor="let status of plotStatusData">
                   <td>{{status.status_name}}</td>
-                  <td [ngStyle]="{'background-color': status.color_hex}">&nbsp;</td>
+                  <td [ngStyle]="{'background-color': status.color_hex, 'cursor': 'pointer'}">&nbsp;</td>
                 </tr>
               </tbody>
         </table>

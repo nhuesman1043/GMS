@@ -67,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media'
             ],
         },
     },
@@ -127,11 +128,21 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOW_ALL_ORIGINS = True
-
 # UPDATE WHEN DEPLOYED
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:4200'
+]
+
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:4200', 
+]
+
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'DELETE',
+    'OPTIONS'  
 ]
 
 # Directory to stored images

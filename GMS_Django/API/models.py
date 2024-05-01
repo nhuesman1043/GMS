@@ -10,8 +10,8 @@ class Person(models.Model):
     date_of_death = models.DateField(null=False)
     date_of_burial = models.DateField(null=False)
     obituary = models.TextField(null=False)
-    portrait_image = models.ImageField(null=True, blank=True)
-    landscape_image = models.ImageField(null=True, blank=True)
+    portrait_image_url = models.URLField(null=True, blank=True)
+    landscape_image_url = models.URLField(null=True, blank=True)
 
     def __str__(self):
         return (self.first_name + " " + self.last_name)

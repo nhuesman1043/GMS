@@ -9,6 +9,9 @@ export class GlobalService {
   // UPDATE WHEN DEPLOYED
   API_URL: string = 'http://localhost:8000/API/';
 
+  // URL to images stored in backend
+  IMAGE_URL = this.API_URL + 'image';
+
   // Flag variable for Sexton
-  IS_SEXTON: boolean = false;
+  IS_SEXTON: boolean = true;
 }

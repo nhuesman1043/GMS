@@ -10,6 +10,11 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import os
 import json
+from django.core.files.storage import FileSystemStorage
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.decorators import parser_classes
+from PIL import Image
+from mimetypes import guess_type
 
 @csrf_exempt
 def login_view(request):
@@ -35,7 +40,7 @@ class Person_CRUD(APIView):
     
         persons = Person.objects.all()
         serializer = Person_Serializer(persons, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data) 
 
     def post(self, request):
         serializer = Person_Serializer(data=request.data)
@@ -89,11 +94,41 @@ class Plot_Status_CRUD(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 def serve_image(request, image_path):
-    # Construct the full path to the image file
-    full_path = os.path.join(settings.MEDIA_ROOT, image_path)
-    
-    # Serve the image file using FileResponse
-    return FileResponse(open(full_path, 'rb'), content_type='image/jpeg')
+    try:
+        # Construct the full path to the image file
+        full_path = os.path.join(settings.MEDIA_ROOT, image_path)
+
+        # Determine the content type dynamically
+        content_type, _ = guess_type(full_path)
+        if not content_type:
+            content_type = 'application/octet-stream'  # Default to binary data if content type cannot be determined
+
+        # Serve the image file using FileResponse with the determined content type
+        return FileResponse(open(full_path, 'rb'), content_type=content_type)
+    except FileNotFoundError:
+        return JsonResponse({'error': 'Image not found'}, status=404)
+
+@csrf_exempt
+@parser_classes([MultiPartParser, FormParser])
+def upload_image(request):
+    if request.method == 'POST' and request.FILES.get('image'):
+        image = request.FILES['image']
+
+        # Check if the uploaded file is an image
+        try:
+            img = Image.open(image)
+            img.verify()  # Verify that it's an image
+        except Exception as e:
+            return JsonResponse({'error': 'Uploaded file is not a valid image'}, status=400)
+
+        # Save the image to MEDIA_ROOT
+        fs = FileSystemStorage(location=settings.MEDIA_ROOT)
+        fileName = fs.save(image.name, image)
+
+        # You can save the filename to a model or return it in the response
+        return JsonResponse({'message': 'Image uploaded successfully', 'fileName': fileName}, status=200)
+    else:
+        return JsonResponse({'error': 'No image provided or incorrect request method'}, status=400)
 
 class Plot_CRUD(APIView):
     def get(self, request, pk=None):

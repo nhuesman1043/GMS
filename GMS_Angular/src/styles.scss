@@ -29,3 +29,6 @@ $snowflake: #d1cfcf;
 // Sizing
 $header-height: 75px;
 $sidebar-width: 35vw; // When changing this value, you will need to update app.component.ts and map.component.ts animations
+
+// Statuses
+$opacity-disabled: 0.5

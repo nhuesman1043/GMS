@@ -4,12 +4,15 @@ from . import views
 urlpatterns = [
     # Login
     path('login/', views.login_view, name='login'),
+
+    # Upload files
+    path('file/upload/image/', views.upload_image, name='upload_image'),
     
     # Person 
     path('persons/', views.Person_CRUD.as_view(), name='persons'),
     path('person/<int:pk>/', views.Person_CRUD.as_view(), name='person'),
 
-    # Images
+    # Get images
     path('image/<path:image_path>/', views.serve_image, name='serve_image'),
 
     # Plot_Status
