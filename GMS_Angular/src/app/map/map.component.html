@@ -48,7 +48,7 @@
             #mark *ngFor="let plot of plots; let i = index" 
             [position]="plot" 
             (mapClick)="selectPlot(plot.plotId, i)" 
-            [icon]="plotIcon(plot.plotColor, isPlotSelected(i))" 
+            [icon]="isPlotSelected(i) ? plotIcon(plot.plotColor, isPlotSelected(i), 1) : plot.icon" 
             label="{{plot.plotName}}"
         >
         </map-marker>

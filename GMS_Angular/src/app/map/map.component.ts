@@ -55,12 +55,12 @@ export class MapComponent {
   personFilter: string = "Person\'s Name";
   identifierFilter: string = "Plot Identifier";
   isSexton: boolean = this.globalService.IS_SEXTON;
-  plotIcon(plotColor: string, isSelected: boolean): any {
+  plotIcon(plotColor: string, isSelected: boolean, opacity: any): any {
     let fillColor = isSelected ? 'white' : plotColor;
     return {
       path: "M 5 5 L 5 50 L 100 50 L 100 5 Z",
       fillColor: fillColor,
-      fillOpacity: 0.85,
+      fillOpacity: opacity,
       strokeWeight: 0,
       scale: 0.65,
        labelOrigin: {
@@ -91,26 +91,41 @@ export class MapComponent {
 
     // Loop through each plot in the database and format data
     for (let i = 0; i < this.plotData.length; i++){
-      //Check to see if plot meets filter conditions
-      if(this.searchFilter(searchField, i)){
-        // Get plot color
+      // Get plot color
       const plotState = this.plotData[i].plot_state;
       const plotColor = this.plotStatusData.find((status: any) => status.status_id === plotState)?.color_hex;
 
-      // Format plot information to be used in html markes
-      if (this.isSexton || plotState === 2){
-      list.push({ 
-          lat: parseFloat(this.plotData[i].plot_latitude)
-        , lng: parseFloat(this.plotData[i].plot_longitude)
-        , plotId: parseInt(this.plotData[i].plot_id)
-        , plotState: this.plotData[i].plot_state
-        , plotName: this.plotData[i].plot_identifier 
-        , plotColor: this.plotStatusData[this.plotData[i].plot_state - 1].color_hex
-        , plotPersonId: this.plotData[i].person_id
-        , icon: this.plotIcon(plotColor, false)
-      });  
+      //Check to see if plot meets filter conditions
+      if(this.searchFilter(searchField, i)) {
+        // Format plot information to be used in html markes that meet search criteria
+        if (this.isSexton || plotState === 2){
+          list.push({ 
+              lat: parseFloat(this.plotData[i].plot_latitude)
+            , lng: parseFloat(this.plotData[i].plot_longitude)
+            , plotId: parseInt(this.plotData[i].plot_id)
+            , plotState: this.plotData[i].plot_state
+            , plotName: this.plotData[i].plot_identifier 
+            , plotColor: this.plotStatusData[this.plotData[i].plot_state - 1].color_hex
+            , plotPersonId: this.plotData[i].person_id
+            , icon: this.plotIcon(plotColor, false, 1)
+          });  
+        }
       }
-    }
+      else {
+        // If plot does not meet search criteria, make it grey and translucent
+        if (this.isSexton || plotState === 2){
+          list.push({ 
+              lat: parseFloat(this.plotData[i].plot_latitude)
+            , lng: parseFloat(this.plotData[i].plot_longitude)
+            , plotId: parseInt(this.plotData[i].plot_id)
+            , plotState: this.plotData[i].plot_state
+            , plotName: this.plotData[i].plot_identifier 
+            , plotColor: 'lightgrey'
+            , plotPersonId: this.plotData[i].person_id
+            , icon: this.plotIcon('lightgrey', false, 0.33)
+          });  
+        }
+      }
     }
 
     // Set the list of formatted plots to a global variable
