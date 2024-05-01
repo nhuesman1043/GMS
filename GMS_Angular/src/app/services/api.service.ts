@@ -106,10 +106,25 @@ export class APIService {
     }
   }
 
+  // 
+  async uploadFile(endpoint: string, formData: FormData): Promise<any> {
+    try {
+      // Build url based on global IMAGE_URL and given endpoint
+      const url = this.globalService.API_URL + endpoint;
+
+      // Upload image
+      const response = await firstValueFrom(this.http.post(url, formData));
+      return response;
+    } catch (error) {
+      console.error('Error uploading file: ', error);
+      throw error; 
+    }
+  }
+
   /* 
     Example usage of HTTP methods:
     !! All of these methods must be called in asynchronous functions 
-    !! Add "async" before function name ( See examples below ) 
+    !! Add 'async' before function name ( See examples below ) 
 
     getData: 
       constructor(private apiService: APIService) { } 
@@ -128,42 +143,42 @@ export class APIService {
       async createExample() {
           // Needed fields for creating a person
           const createFields = {
-            "first_name": "TEST",
-            "last_name": "TEST",
-            "date_of_birth": "1956-04-12",
-            "date_of_death": "2024-02-20",
-            "date_of_burial": "2024-04-23",
-            "obituary": "A great TEST",
-            "portrait_image": null,
-            "landscape_image": null
-          }
+            'first_name': 'TEST',
+            'last_name': 'TEST',
+            'date_of_birth': '1956-04-12',
+            'date_of_death': '2024-02-20',
+            'date_of_burial': '2024-04-23',
+            'obituary': 'A great TEST',
+            'portrait_image': null,
+            'landscape_image': null
+          };
 
           // Call the postData method of ApiService to create a person
-          await this.apiService.postData('persons/', createFields)
+          await this.apiService.postData('persons/', createFields);
       }
 
     putData:
       async updateExample() {
         // Needed fields for updating a person
         const updateFields = {
-          "first_name": "Henry",
-          "last_name": "Doe",
-          "date_of_birth": "1956-04-12",
-          "date_of_death": "2024-02-20",
-          "date_of_burial": "2024-04-23",
-          "obituary": "He was a great man...",
-          "portrait_image": null,
-          "landscape_image": null
-        }
+          'first_name': 'Henry',
+          'last_name': 'Doe',
+          'date_of_birth': '1956-04-12',
+          'date_of_death': '2024-02-20',
+          'date_of_burial': '2024-04-23',
+          'obituary': 'He was a great man...',
+          'portrait_image': null,
+          'landscape_image': null
+        };
 
         // Call the putData method of ApiService to update person with id 1
-        await this.apiService.putData('person/1/', updateFields)
+        await this.apiService.putData('person/1/', updateFields);
       }
 
     deleteData:
       async deleteExample() {
         // Call the deleteData method of ApiService to delete person with id 6
-        await this.apiService.deleteData('person/6/')
+        await this.apiService.deleteData('person/6/');
       }
   */
 }
