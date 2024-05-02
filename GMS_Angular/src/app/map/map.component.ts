@@ -63,6 +63,7 @@ export class MapComponent {
   filterProperty: string = "Person\'s Name";
   personFilter: string = "Person\'s Name";
   identifierFilter: string = "Plot Identifier";
+  statusFilter: string = "Plot State";
   isSexton = this.apiService.isSexton();
   nameList: any;
   
@@ -140,7 +141,7 @@ export class MapComponent {
       else {
         // If plot does not meet search criteria, make it grey and translucent
         if (this.isSexton || plotState === 2){
-          if (this.plotData[i].plot_id !== null) {
+          if (this.plotData[i].person_id !== null) {
           list.push({ 
               lat: parseFloat(this.plotData[i].plot_latitude)
             , lng: parseFloat(this.plotData[i].plot_longitude)
@@ -187,6 +188,10 @@ export class MapComponent {
     // Get plot identifier if filtering by identifier
     else if(this.filterProperty === this.identifierFilter) {
         filter = this.plotData[i].plot_identifier.toLowerCase();
+    }
+    else if(this.filterProperty === this.statusFilter) {
+      console.log
+      return searchField === this.plotData[i].plot_state;
     }
 
     // Check if clear button needs to be enabled

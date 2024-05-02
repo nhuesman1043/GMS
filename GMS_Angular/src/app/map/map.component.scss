@@ -91,6 +91,17 @@
     z-index: 6;
 }
 
+.btn-search-disabled, .btn-search-disabled:focus, .btn-search-disabled:hover {
+    background-color: $lightgrey;
+    color: $white;
+    border-left: none;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-style:solid;
+    border-color: transparent;
+    z-index: 6;
+}
+
 .btn-filter-property-selected, .btn-filter-property-selected:focus {
     background-color: $brand;
     color: $white;
