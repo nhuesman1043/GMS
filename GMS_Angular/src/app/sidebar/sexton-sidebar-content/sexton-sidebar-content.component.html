@@ -148,7 +148,7 @@
                     <i class="fa-solid fa-solid fa-xmark fs-6 p-1"></i>
                 </button>
             </div>
-            <div *ngIf="portraitInvalidFileType" class="mt-1 text-center text-danger">
+            <div *ngIf="portraitInvalidFileType && !portraitFileUploaded" class="mt-1 text-center text-danger">
                 <p>Please upload an image file.</p>
             </div>
             <div *ngIf="!portraitFileUploaded && !portraitInvalidFileType" class="mt-1 text-center">
@@ -173,7 +173,7 @@
                     <i class="fa-solid fa-solid fa-xmark fs-6 p-1"></i>
                 </button>
             </div>
-            <div *ngIf="landscapeInvalidFileType" class="mt-1 text-center text-danger">
+            <div *ngIf="landscapeInvalidFileType && !landscapeFileUploaded" class="mt-1 text-center text-danger">
                 <p>Please upload an image file.</p>
             </div>
             <div *ngIf="!landscapeFileUploaded && !landscapeInvalidFileType" class="mt-1 text-center">
