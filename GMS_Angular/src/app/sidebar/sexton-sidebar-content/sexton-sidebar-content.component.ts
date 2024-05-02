@@ -111,9 +111,6 @@ export class SextonSidebarContentComponent implements OnInit {
         // Get person's data beacuse we've confirmed that somebody is here
         this.personData = await this.apiService.getData('person/' + this.plotData.person_id + '/');
 
-        // Filter out state of available if we have a person in the plot
-        this.plotStatusData = this.plotStatusData.filter((status: { status_id: number }) => status.status_id !== 1);
-
         // Check if there is an available portait image and if so, set value and show
         if (this.personData.portrait_image_url !== null) {
           this.portraitImageSrc = this.personData.portrait_image_url;

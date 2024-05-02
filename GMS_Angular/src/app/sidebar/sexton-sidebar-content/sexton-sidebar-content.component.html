@@ -43,6 +43,7 @@
                     ngbDatepicker
                     #dateOfBirthPicker="ngbDatepicker"
                     [value]="personData.date_of_birth"
+                    readonly
                     (ngModelChange)="updatePersonField('date_of_birth', $event)"
                     [ngClass]="{'is-invalid': (personData.date_of_birth === '' && hasTriedToCreatePerson) || (plotData.person_id !== null && personData.date_of_birth === '')}"
                     [minDate]="{year: 1800, month: 1, day: 1}"
@@ -64,6 +65,7 @@
                     ngbDatepicker
                     #dateOfDeathPicker="ngbDatepicker"
                     [value]="personData.date_of_death"
+                    readonly
                     (ngModelChange)="updatePersonField('date_of_death', $event)"
                     [ngClass]="{'is-invalid': (personData.date_of_death === '' && hasTriedToCreatePerson) || (plotData.person_id !== null && personData.date_of_death === '')}"
                     [minDate]="{year: 1800, month: 1, day: 1}"
@@ -106,6 +108,7 @@
                     ngbDatepicker
                     #dateOfBurialPicker="ngbDatepicker"
                     [value]="personData.date_of_burial"
+                    readonly
                     (ngModelChange)="updatePersonField('date_of_burial', $event)"
                     [ngClass]="{'is-invalid': (personData.date_of_burial === '' && hasTriedToCreatePerson) || (plotData.person_id !== null && personData.date_of_burial === '')}"
                     [minDate]="{year: 1800, month: 1, day: 1}"
