@@ -42,17 +42,18 @@ import { SextonSidebarContentComponent } from './sexton-sidebar-content/sexton-s
 export class SidebarComponent {
   constructor(private apiService: APIService) {}
 
-  // Sidebar state stuff
-  isCollapsed: boolean = true;
-  @Input() isSidebarCollapsed: boolean = true;
-  sidebarState: string = 'collapsed'; // Initial state
-
-  // Check for Sexton
-  isSexton = this.apiService.isSexton();
-
+  // Play animation when isSidebarCollapsed is changed
   ngOnChanges(changes: SimpleChanges) {
     if (changes['isSidebarCollapsed']) { 
       this.sidebarState = this['isSidebarCollapsed'] ? 'collapsed' : 'expanded';
     }
   }
+
+  // Sidebar state stuff
+  isCollapsed: boolean = true;
+  @Input() isSidebarCollapsed: boolean = true;
+  sidebarState: string = 'collapsed';             // Initial state
+
+  // Check for Sexton
+  isSexton = this.apiService.isSexton();
 }

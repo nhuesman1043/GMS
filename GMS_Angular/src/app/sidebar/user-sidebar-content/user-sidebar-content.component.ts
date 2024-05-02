@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgIf, NgStyle, DatePipe, formatDate } from '@angular/common';
 import { APIService } from '../../services/api.service';
-import { GlobalService } from '../../services/global.service';
 import { SidebarService } from '../../services/sidebar.service';
 
 @Component({
@@ -16,12 +15,19 @@ import { SidebarService } from '../../services/sidebar.service';
   styleUrl: './user-sidebar-content.component.scss'
 })
 export class UserSidebarContentComponent implements OnInit {
-  constructor(private apiService: APIService, private globalService : GlobalService, private sidebarService: SidebarService) { } 
+  constructor(private apiService: APIService, private sidebarService: SidebarService) { } 
   // Variables to hold pulled in plot data and person data
   plotData: any;
   personData: any;
   portraitImage: any;
   landscapeImage: any;
+
+  ngOnInit() {
+    this.sidebarService.sidebarToggled$.subscribe((id: number) => {
+      // Call getUserContentData method when sidebar is toggled
+      this.getUserContentData(id);
+    });
+  }
 
   async getUserContentData(plotId: number): Promise<void> {
     try {
@@ -54,13 +60,7 @@ export class UserSidebarContentComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-    this.sidebarService.sidebarToggled$.subscribe((id: number) => {
-      // Call getUserContentData method when sidebar is toggled
-      this.getUserContentData(id);
-    });
-  }
-
+  // Format date range
   formatDateRange(startDate: Date, endDate: Date): string {
     const formattedStartDate = formatDate(startDate, 'mediumDate', 'en-US');
     const formattedEndDate = formatDate(endDate, 'mediumDate', 'en-US');

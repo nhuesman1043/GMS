@@ -117,11 +117,19 @@ export class SextonSidebarContentComponent implements OnInit {
           this.portraitFileUploaded = true;
         }
 
+        // Ensure an image isn't shown is there isn't one to show
+        else 
+          this.portraitFileUploaded = false;
+
         // Check if there is an available landscape image and if so, set value and show
         if (this.personData.landscape_image_url !== null) {
           this.landscapeImageSrc = this.personData.landscape_image_url;
           this.landscapeFileUploaded = true;
         }
+
+        // Ensure an image isn't shown is there isn't one to show
+        else 
+          this.landscapeFileUploaded = false;
 
         // Call initializeDateFields to set all date fields
         this.initializeDateFields()
