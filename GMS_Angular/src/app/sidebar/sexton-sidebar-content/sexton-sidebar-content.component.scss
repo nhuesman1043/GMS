@@ -52,13 +52,13 @@
 
     .uploaded-image {
         border: 0.75px solid $black;
+    }
 
-        .btn-clear-image {
-            background-color: $mean-button-red;
-            color: $white;
-            margin-top: 5px;
-            margin-right: 5px;
-        }
+    .btn-clear-image {
+        background-color: $mean-button-red;
+        color: $white;
+        margin-top: 5px;
+        margin-right: 5px;
     }
 }
 

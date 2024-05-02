@@ -86,7 +86,7 @@
                     <option 
                         *ngFor="let status of plotStatusData" 
                         [value]="status.status_id" 
-                        [selected]="status.status_name === plotData.plot_state"
+                        [selected]="status.status_id === plotData.plot_state"
                     >
                         {{status.status_name}}
                     </option>
@@ -130,8 +130,8 @@
     </div>
     <hr>
     <div class="row position-relative mb-2">
-        <div class="col-6 position-relative p-1">
-            <p>Portrait Image:</p>
+        <div class="col-6 position-relative p-1 text-center">
+            <p class="mb-1">Portrait Image:</p>
             <div class="file-drop" *ngIf="!portraitFileUploaded">
                 <ngx-file-drop 
                     (onFileDrop)="handleDroppedFile($event, 'portrait')"
@@ -142,8 +142,8 @@
                 >
                 </ngx-file-drop>
             </div>
-            <div *ngIf="portraitFileUploaded" class="uploaded-image position-relative">
-                <img [src]="portraitImageSrc" alt="Uploaded Image" class="img-fluid">
+            <div *ngIf="portraitFileUploaded" class="position-relative d-inline-block">
+                <img [src]="portraitImageSrc" alt="Uploaded Image" class="img-fluid uploaded-image">
                 <button class="btn btn-clear-image position-absolute top-0 end-0 d-flex" (click)="clearFile('portrait')" title="Clear Image">
                     <i class="fa-solid fa-solid fa-xmark fs-6 p-1"></i>
                 </button>
@@ -155,8 +155,8 @@
                 <p>Drag and drop a file above to upload it</p>
             </div>
         </div>
-        <div class="col-6 position-relative p-1">
-            <p>Landscape Image:</p>
+        <div class="col-6 position-relative p-1 text-center">
+            <p class="mb-1">Landscape Image:</p>
             <div class="file-drop" *ngIf="!landscapeFileUploaded">
                 <ngx-file-drop 
                     (onFileDrop)="handleDroppedFile($event, 'landscape')"
@@ -167,8 +167,8 @@
                 >
                 </ngx-file-drop>
             </div>
-            <div *ngIf="landscapeFileUploaded" class="uploaded-image position-relative">
-                <img [src]="landscapeImageSrc" alt="Uploaded Image" class="img-fluid">
+            <div *ngIf="landscapeFileUploaded" class="position-relative d-inline-block">
+                <img [src]="landscapeImageSrc" alt="Uploaded Image" class="img-fluid uploaded-image">
                 <button class="btn btn-clear-image position-absolute top-0 end-0 d-flex" (click)="clearFile('landscape')" title="Clear Image">
                     <i class="fa-solid fa-solid fa-xmark fs-6 p-1"></i>
                 </button>
@@ -186,9 +186,9 @@
         <div class="col-6 d-flex justify-content-center align-items-center">
             <button 
                 class="btn fs-5 p-1" 
-                [ngClass]="{'btn-save': changesMade, 'btn-save-disabled': !changesMade}" 
+                [ngClass]="{'btn-save': changesMade || plotStatusChange, 'btn-save-disabled': !changesMade && !plotStatusChange}" 
                 (click)="onSave()"
-                [disabled]="!changesMade"
+                [disabled]="!changesMade && !plotStatusChange"
             >
                 Save Changes
             </button>
