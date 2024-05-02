@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, inject, ViewChild } from '@angular/core';
 import { NgbCalendar, NgbDatepickerModule, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { APIService } from '../../services/api.service';
 import { SidebarService } from '../../services/sidebar.service';
@@ -8,7 +8,7 @@ import { JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgxFileDropModule, NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop'
 import { MapService } from '../../services/map.service';
-import { response } from 'express';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-sexton-sidebar-content',
@@ -26,7 +26,14 @@ import { response } from 'express';
   templateUrl: './sexton-sidebar-content.component.html',
   styleUrls: ['./sexton-sidebar-content.component.scss']
 })
+// Noah's pièce de résistance
 export class SextonSidebarContentComponent implements OnInit {
+  // Inject modal and get reference to templates
+  private modalService = inject(NgbModal);
+  @ViewChild('confirmation', { static: true }) confirmationTemplate!: TemplateRef<any>;
+  @ViewChild('fail', { static: true }) failTemplate!: TemplateRef<any>;
+  @ViewChild('warn', { static: true }) warnTemplate!: TemplateRef<any>;
+
   // Data variables and date stuff
   plotData: any;
   selectedPlotId: number = -1;
@@ -53,8 +60,10 @@ export class SextonSidebarContentComponent implements OnInit {
   // Variable to determine if we need to PUT or POST depending on value of person_id in plot
   isNewPerson: boolean = false;
 
-  // Variable for showing whether or not any changes have been made
+  // Variable for showing whether or not any changes have been made and canCreatePerson flag
   changesMade: boolean = false;
+  hasTriedToCreatePerson: boolean = false;
+  canCreatePerson: boolean = false;
 
   constructor(
     private apiService: APIService,
@@ -66,21 +75,22 @@ export class SextonSidebarContentComponent implements OnInit {
 
   ngOnInit(): void {
     this.sidebarService.sidebarToggled$.subscribe((id: number) => {
-      this.getSextonContentData(id);
+      this.getSextonContentData(id, true);
     });
 
     this.date = this.calendar.getToday()
   }
 
-  async getSextonContentData(plotId: number): Promise<void> {
-    // Reset images and changesMade
+  async getSextonContentData(plotId: number, toggleSidebar: boolean): Promise<void> {
+    // Reset 
     this.portraitImageSrc = null;
     this.landscapeImageSrc = null;
     this.changesMade = false;
+    this.hasTriedToCreatePerson = false; 
 
     try {
       // Set dataLoaded to false when starting to get Sexton data
-      this.sidebarService.setDataLoadedStatus(false);
+      this.sidebarService.setDataLoadedStatus(false, toggleSidebar);
 
       // Set selectedPlotId so we can access it elsewhere
       this.selectedPlotId = plotId;
@@ -120,7 +130,7 @@ export class SextonSidebarContentComponent implements OnInit {
         this.portraitFileUploaded = false;
         this.landscapeFileUploaded = false;
 
-        // Blank person...
+        // Set to blank person...
         this.personData = {
           'first_name': '',
           'last_name': '',
@@ -134,11 +144,12 @@ export class SextonSidebarContentComponent implements OnInit {
       }
 
       // Set dataLoaded to true when data is fetched
-      this.sidebarService.setDataLoadedStatus(true);
+      if (toggleSidebar)
+        this.sidebarService.setDataLoadedStatus(true, toggleSidebar);
     } catch (err) {
       // Show error and set data loaded to false
       console.error('Error fetching Sexton content data:', err);
-      this.sidebarService.setDataLoadedStatus(false);
+      this.sidebarService.setDataLoadedStatus(false, toggleSidebar);
     }
   }
 
@@ -191,6 +202,17 @@ export class SextonSidebarContentComponent implements OnInit {
       // Set new value
       this.personData[propertyName] = value;
     }
+
+    // Check to see if we can create a person
+    if (
+      this.personData['first_name'] !== '' &&
+      this.personData['last_name'] !== '' &&
+      this.personData['date_of_birth'] !== '' &&
+      this.personData['date_of_death'] !== '' &&
+      this.personData['date_of_burial'] !== '' &&
+      this.personData['obituary'] !== ''
+    )
+      this.canCreatePerson = true;
   }
 
   // Method to handle when user inputs a change to a plot property, updates our current personData
@@ -257,54 +279,6 @@ export class SextonSidebarContentComponent implements OnInit {
     }
   }
 
-  // Handle files uploaded through File Explorer
-  handleFileInput(event: Event, imageType: string) {
-    // Show changes have been made
-    this.changesMade = true;
-
-    // Event target, contains uploaded file
-    const target = event.target as HTMLInputElement;
-
-    // Ensure we have a target file and grab first entry
-    if (target && target.files && target.files.length > 0) {
-      const file = target.files[0];
-  
-      // Check for invalid file types
-      if (!file.type.startsWith('image/')) {
-        // Show invalid for portrait
-        if (imageType === 'portrait') 
-          this.portraitInvalidFileType = true;
-
-        // Show invalid for landscape
-        else if (imageType === 'landscape') 
-          this.landscapeInvalidFileType = true;
-        
-        return;
-      }
-  
-      // Create a FileReader to read the file asynchronously
-      const reader = new FileReader();
-      reader.onload = (e: ProgressEvent<FileReader>) => {
-        // Set portrait source 
-        if (imageType === 'portrait') {
-          this.portraitImageSrc = e.target?.result ?? null;
-          this.portraitFileUploaded = true;
-          this.portraitFile = file;
-        }
-
-        // Set landscape source 
-        else if (imageType === 'landscape') {
-          this.landscapeImageSrc = e.target?.result ?? null;
-          this.landscapeFileUploaded = true;
-          this.landscapeFile = file;
-        }
-      };
-
-      // Allow us to get a preview of the uploaded file
-      reader.readAsDataURL(file);
-    }
-  }
-
   // Clear currently uploaded file
   clearFile(imageType: string) {
     // Show changes have been made
@@ -315,6 +289,7 @@ export class SextonSidebarContentComponent implements OnInit {
       this.portraitFileUploaded = false;
       this.portraitImageSrc = null;
       this.portraitInvalidFileType = false;
+      this.personData['portrait_image_url'] = null;
     }
 
     // Clear landscape file
@@ -322,42 +297,117 @@ export class SextonSidebarContentComponent implements OnInit {
       this.landscapeFileUploaded = false;
       this.landscapeImageSrc = null;
       this.landscapeInvalidFileType = false;
+      this.personData['landscape_image_url'] = null;
     }
   }
+
+  // Open confirmation popup
+	showPopup(content: TemplateRef<any>) {
+		this.modalService.open(content, { 
+      backdrop: 'static', 
+      animation: true, 
+      centered: true 
+    }).result.then();
+	}
 
   // Save changes to database
   async onSave() {
     // We are creating a new person to occupy this plot, so POST
     if (this.isNewPerson) {
-      // Create new person
-      //await this.apiService.postData('persons/', createFields);
+      // Show that we've tried to create a person, show invalid fields if applicable
+      this.hasTriedToCreatePerson = true;
+
+      // Check that required fields are filled out before creation
+      if (this.canCreatePerson) {
+        try {
+          // Upload images
+          await this.uploadImages();
+
+          // Remove person_id and plot_id from the create fields
+          delete this.personData.person_id;
+          delete this.plotData.plot_id
+
+          // Create person and then update plot to reference this new person 
+          const response = await this.apiService.postData('persons/', this.personData);
+          const newPersonId = response.person_id;
+
+          // Ensure reference to new person and plot state of occupied
+          this.plotData['person_id'] = newPersonId;
+          this.plotData['plot_state'] = 2;
+
+          // Update plot with new person reference
+          await this.apiService.putData('plot/' + this.selectedPlotId + '/', this.plotData);
+
+          // Show confirmation if we make it this far
+          this.showPopup(this.confirmationTemplate);
+        } catch(error) {
+          // Show failure if there is an issue
+          this.showPopup(this.failTemplate);
+        }
+      }
+
+      // Return if we try to create with invalid fields
+      else
+        return;
     }
 
     // We are updating the person already in this plot, so PUT
     else {
-      // Upload images to this person
-      await this.uploadImages();
+      try {
+        // Upload images
+        await this.uploadImages();
 
-      // Save person_id to variable before deletion
-      const personId = this.personData.person_id;
+        // Save person_id to variable before deletion
+        const personId = this.personData.person_id;
 
-      // Remove plot_id and person_id from update fields
-      delete this.plotData.plot_id
-      delete this.personData.person_id;
+        // Remove plot_id and person_id from update fields
+        delete this.plotData.plot_id
+        delete this.personData.person_id;
 
-      // Update plot and then person
-      await this.apiService.putData('plot/' + this.selectedPlotId + '/', this.plotData);
-      await this.apiService.putData('person/' + personId + '/', this.personData);
+        // Update plot and then person
+        await this.apiService.putData('plot/' + this.selectedPlotId + '/', this.plotData);
+        await this.apiService.putData('person/' + personId + '/', this.personData);
+
+        // Show confirmation if we make it this far
+        this.showPopup(this.confirmationTemplate);
+      } catch(error) {
+        // Show failure if there is an issue
+        this.showPopup(this.failTemplate);
+      }
     }
-
-    // Refresh map to display newly updated set of plots
-    this.mapService.mapInstance?.refreshMap('');
     
-    // Reset changesMade and data by toggling sidebar woth selectPlot method on currently selected plot
+    // Refresh data and map
+    this.getSextonContentData(this.selectedPlotId, false);
     this.changesMade = false;
-    //this.mapService.mapInstance?.selectPlot(this.selectedPlotId)
+    this.mapService.mapInstance?.refreshMap('');
   }
 
+  // Remove a person from a plot and delete them
+  async onDelete() {
+    try {
+      // Save person_id and update plot to remove its refrence to person
+      const personId = this.plotData['person_id']
+      delete this.plotData.plot_id;
+      this.plotData['person_id'] = null;
+      this.plotData['plot_state'] = 1;
+      await this.apiService.putData('plot/' + this.selectedPlotId + '/', this.plotData);
+
+      // Delete person
+      await this.apiService.deleteData('person/' + personId + '/');
+
+      // Show confirmation if we make it this far
+      this.showPopup(this.confirmationTemplate);
+    } catch(error) {
+      // Show failure if there is an issue
+      this.showPopup(this.failTemplate);
+    }
+
+    // Refresh data and map
+    this.getSextonContentData(this.selectedPlotId, false);
+    this.mapService.mapInstance?.refreshMap('');
+  }
+
+  // Method to upload images to databse
   async uploadImages() {
     // Upload portrait image if available
     if (this.portraitFileUploaded && this.portraitFile !== null) {

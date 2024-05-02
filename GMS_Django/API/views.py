@@ -59,8 +59,11 @@ class Person_CRUD(APIView):
     def post(self, request):
         serializer = Person_Serializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            instance = serializer.save()
+            # Include person_id in the serialized data
+            serialized_data = serializer.data
+            serialized_data['person_id'] = instance.person_id
+            return Response(serialized_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):

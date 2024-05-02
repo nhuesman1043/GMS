@@ -8,7 +8,10 @@ import { NgIf } from '@angular/common';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [WeatherWidgetComponent, NgIf],
+  imports: [
+    WeatherWidgetComponent, 
+    NgIf
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   host: {ngSkipHydration: 'true'},

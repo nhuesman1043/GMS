@@ -10,14 +10,44 @@
     }
 
     .btn-save {
+        width: 90%;
         background-color: $good-button-green;
         color: $white
     }
 
     .btn-save-disabled {
+        width: 90%;
         background-color: $good-button-green;
         color: $white;
         opacity: $opacity-disabled;
+    }
+
+    .btn-delete {
+        width: 90%;
+        background-color: $mean-button-red;
+        color: $white
+    }
+
+    .btn-delete-disabled {
+        width: 90%;
+        background-color: $mean-button-red;
+        color: $white;
+        opacity: $opacity-disabled;
+    }
+
+    .file-drop {
+        width: 100%;
+        border: dashed $blue-grey;
+        border-radius: 10px;
+
+        .file-dropzone {
+            border: solid green;
+            padding: 10px;
+        }
+
+        .btn-browse {
+            background-color: $brand;
+        }
     }
 
     .uploaded-image {
@@ -29,5 +59,39 @@
             margin-top: 5px;
             margin-right: 5px;
         }
+    }
+}
+
+.icon-saved {
+    color: $good-button-green;
+}
+
+.icon-fail {
+    color: $mean-button-red;
+}
+
+.icon-warn {
+    color: $somewhat-okay-button-yellow;
+}
+
+.btn-confirm-delete {
+    width: 40%;
+    background-color: $mean-button-red;
+    color: $white;
+
+    &:focus {
+        background-color: $mean-button-red;
+        color: $white;
+    }
+}
+
+.btn-close-modal {
+    background-color: $blue-grey;
+    color: $white;
+    width: 40%;
+
+    &:focus {
+        background-color: $blue-grey;
+        color: $white;
     }
 }

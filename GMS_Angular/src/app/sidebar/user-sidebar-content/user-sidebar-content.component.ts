@@ -26,7 +26,7 @@ export class UserSidebarContentComponent implements OnInit {
   async getUserContentData(plotId: number): Promise<void> {
     try {
       // Set dataLoaded to false when starting to get user data
-      this.sidebarService.setDataLoadedStatus(false);
+      this.sidebarService.setDataLoadedStatus(false, true);
 
       // Call the getData method of ApiService to fetch plot data and then person data based on plot's person_id value
       this.plotData = await this.apiService.getData('plot/' + plotId + '/');
@@ -46,11 +46,11 @@ export class UserSidebarContentComponent implements OnInit {
         this.landscapeImage = this.personData.landscape_image_url;
 
       // Set dataLoaded to true when data is fetched
-      this.sidebarService.setDataLoadedStatus(true);
+      this.sidebarService.setDataLoadedStatus(true, true);
     } catch(err) {
       // Show error and set data loaded to false
       console.error('Error fetching user content data:', err);
-      this.sidebarService.setDataLoadedStatus(false);
+      this.sidebarService.setDataLoadedStatus(false, false);
     }
   }
 
