@@ -70,9 +70,11 @@ export class MapComponent {
   // This method creates the icon for the plots using an svg string
   plotIcon(plotColor: string, isSelected: boolean, opacity: any, personName: string): any {
     let fillColor = isSelected ? 'white' : plotColor;
-    const svgString = '<svg width="25" height="25" xmlns="http://www.w3.org/2000/svg"><rect width="25" height="25" rx="6" ry="6"' +
-    'fill="' + fillColor + '" opacity="' + opacity + '" /><style>.popup {white-space:nowrap;min-width:fit-content; left:50%;display: none;position: absolute;background-color: #FFFFFF;color: #000000;' + 
+    const svgString = '<svg width="30" height="30" viewBox="0 0 488 428" xmlns="http://www.w3.org/2000/svg"><g transform="translate(163.51 120.39)"><path d="m80.488-116.39c-81.822 0-150 63.366-150 150v150c0 6.668-0.757 23.558 0 30h300c0.757-6.442 0-23.332 0-30v-150c0-86.634-68.178-150-150-150zm-240 360v60h480v-60z" stroke="#fff" stroke-linejoin="round" stroke-width="24" style="paint-order:normal" ' +
+    'fill="' + fillColor + '" opacity="' + opacity + '" /></g><style>.popup {white-space:nowrap;min-width:fit-content; left:50%;display: none;position: absolute;background-color: #FFFFFF;color: #000000;' + 
     'padding: 5px;border-radius: 5px;z-index: 20;}svg:hover + .popup {min-width:fit-content; display: block; top:-30px; z-index:20;transform:translateX(-50%)}</style></svg><div class="popup">' + personName + '</div>';
+
+    // const svgString = '<svg width="30" height="30" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M256 46c-81.822 0-150 63.366-150 150v150c0 6.668-.757 23.558 0 30h300c.757-6.442 0-23.332 0-30V196c0-86.634-68.178-150-150-150zM16 406v60h480v-60H16z" fill="#fff" /></svg>';
     const sanitizedHtml = this.sanitizer.bypassSecurityTrustHtml(svgString);
     const container = this.elementRef.nativeElement.ownerDocument.createElement('div');
     let htmlstring: string = sanitizedHtml.toString().replace('SafeValue must use [property]=binding: ', '').replace(' (see https://g.co/ng/security#xss)', '');
