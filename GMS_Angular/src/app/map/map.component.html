@@ -16,7 +16,7 @@
       </div>
 
       <div *ngIf="filterProperty === statusFilter">
-        <button class="btn-clear-disabled"><i class="fa-solid fa-trash-can fs-6" style="padding-left: 4px; padding-right: 4px;"></i></button>
+        <button (click)="refreshMap(''); isClearable = false; filterProperty = personFilter;" class="btn-clear"><i class="fa-solid fa-trash-can fs-6" style="padding-left: 4px; padding-right: 4px;"></i></button>        <input #searchBox readonly id="search-box" (input)="searchBox.value==='' ? setClearButtonReset(false) : isClearable = true" (keyup.enter)="refreshMap(searchBox.value)" class="search-bar search-box" placeholder="{{statusFilter}}"/>
         <input #searchBox readonly id="search-box" (input)="searchBox.value==='' ? setClearButtonReset(false) : isClearable = true" (keyup.enter)="refreshMap(searchBox.value)" class="search-bar search-box" placeholder="{{statusFilter}}"/>
         <button class="search-bar btn-search-disabled"><i class="fa-solid fa-magnifying-glass fs-6" style="padding-left: 4px; padding-right: 4px;"></i></button>
       </div>
