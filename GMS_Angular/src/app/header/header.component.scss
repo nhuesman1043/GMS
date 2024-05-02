@@ -1,5 +1,6 @@
 @import "../../styles.scss";
 
+// Styles for header
 .header {
     border-bottom: solid $silver;
     background-color: $off-white;
@@ -35,7 +36,7 @@ border: none;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 6;
-    background-color: rgb(255, 255, 255);
+    background-color: $off-white;
     border-radius: 10px;
     border: 2px solid $black;
     width: 750px;

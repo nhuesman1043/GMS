@@ -31,7 +31,7 @@ export class HeaderComponent {
 
   // Log out the sexton and reload the page
   logout(): void {
-    this.apiService.logout(); // Call logout method from APIService
+    this.apiService.logout();
     window.location.reload();
   }
 }
