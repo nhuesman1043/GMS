@@ -67,14 +67,16 @@ export class MapComponent {
   nameList: any;
   
   // This method creates the icon for the plots using an svg string
-  plotIcon(plotColor: string, isSelected: boolean, opacity: any): any {
+  plotIcon(plotColor: string, isSelected: boolean, opacity: any, personName: string): any {
     let fillColor = isSelected ? 'white' : plotColor;
-    const svgString = '<svg width="25" height="25" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" style="fill:' + fillColor + '; opacity:' + opacity +'" /></svg>';
+    const svgString = '<svg width="25" height="25" xmlns="http://www.w3.org/2000/svg"><rect width="25" height="25" rx="6" ry="6"' +
+    'fill="' + fillColor + '" opacity="' + opacity + '" /><style>.popup {white-space:nowrap;min-width:fit-content; left:50%;display: none;position: absolute;background-color: #FFFFFF;color: #000000;' + 
+    'padding: 5px;border-radius: 5px;z-index: 20;}svg:hover + .popup {min-width:fit-content; display: block; top:-30px; z-index:20;transform:translateX(-50%)}</style></svg><div class="popup">' + personName + '</div>';
     const sanitizedHtml = this.sanitizer.bypassSecurityTrustHtml(svgString);
     const container = this.elementRef.nativeElement.ownerDocument.createElement('div');
     let htmlstring: string = sanitizedHtml.toString().replace('SafeValue must use [property]=binding: ', '').replace(' (see https://g.co/ng/security#xss)', '');
     container.innerHTML = htmlstring;
-    return container.firstChild as HTMLElement;
+    return container;
   }
   
   // Define options/settings for the google map api
@@ -86,7 +88,8 @@ export class MapComponent {
     keyboardShortcuts: false,
     rotateControl: true,
     restriction: {latLngBounds: {north: 46.6551803, south: 46.6520219, west: -96.4423670, east: -96.4394105}},
-    minZoom: 19
+    minZoom: 19,
+    maxZoom: 21,
   };
 
   async refreshMap(searchField: string): Promise<void> {
@@ -107,7 +110,8 @@ export class MapComponent {
       if(this.searchFilter(searchField, i)) {
         // Format plot information to be used in html markes that meet search criteria
         if (this.isSexton || plotState === 2){
-          list.push({ 
+          if (this.plotData[i].person_id !== null) {
+            list.push({ 
               lat: parseFloat(this.plotData[i].plot_latitude)
             , lng: parseFloat(this.plotData[i].plot_longitude)
             , plotId: parseInt(this.plotData[i].plot_id)
@@ -115,14 +119,28 @@ export class MapComponent {
             , plotName: this.plotData[i].plot_identifier 
             , plotColor: this.plotStatusData[this.plotData[i].plot_state - 1].color_hex
             , plotPersonId: this.plotData[i].person_id
-            , icon: this.plotIcon(plotColor, false, 1)
+            , icon: this.plotIcon(plotColor, false, 1, this.getFullName(i))
           });
-          this.getFullName(i);
+          }
+          else {
+            this.getFullName(i)
+            list.push({ 
+              lat: parseFloat(this.plotData[i].plot_latitude)
+            , lng: parseFloat(this.plotData[i].plot_longitude)
+            , plotId: parseInt(this.plotData[i].plot_id)
+            , plotState: this.plotData[i].plot_state
+            , plotName: this.plotData[i].plot_identifier 
+            , plotColor: this.plotStatusData[this.plotData[i].plot_state - 1].color_hex
+            , plotPersonId: this.plotData[i].person_id
+            , icon: this.plotIcon(plotColor, false, 1, 'Empty')
+          });
+          }
         }
       }
       else {
         // If plot does not meet search criteria, make it grey and translucent
         if (this.isSexton || plotState === 2){
+          if (this.plotData[i].plot_id !== null) {
           list.push({ 
               lat: parseFloat(this.plotData[i].plot_latitude)
             , lng: parseFloat(this.plotData[i].plot_longitude)
@@ -131,9 +149,22 @@ export class MapComponent {
             , plotName: this.plotData[i].plot_identifier 
             , plotColor: 'lightgrey'
             , plotPersonId: this.plotData[i].person_id
-            , icon: this.plotIcon('lightgrey', false, 0.33)
+            , icon: this.plotIcon('lightgrey', false, 0.33, this.getFullName(i))
           });  
-          this.getFullName(i);
+          }
+          else {
+            this.getFullName(i)
+            list.push({ 
+              lat: parseFloat(this.plotData[i].plot_latitude)
+            , lng: parseFloat(this.plotData[i].plot_longitude)
+            , plotId: parseInt(this.plotData[i].plot_id)
+            , plotState: this.plotData[i].plot_state
+            , plotName: this.plotData[i].plot_identifier 
+            , plotColor: 'lightgrey'
+            , plotPersonId: this.plotData[i].person_id
+            , icon: this.plotIcon('lightgrey', false, 0.33, 'Empty')
+          });  
+          }
         }
       }
     }
@@ -176,9 +207,10 @@ export class MapComponent {
         filter = filteredArray[0].first_name + " " + filteredArray[0].last_name;
         this.nameList.push(filter);
     }
-    else if(this.plotData[i].person_id === null) {
-      this.nameList.push('');
+    else {
+      this.nameList.push('Empty');
     }
+    return filter
   }
 
   // Sets the state of the clear button and refreshes map
@@ -225,5 +257,14 @@ export class MapComponent {
   async ngOnInit(): Promise<void> {
     this.refreshMap('');
     this.mapService.mapInstance = this;
+  }
+
+  isSelected(bool: boolean): number {
+    if (bool) {
+      return 20;
+    }
+    else {
+      return 1;
+    }
   }
 }

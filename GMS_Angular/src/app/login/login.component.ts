@@ -33,7 +33,7 @@ export class LoginComponent {
 
         this.apiService.setToken(response.token);
         this.apiService.isSexton(); 
-        this.router.navigate(['/']); 
+        this.router.navigate(['/']).then(() => {window.location.reload()});
       }
     } catch (error) {
       this.loginError = 'Invalid username or password.';
