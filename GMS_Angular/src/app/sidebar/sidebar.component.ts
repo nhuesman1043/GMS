@@ -1,7 +1,6 @@
 import { Component, Input, SimpleChanges} from '@angular/core';
 import { NgClass, NgIf, NgStyle } from '@angular/common';
 import { trigger, state, style, animate, transition } from '@angular/animations';
-import { GlobalService } from '../services/global.service';
 import { APIService } from '../services/api.service';
 
 // Components
@@ -41,7 +40,7 @@ import { SextonSidebarContentComponent } from './sexton-sidebar-content/sexton-s
   ]
 })
 export class SidebarComponent {
-  constructor(private globalService: GlobalService, private apiService: APIService) {}
+  constructor(private apiService: APIService) {}
 
   // Sidebar state stuff
   isCollapsed: boolean = true;
