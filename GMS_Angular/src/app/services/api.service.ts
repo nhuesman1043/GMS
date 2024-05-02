@@ -12,6 +12,7 @@ export class APIService {
 
   constructor(private http: HttpClient, private globalService: GlobalService, private router: Router) {}
 
+  // Log in the user
   async login(username: string, password: string): Promise<any> {
     try {
       const url = this.globalService.API_URL + 'login/'; 
@@ -24,14 +25,17 @@ export class APIService {
     }
   }
 
+  // Check if user is Sexton
   isSexton(): boolean {
     return !!this.getToken();
   }
 
+  // Set the token for authentification
   setToken(token: string): void {
     localStorage.setItem(this.TOKEN_KEY, token);
   }
 
+  // Get the token for authentification
   getToken(): string | null {
     if (typeof localStorage !== 'undefined') {
       return localStorage.getItem(this.TOKEN_KEY);
@@ -41,12 +45,10 @@ export class APIService {
 
   async logout(): Promise<void> {
     // Perform logout actions such as clearing tokens or session data
-    // Example:
     localStorage.removeItem('auth_token');
-    //this.router.navigate(['/home']);
   }
 
-  // getData method takes a url from Django and returns all data pertaining to it
+  // GetData method takes a url from Django and returns all data pertaining to it
   async getData(endpoint: string): Promise<any> {
     try {
       // Build url based on global API_URL and given endpoint
@@ -62,7 +64,7 @@ export class APIService {
     
   }
 
-  // postData method takes a url from Django and a body (consists of all the needed attributes of a model) and creates an entry in the database
+  // PostData method takes a url from Django and a body (consists of all the needed attributes of a model) and creates an entry in the database
   async postData(endpoint: string, body: any): Promise<any> {
     try {
         // Build url based on global API_URL and given endpoint
@@ -77,7 +79,7 @@ export class APIService {
     }
   }
 
-  // putData method takes a url from Django and a body (consists of all the attributes to update of a model) and updates an entry in the database
+  // PutData method takes a url from Django and a body (consists of all the attributes to update of a model) and updates an entry in the database
   async putData(endpoint: string, body: any): Promise<any> {
     try {
         // Build url based on global API_URL and given endpoint
@@ -92,7 +94,7 @@ export class APIService {
     }
   }
 
-  // deleteData method takes a url from Django and deletes its corresponding data
+  // DeleteData method takes a url from Django and deletes its corresponding data
   async deleteData(endpoint: string): Promise<void> {
     try {
         // Build url based on global API_URL and given endpoint
@@ -106,7 +108,7 @@ export class APIService {
     }
   }
 
-  // 
+  // Upload an image file
   async uploadFile(endpoint: string, formData: FormData): Promise<any> {
     try {
       // Build url based on global IMAGE_URL and given endpoint
@@ -120,65 +122,4 @@ export class APIService {
       throw error; 
     }
   }
-
-  /* 
-    Example usage of HTTP methods:
-    !! All of these methods must be called in asynchronous functions 
-    !! Add 'async' before function name ( See examples below ) 
-
-    getData: 
-      constructor(private apiService: APIService) { } 
-      // Variables to hold pulled in plot data
-      plotData: any;
-
-      async ngOnInit(): Promise<void> {
-        // Call the getData method of ApiService to fetch all plot data for plot with id of 1
-        this.plotData = await this.apiService.getData('plot/1/');
-
-        // Call the getData method of ApiService to fetch all plot data
-        this.plotData = await this.apiService.getData('plots/');
-      }
-
-    postData:
-      async createExample() {
-          // Needed fields for creating a person
-          const createFields = {
-            'first_name': 'TEST',
-            'last_name': 'TEST',
-            'date_of_birth': '1956-04-12',
-            'date_of_death': '2024-02-20',
-            'date_of_burial': '2024-04-23',
-            'obituary': 'A great TEST',
-            'portrait_image': null,
-            'landscape_image': null
-          };
-
-          // Call the postData method of ApiService to create a person
-          await this.apiService.postData('persons/', createFields);
-      }
-
-    putData:
-      async updateExample() {
-        // Needed fields for updating a person
-        const updateFields = {
-          'first_name': 'Henry',
-          'last_name': 'Doe',
-          'date_of_birth': '1956-04-12',
-          'date_of_death': '2024-02-20',
-          'date_of_burial': '2024-04-23',
-          'obituary': 'He was a great man...',
-          'portrait_image': null,
-          'landscape_image': null
-        };
-
-        // Call the putData method of ApiService to update person with id 1
-        await this.apiService.putData('person/1/', updateFields);
-      }
-
-    deleteData:
-      async deleteExample() {
-        // Call the deleteData method of ApiService to delete person with id 6
-        await this.apiService.deleteData('person/6/');
-      }
-  */
 }

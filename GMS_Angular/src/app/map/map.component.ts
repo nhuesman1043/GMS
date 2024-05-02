@@ -71,6 +71,7 @@ export class MapComponent {
   plotIcon(plotColor: string, isSelected: boolean, opacity: any, personName: string): any {
     let svgString: string = '';
     if (isSelected) {
+      // Make the icon have a white border if selected
       svgString = '<svg width="30" height="30" viewBox="0 0 488 428" xmlns="http://www.w3.org/2000/svg">' +
                     '<g transform="translate(163.51 120.39)">' +
                         '<path d="m80.488-116.39c-81.822 0-150 63.366-150 150v150c0 6.668-0.757 23.558 0 30h300c0.757-6.442 0-23.332 0-30v-150c0-86.634-68.178-150-150-150zm-240 360v60h480v-60z" ' +
@@ -116,6 +117,7 @@ export class MapComponent {
                 '<div class="popup">' + personName + '</div>';
     }
     else {
+      // Make the icon have a black border if not selected
       svgString = '<svg width="30" height="30" viewBox="0 0 488 428" xmlns="http://www.w3.org/2000/svg">' +
                     '<g transform="translate(163.51 120.39)">' +
                         '<path d="m80.488-116.39c-81.822 0-150 63.366-150 150v150c0 6.668-0.757 23.558 0 30h300c0.757-6.442 0-23.332 0-30v-150c0-86.634-68.178-150-150-150zm-240 360v60h480v-60z" ' +
@@ -161,7 +163,7 @@ export class MapComponent {
                 '<div class="popup">' + personName + '</div>';
     }
 
-    // const svgString = '<svg width="30" height="30" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M256 46c-81.822 0-150 63.366-150 150v150c0 6.668-.757 23.558 0 30h300c.757-6.442 0-23.332 0-30V196c0-86.634-68.178-150-150-150zM16 406v60h480v-60H16z" fill="#fff" /></svg>';
+    // Sanitize, format, and return an HtmlElement using the svg string
     const sanitizedHtml = this.sanitizer.bypassSecurityTrustHtml(svgString);
     const container = this.elementRef.nativeElement.ownerDocument.createElement('div');
     let htmlstring: string = sanitizedHtml.toString().replace('SafeValue must use [property]=binding: ', '').replace(' (see https://g.co/ng/security#xss)', '');
@@ -171,17 +173,19 @@ export class MapComponent {
   
   // Define options/settings for the google map api
   options: google.maps.MapOptions = {
-    center: { lat: 46.6537, lng: -96.4405 },
+    center: { lat: 46.653050, lng: -96.4400290 },
     zoom: 19,
     mapTypeId: "satellite",
     disableDefaultUI: true,
     keyboardShortcuts: false,
     rotateControl: true,
-    restriction: {latLngBounds: {north: 46.6551803, south: 46.6520219, west: -96.4423670, east: -96.4394105}},
+    restriction: {latLngBounds: {north: 46.654132, south: 46.651956, west: -96.441425, east: -96.438958}},
     minZoom: 19,
     maxZoom: 21,
+    isFractionalZoomEnabled: true,
   };
 
+  // Method for refreshing the maps and plots
   async refreshMap(searchField: string): Promise<void> {
     // Get plots and plot status from database
     this.plotData = await this.apiService.getData('plots');
@@ -200,6 +204,7 @@ export class MapComponent {
       if(this.searchFilter(searchField, i)) {
         // Format plot information to be used in html markes that meet search criteria
         if (this.isSexton || plotState === 2){
+          // If there is a person in the plot
           if (this.plotData[i].person_id !== null) {
             list.push({ 
               lat: parseFloat(this.plotData[i].plot_latitude)
@@ -213,6 +218,7 @@ export class MapComponent {
           });
           }
           else {
+            // If there is not a person in the plot
             this.getFullName(i)
             list.push({ 
               lat: parseFloat(this.plotData[i].plot_latitude)
@@ -230,6 +236,7 @@ export class MapComponent {
       else {
         // If plot does not meet search criteria, make it grey and translucent
         if (this.isSexton || plotState === 2){
+          // If there is a person in the plot
           if (this.plotData[i].person_id !== null) {
           list.push({ 
               lat: parseFloat(this.plotData[i].plot_latitude)
@@ -242,6 +249,7 @@ export class MapComponent {
             , icon: this.plotIcon('lightgrey', false, 0.33, this.getFullName(i))
           });  
           }
+          // If there is not a person in the plot
           else {
             this.getFullName(i)
             list.push({ 
@@ -266,18 +274,20 @@ export class MapComponent {
   // Method for checking if a plot has a person that is being searched for
   searchFilter(searchField: any, i: any) {
     let filter = '';
+    // Check if plot meets search criteria if searching by person's name
     if(this.filterProperty === this.personFilter) {
-    // Get the first and last name of the person in the plot if filtering by name
+    // Get the first and last name of the person in the plot
     if(this.plotData[i].person_id !== null){
       const filteredArray = this.personData.filter((dict: any) => {
         return dict.person_id == this.plotData[i].person_id;});
         filter = (filteredArray[0].first_name + " " + filteredArray[0].last_name).toLowerCase();
     }
     }
-    // Get plot identifier if filtering by identifier
+    // Check if plot meets search criteria if searching by plot identifier
     else if(this.filterProperty === this.identifierFilter) {
         filter = this.plotData[i].plot_identifier.toLowerCase();
     }
+    // Check if plot meets search criteria if searching by plot status
     else if(this.filterProperty === this.statusFilter) {
       console.log
       return searchField === this.plotData[i].plot_state;
@@ -301,6 +311,7 @@ export class MapComponent {
         filter = filteredArray[0].first_name + " " + filteredArray[0].last_name;
         this.nameList.push(filter);
     }
+    // If plot is not occupied, make popup text "Empty"
     else {
       this.nameList.push('Empty');
     }
@@ -351,14 +362,5 @@ export class MapComponent {
   async ngOnInit(): Promise<void> {
     this.refreshMap('');
     this.mapService.mapInstance = this;
-  }
-
-  isSelected(bool: boolean): number {
-    if (bool) {
-      return 20;
-    }
-    else {
-      return 1;
-    }
   }
 }

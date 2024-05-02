@@ -59,7 +59,6 @@
             [position]="plot" 
             (mapClick)="selectPlot(plot.plotId, i)" 
             [content]="i === selectedPlotIndex ? plotIcon(plot.plotColor, i === selectedPlotIndex, 1, nameList[i]) : plot.icon"
-            [zIndex]="isSelected(i === selectedPlotIndex)"
         >
         </map-advanced-marker>
     </google-map>
