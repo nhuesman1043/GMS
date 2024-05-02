@@ -64,6 +64,7 @@ export class SextonSidebarContentComponent implements OnInit {
   changesMade: boolean = false;
   hasTriedToCreatePerson: boolean = false;
   canCreatePerson: boolean = false;
+  plotStatusChange: boolean = false;
 
   constructor(
     private apiService: APIService,
@@ -86,6 +87,7 @@ export class SextonSidebarContentComponent implements OnInit {
     this.portraitImageSrc = null;
     this.landscapeImageSrc = null;
     this.changesMade = false;
+    this.plotStatusChange = false;
     this.hasTriedToCreatePerson = false; 
 
     try {
@@ -217,8 +219,13 @@ export class SextonSidebarContentComponent implements OnInit {
 
   // Method to handle when user inputs a change to a plot property, updates our current personData
   updatePlotField(propertyName: string, value: any) {
-    // Show changes have been made
-    this.changesMade = true;
+    // Show changes have been made, different for plot_state
+    if (propertyName !== 'plot_state')
+      this.changesMade = true;
+
+    // Update plotStatusChange if needed
+    else
+      this.plotStatusChange = true;
 
     // Set new value
     this.plotData[propertyName] = value;
@@ -314,28 +321,13 @@ export class SextonSidebarContentComponent implements OnInit {
   async onSave() {
     // We are creating a new person to occupy this plot, so POST
     if (this.isNewPerson) {
-      // Show that we've tried to create a person, show invalid fields if applicable
-      this.hasTriedToCreatePerson = true;
-
-      // Check that required fields are filled out before creation
-      if (this.canCreatePerson) {
+      // Update plot if we are just changing its status
+      if (this.plotStatusChange && !this.changesMade) {
         try {
-          // Upload images
-          await this.uploadImages();
-
-          // Remove person_id and plot_id from the create fields
-          delete this.personData.person_id;
+          // Remove plot_id from the update fields
           delete this.plotData.plot_id
 
-          // Create person and then update plot to reference this new person 
-          const response = await this.apiService.postData('persons/', this.personData);
-          const newPersonId = response.person_id;
-
-          // Ensure reference to new person and plot state of occupied
-          this.plotData['person_id'] = newPersonId;
-          this.plotData['plot_state'] = 2;
-
-          // Update plot with new person reference
+          // Update plot
           await this.apiService.putData('plot/' + this.selectedPlotId + '/', this.plotData);
 
           // Show confirmation if we make it this far
@@ -346,9 +338,42 @@ export class SextonSidebarContentComponent implements OnInit {
         }
       }
 
-      // Return if we try to create with invalid fields
-      else
-        return;
+      // Show that we've tried to create a person, show invalid fields if applicable
+      else if (this.changesMade) {
+        this.hasTriedToCreatePerson = true;
+
+        // Check that required fields are filled out before creation
+        if (this.canCreatePerson) {
+          try {
+            // Upload images
+            await this.uploadImages();
+
+            // Remove person_id and plot_id from the create fields
+            delete this.personData.person_id;
+            delete this.plotData.plot_id
+
+            // Create person and then update plot to reference this new person 
+            const response = await this.apiService.postData('persons/', this.personData);
+            const newPersonId = response.person_id;
+
+            // Ensure reference to new person
+            this.plotData['person_id'] = newPersonId;
+
+            // Update plot with new person reference
+            await this.apiService.putData('plot/' + this.selectedPlotId + '/', this.plotData);
+
+            // Show confirmation if we make it this far
+            this.showPopup(this.confirmationTemplate);
+          } catch(error) {
+            // Show failure if there is an issue
+            this.showPopup(this.failTemplate);
+          }
+        }
+
+        // Return for invalid fields
+        else
+          return;
+      }
     }
 
     // We are updating the person already in this plot, so PUT
@@ -370,16 +395,16 @@ export class SextonSidebarContentComponent implements OnInit {
 
         // Show confirmation if we make it this far
         this.showPopup(this.confirmationTemplate);
+
       } catch(error) {
         // Show failure if there is an issue
         this.showPopup(this.failTemplate);
       }
     }
-    
+
     // Refresh data and map
-    this.getSextonContentData(this.selectedPlotId, false);
-    this.changesMade = false;
-    this.mapService.mapInstance?.refreshMap('');
+    await this.getSextonContentData(this.selectedPlotId, false);
+    await this.mapService.mapInstance?.refreshMap('');
   }
 
   // Remove a person from a plot and delete them
@@ -413,8 +438,18 @@ export class SextonSidebarContentComponent implements OnInit {
     if (this.portraitFileUploaded && this.portraitFile !== null) {
       try {
         // Call uploadFile to upload file to database and save name to response.fileName
+        // Create FormData object and clean file name
+        // Create a new File object with the same content but a modified name - Remove spaces
+        const modifiedPortraitFile = new File(
+          [this.portraitFile], 
+          this.portraitFile['name'].replaceAll(' ', ''), {  // Clean file name
+          type: this.portraitFile.type,
+          lastModified: this.portraitFile.lastModified
+        });
         const portraitFormData = new FormData();
-        portraitFormData.append('image', this.portraitFile); 
+        portraitFormData.append('image', modifiedPortraitFile); 
+
+        // Upload modifiedPortraitFile
         const response = await this.apiService.uploadFile('file/upload/image/', portraitFormData);
 
         // Assign the file object to personData['portrait_image_url']
@@ -425,30 +460,30 @@ export class SextonSidebarContentComponent implements OnInit {
       }      
     }
 
-    // Remove portrait file
-    else {
-
-    }
-
     // Upload landscape image if available
     if (this.landscapeFileUploaded && this.landscapeFile !== null) {
       try {
         // Call uploadFile to upload file to database and save name to response.fileName
+        // Create FormData object and clean file name
+        // Create a new File object with the same content but a modified name - Remove spaces
+        const modifiedLandscapeFile = new File(
+          [this.landscapeFile], 
+          this.landscapeFile['name'].replaceAll(' ', ''), {  // Clean file name
+          type: this.landscapeFile.type,
+          lastModified: this.landscapeFile.lastModified
+        });
         const landscapeFormData = new FormData();
-        landscapeFormData.append('image', this.landscapeFile); 
+        landscapeFormData.append('image', modifiedLandscapeFile); 
+
+        // Upload modifiedPortraitFile
         const response = await this.apiService.uploadFile('file/upload/image/', landscapeFormData);
 
         // Assign the file object to personData['landscape_image_url']
         this.personData['landscape_image_url'] = this.globalService.IMAGE_URL + '/' + response.fileName;
       } catch (error) {
-        // Something broke lol
+        // Something broke lol - Losing sanity
         console.error('Error uploading landscape image: ', error);
       }      
-    }
-
-    // Remove landscape file
-    else {
-
     }
   }
 }
