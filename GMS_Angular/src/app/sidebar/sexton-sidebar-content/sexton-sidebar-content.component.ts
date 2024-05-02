@@ -43,6 +43,7 @@ export class SextonSidebarContentComponent implements OnInit {
   dateOfDeathModel: NgbDateStruct | null = null;
   dateOfBurialModel: NgbDateStruct | null = null
   date: { year: number; month: number } = { year: 0, month: 0 };
+  currentYear: number = -1;
 
   // Image variables
   portraitFileUploaded: boolean = false;
@@ -71,7 +72,7 @@ export class SextonSidebarContentComponent implements OnInit {
     private globalService: GlobalService,
     private sidebarService: SidebarService,
     private calendar: NgbCalendar,
-    private mapService: MapService
+    private mapService: MapService,
   ) { }
 
   ngOnInit(): void {
@@ -79,7 +80,8 @@ export class SextonSidebarContentComponent implements OnInit {
       this.getSextonContentData(id, true);
     });
 
-    this.date = this.calendar.getToday()
+    this.date = this.calendar.getToday();
+    this.currentYear = this.date.year;
   }
 
   async getSextonContentData(plotId: number, toggleSidebar: boolean): Promise<void> {

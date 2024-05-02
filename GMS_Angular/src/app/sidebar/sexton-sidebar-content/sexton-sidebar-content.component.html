@@ -44,8 +44,9 @@
                     #dateOfBirthPicker="ngbDatepicker"
                     [value]="personData.date_of_birth"
                     (ngModelChange)="updatePersonField('date_of_birth', $event)"
-                    readonly
                     [ngClass]="{'is-invalid': (personData.date_of_birth === '' && hasTriedToCreatePerson) || (plotData.person_id !== null && personData.date_of_birth === '')}"
+                    [minDate]="{year: 1800, month: 1, day: 1}"
+                    [maxDate]="{year: currentYear, month: 12, day: 31}"
                 />
                 <button class="btn btn-outline-secondary d-flex" (click)="dateOfBirthPicker.toggle()" type="button">
                     <i class="fa-solid fa-calendar-days p-1"></i>
@@ -64,8 +65,9 @@
                     #dateOfDeathPicker="ngbDatepicker"
                     [value]="personData.date_of_death"
                     (ngModelChange)="updatePersonField('date_of_death', $event)"
-                    readonly
                     [ngClass]="{'is-invalid': (personData.date_of_death === '' && hasTriedToCreatePerson) || (plotData.person_id !== null && personData.date_of_death === '')}"
+                    [minDate]="{year: 1800, month: 1, day: 1}"
+                    [maxDate]="{year: currentYear, month: 12, day: 31}"
                 />
                 <button class="btn btn-outline-secondary d-flex" (click)="dateOfDeathPicker.toggle()" type="button">
                     <i class="fa-solid fa-calendar-days p-1"></i>
@@ -105,8 +107,9 @@
                     #dateOfBurialPicker="ngbDatepicker"
                     [value]="personData.date_of_burial"
                     (ngModelChange)="updatePersonField('date_of_burial', $event)"
-                    readonly
                     [ngClass]="{'is-invalid': (personData.date_of_burial === '' && hasTriedToCreatePerson) || (plotData.person_id !== null && personData.date_of_burial === '')}"
+                    [minDate]="{year: 1800, month: 1, day: 1}"
+                    [maxDate]="{year: currentYear, month: 12, day: 31}"
                 />
                 <button class="btn btn-outline-secondary d-flex" (click)="dateOfBurialPicker.toggle()" type="button">
                     <i class="fa-solid fa-calendar-days p-1"></i>
