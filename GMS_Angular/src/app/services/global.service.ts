@@ -11,7 +11,4 @@ export class GlobalService {
 
   // URL to images stored in backend
   IMAGE_URL = this.API_URL + 'image';
-
-  // Flag variable for Sexton
-  //IS_SEXTON: boolean = false;
 }

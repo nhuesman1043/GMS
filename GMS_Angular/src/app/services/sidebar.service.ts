@@ -17,7 +17,8 @@ export class SidebarService {
     } 
   }
 
-  setDataLoadedStatus(isLoaded: boolean) {
-    this.dataLoadedSource.next(isLoaded);
+  setDataLoadedStatus(isLoaded: boolean, toggleSidebar: boolean) {
+    if (toggleSidebar)
+      this.dataLoadedSource.next(isLoaded);
   }
 }
