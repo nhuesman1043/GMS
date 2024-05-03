@@ -70,11 +70,13 @@
     color: $mean-button-red;
 }
 
-.btn-warning-easter-egg {
+.btn-warning-easter-egg, .btn-warning-easter-egg:focus, .btn-warning-easter-egg:hover {
     background-color: transparent;
     border: none;
     cursor: auto;
-
+    outline: none;
+    box-shadow: none !important;
+    
     .icon-warn {
         color: $somewhat-okay-button-yellow;
     }
