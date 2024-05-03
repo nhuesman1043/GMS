@@ -48,7 +48,8 @@ export class MapComponent {
     private apiService: APIService, 
     private app: AppComponent, 
     private sidebarService: SidebarService, 
-    private mapService: MapService
+    private mapService: MapService,
+    private globalService: GlobalService
   ) { } 
 
   // Define variables
@@ -70,6 +71,12 @@ export class MapComponent {
   // This method creates the icon for the plots using an svg string
   plotIcon(plotColor: string, isSelected: boolean, opacity: any, personName: string): any {
     let svgString: string = '';
+
+    // Show global plot color for users
+    if (!this.isSexton)
+      plotColor = this.globalService.USER_PLOT_COLOR;
+
+    // Check for selected
     if (isSelected) {
       // Make the icon have a white border if selected
       svgString = '<svg width="30" height="30" viewBox="0 0 488 428" xmlns="http://www.w3.org/2000/svg">' +
@@ -198,7 +205,11 @@ export class MapComponent {
     for (let i = 0; i < this.plotData.length; i++){
       // Get plot color
       const plotState = this.plotData[i].plot_state;
-      const plotColor = this.plotStatusData.find((status: any) => status.status_id === plotState)?.color_hex;
+      let plotColor = this.plotStatusData.find((status: any) => status.status_id === plotState)?.color_hex;
+
+      // Generic user plot color
+      if (!this.isSexton)
+        plotColor = this.globalService.USER_PLOT_COLOR;
 
       //Check to see if plot meets filter conditions
       if(this.searchFilter(searchField, i)) {

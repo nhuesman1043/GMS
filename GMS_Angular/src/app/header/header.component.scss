@@ -6,6 +6,10 @@
     background-color: $off-white;
 }
 
+.btn-popup-close:hover {
+    color: $brand;
+}
+
 .btn-donate, .btn-donate:focus {
     background-color: $brand;
     color: $white;

@@ -30,7 +30,7 @@
           transition: border-color 0.3s;
     
           &:focus {
-            border-color: $baby-blue;
+            border-color: $brand;
           }
         }
     
@@ -39,7 +39,7 @@
           padding: 10px;
           border: none;
           border-radius: 5px;
-          background-color: $baby-blue;
+          background-color: $brand;
           color: $white;
           cursor: pointer;
           transition: background-color 0.3s;

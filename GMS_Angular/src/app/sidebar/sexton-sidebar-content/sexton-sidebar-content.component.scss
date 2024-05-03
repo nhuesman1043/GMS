@@ -70,8 +70,14 @@
     color: $mean-button-red;
 }
 
-.icon-warn {
-    color: $somewhat-okay-button-yellow;
+.btn-warning-easter-egg {
+    background-color: transparent;
+    border: none;
+    cursor: auto;
+
+    .icon-warn {
+        color: $somewhat-okay-button-yellow;
+    }
 }
 
 .btn-confirm-delete {
@@ -93,5 +99,22 @@
     &:focus {
         background-color: $blue-grey;
         color: $white;
+    }
+}
+
+.easter-egg {
+    position: fixed;
+    left: 0;
+    animation: slideRightLeft 5s linear forwards; 
+    z-index: 10;
+    top: 42%;
+
+    @keyframes slideRightLeft {
+        0% {
+            transform: translate(-100%);
+        }
+        100% {
+            transform: translate(105vw);
+        }
     }
 }

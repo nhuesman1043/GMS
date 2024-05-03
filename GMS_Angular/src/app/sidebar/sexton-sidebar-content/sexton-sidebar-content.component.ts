@@ -67,6 +67,9 @@ export class SextonSidebarContentComponent implements OnInit {
   canCreatePerson: boolean = false;
   plotStatusChange: boolean = false;
 
+  // Easter egg shhhh.....
+  warningCount: number = 0;
+
   constructor(
     private apiService: APIService,
     private globalService: GlobalService,
@@ -260,7 +263,7 @@ export class SextonSidebarContentComponent implements OnInit {
         const castedFile = file as File;
 
         // Check if the dropped file is an image
-        if (!castedFile.type.startsWith('image/')) {
+        if (castedFile.type !== 'image/webp') {
           // Show invalid for portrait
           if (imageType === 'portrait')
             this.portraitInvalidFileType = true;
@@ -495,5 +498,12 @@ export class SextonSidebarContentComponent implements OnInit {
         console.error('Error uploading landscape image: ', error);
       }      
     }
+  }
+
+  easterEgg(reset: boolean) {
+    if (reset)
+      this.warningCount = 0;
+    else
+      this.warningCount++;
   }
 }

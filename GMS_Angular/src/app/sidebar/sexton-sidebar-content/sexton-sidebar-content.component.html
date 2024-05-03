@@ -155,7 +155,7 @@
                 </button>
             </div>
             <div *ngIf="portraitInvalidFileType && !portraitFileUploaded" class="mt-1 text-center text-danger">
-                <p>Please upload an image file.</p>
+                <p>Please upload a .webp file.</p>
             </div>
             <div *ngIf="!portraitFileUploaded && !portraitInvalidFileType" class="mt-1 text-center">
                 <p>Drag and drop a file above to upload it</p>
@@ -180,7 +180,7 @@
                 </button>
             </div>
             <div *ngIf="landscapeInvalidFileType && !landscapeFileUploaded" class="mt-1 text-center text-danger">
-                <p>Please upload an image file.</p>
+                <p>Please upload a .webp file.</p>
             </div>
             <div *ngIf="!landscapeFileUploaded && !landscapeInvalidFileType" class="mt-1 text-center">
                 <p>Drag and drop a file above to upload it</p>
@@ -248,12 +248,14 @@
 <ng-template #warn let-modal>
     <div class="modal-body text-center">
         <p class="fs-2 mt-2">Remove person from plot?</p>
-        <i class="fas fa-exclamation-triangle icon-warn mb-2 fs-1"></i>
+        <button (click)="easterEgg(false)" class="btn-warning-easter-egg">
+            <i class="fas fa-exclamation-triangle icon-warn mb-2 fs-1"></i>
+        </button>
         <br>
         <button 
             type="button" 
             class="btn btn-confirm-delete mb-3 fs-4 p-1" 
-            (click)="onDelete(); modal.close('Close click')"
+            (click)="onDelete(); modal.close('Close click'); easterEgg(true)"
         >
             Confirm
         </button>
@@ -261,9 +263,12 @@
         <button 
             type="button" 
             class="btn btn-close-modal mb-3 fs-4 p-1" 
-            (click)="modal.close('Close click')"
+            (click)="modal.close('Close click'); easterEgg(true)"
         >
             Close
         </button>
+    </div>
+    <div *ngIf="warningCount === 7" class="easter-egg">
+        <img src="https://cdn.discordapp.com/attachments/1201222126846349366/1235732615982747722/cub_biomed_lesson01_animation1_1.gif?ex=6635712e&is=66341fae&hm=03dac12ce8aa915af4d0bf68963ce643a6a398c91d10a4047c7b9ae594349192&"/>
     </div>
 </ng-template>
