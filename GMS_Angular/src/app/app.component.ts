@@ -46,7 +46,7 @@ export class AppComponent {
   constructor(private sidebarService: SidebarService, private router: Router) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.isAdminRoute = this.router.url === '/admin';
+        this.isAdminRoute = this.router.url === '/sexton';
       }
     });
   };

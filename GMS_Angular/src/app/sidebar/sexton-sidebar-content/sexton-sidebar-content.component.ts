@@ -95,6 +95,8 @@ export class SextonSidebarContentComponent implements OnInit {
     this.changesMade = false;
     this.plotStatusChange = false;
     this.hasTriedToCreatePerson = false; 
+    this.portraitInvalidFileType = false;
+    this.landscapeInvalidFileType = false;
 
     try {
       // Set dataLoaded to false when starting to get Sexton data
