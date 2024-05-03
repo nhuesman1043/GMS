@@ -268,10 +268,12 @@
             Close
         </button>
     </div>
-    <div *ngIf="warningCount === 7" class="easter-egg">
-        <img src="https://cdn.discordapp.com/attachments/1201222126846349366/1235732615982747722/cub_biomed_lesson01_animation1_1.gif?ex=6635712e&is=66341fae&hm=03dac12ce8aa915af4d0bf68963ce643a6a398c91d10a4047c7b9ae594349192&"/>
-        <img src="https://cdn.discordapp.com/attachments/1201222126846349366/1235732615982747722/cub_biomed_lesson01_animation1_1.gif?ex=6635712e&is=66341fae&hm=03dac12ce8aa915af4d0bf68963ce643a6a398c91d10a4047c7b9ae594349192&"/>
-        <img src="https://cdn.discordapp.com/attachments/1201222126846349366/1235732615982747722/cub_biomed_lesson01_animation1_1.gif?ex=6635712e&is=66341fae&hm=03dac12ce8aa915af4d0bf68963ce643a6a398c91d10a4047c7b9ae594349192&"/>
-        <img src="https://cdn.discordapp.com/attachments/1201222126846349366/1235732615982747722/cub_biomed_lesson01_animation1_1.gif?ex=6635712e&is=66341fae&hm=03dac12ce8aa915af4d0bf68963ce643a6a398c91d10a4047c7b9ae594349192&"/>
+    <div *ngIf="warningCount % 7 === 0 && warningCount !== 0">
+        
+        <img class="easter-egg-right" style="top:6%" src="https://cdn.discordapp.com/attachments/1201222126846349366/1235802793302818957/output-onlinegiftools.gif?ex=6635b28a&is=6634610a&hm=3041293d60df840dd2ef0052fd98b67ec5c695482785b638faf0713f8647a286&"/>
+        <img class="easter-egg-left" style="top:24% " src="https://cdn.discordapp.com/attachments/1201222126846349366/1235732615982747722/cub_biomed_lesson01_animation1_1.gif?ex=6635712e&is=66341fae&hm=03dac12ce8aa915af4d0bf68963ce643a6a398c91d10a4047c7b9ae594349192&"/>
+        <img class="easter-egg-right" style="top: 42%" src="https://cdn.discordapp.com/attachments/1201222126846349366/1235802793302818957/output-onlinegiftools.gif?ex=6635b28a&is=6634610a&hm=3041293d60df840dd2ef0052fd98b67ec5c695482785b638faf0713f8647a286&"/>
+        <img class="easter-egg-left" style="top: 60%" src="https://cdn.discordapp.com/attachments/1201222126846349366/1235732615982747722/cub_biomed_lesson01_animation1_1.gif?ex=6635712e&is=66341fae&hm=03dac12ce8aa915af4d0bf68963ce643a6a398c91d10a4047c7b9ae594349192&"/>
+        <img class="easter-egg-right" style="top: 78%" src="https://cdn.discordapp.com/attachments/1201222126846349366/1235802793302818957/output-onlinegiftools.gif?ex=6635b28a&is=6634610a&hm=3041293d60df840dd2ef0052fd98b67ec5c695482785b638faf0713f8647a286&"/>
     </div>
 </ng-template>

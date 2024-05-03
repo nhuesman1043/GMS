@@ -102,19 +102,34 @@
     }
 }
 
-.easter-egg {
+.easter-egg-left {
     position: fixed;
     left: 0;
+    animation: slideLeft 5s linear forwards; 
+    z-index: 10;
+
+    @keyframes slideLeft {
+        0% {
+            transform: translateX(-100%);
+        }
+        100% {
+            transform: translateX(105vw);
+        }
+    }
+}
+
+.easter-egg-right {
+    position: fixed;
+    right: 0;
     animation: slideRight 5s linear forwards; 
     z-index: 10;
-    top: 42%;
 
     @keyframes slideRight {
         0% {
-            transform: translate(-100%);
+            transform: translateX(110%);
         }
         100% {
-            transform: translate(105vw);
+            transform: translateX(-105vw);
         }
     }
 }
