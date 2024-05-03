@@ -105,11 +105,11 @@
 .easter-egg {
     position: fixed;
     left: 0;
-    animation: slideRightLeft 5s linear forwards; 
+    animation: slideRight 5s linear forwards; 
     z-index: 10;
     top: 42%;
 
-    @keyframes slideRightLeft {
+    @keyframes slideRight {
         0% {
             transform: translate(-100%);
         }

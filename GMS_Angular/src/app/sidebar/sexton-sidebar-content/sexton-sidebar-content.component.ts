@@ -3,7 +3,7 @@ import { NgbCalendar, NgbDatepickerModule, NgbDateStruct } from '@ng-bootstrap/n
 import { APIService } from '../../services/api.service';
 import { SidebarService } from '../../services/sidebar.service';
 import { GlobalService } from '../../services/global.service';
-import { NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
+import { NgClass, NgFor, NgForOf, NgIf, NgStyle } from '@angular/common';
 import { JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgxFileDropModule, NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop'
@@ -17,6 +17,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
     NgIf,
     NgStyle,
     NgFor,
+    NgForOf,
     NgClass,
     NgbDatepickerModule,
     JsonPipe,
